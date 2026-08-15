@@ -35,7 +35,7 @@
     .brand-title span { color: var(--gold-primary); }
 
     .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #94A3B8; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+    .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #94A3B8; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; cursor: pointer; }
     .nav-item.active a, .nav-item a:hover { background-color: var(--navy-light); color: #FFF; }
     .nav-item.active a { border-left: 4px solid var(--gold-primary); }
 
@@ -57,7 +57,8 @@
     .dashboard-split { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
     .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .table-title { font-size: 18px; font-weight: 700; color: var(--navy-dark); }
-    .btn-gold { background-color: var(--gold-primary); color: var(--navy-dark); padding: 10px 18px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; }
+    .btn-gold { background-color: var(--gold-primary); color: var(--navy-dark); padding: 10px 18px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-gold:hover { background-color: var(--gold-hover); }
 
     table { width: 100%; border-collapse: collapse; text-align: left; }
     th { padding: 12px; font-size: 12px; color: var(--text-muted); border-bottom: 2px solid var(--border-color); text-transform: uppercase; }
@@ -68,8 +69,18 @@
     .badge-cleaning { background: #FFFBEB; color: var(--status-cleaning); }
 
     .actions-list { display: flex; flex-direction: column; gap: 12px; }
-    .action-btn { width: 100%; padding: 14px; border: 1px solid var(--border-color); background: var(--bg-light); border-radius: 8px; text-align: left; font-weight: 600; color: var(--navy-dark); cursor: pointer; }
+    .action-btn { width: 100%; padding: 14px; border: 1px solid var(--border-color); background: var(--bg-light); border-radius: 8px; text-align: left; font-weight: 600; color: var(--navy-dark); cursor: pointer; transition: 0.2s; }
+    .action-btn:hover { background: #E2E8F0; }
     .action-btn i { margin-right: 8px; color: var(--gold-primary); }
+
+    /* Modal Styles */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    .modal { background: #FFF; padding: 24px; border-radius: 12px; width: 400px; display: flex; flex-direction: column; gap: 16px; }
+    .modal-title { font-size: 18px; font-weight: 700; color: var(--navy-dark); }
+    .modal-field { display: flex; flex-direction: column; gap: 6px; }
+    .modal-field input { padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 12px; }
+    .btn-cancel { background: #CBD5E1; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -80,26 +91,22 @@
       <div class="brand-title">Hotel<span>Pro</span></div>
     </div>
     <ul class="nav-list">
-      <li class="nav-item active"><a href="#"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-calendar-check"></i> Reservations</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-bed"></i> Rooms</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-users"></i> Guests</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-user-tie"></i> Staff</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-wallet"></i> Accounts</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-wrench"></i> Maintenance</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-file-invoice-dollar"></i> Billing</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
-      <li class="nav-item"><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+      <li class="nav-item active"><a onclick="setActiveTab(this)"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-calendar-check"></i> Reservations</a></li>
+      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-bed"></i> Rooms</a></li>
+      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-users"></i> Guests</a></li>
+      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-user-tie"></i> Staff</a></li>
+      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-wallet"></i> Accounts</a></li>
     </ul>
   </aside>
 
   <div class="main-wrapper">
     <header class="header">
       <div class="header-title">
-        <h1>Operations Control Panel</h1>
+        <h1 id="page-heading">Operations Control Panel</h1>
       </div>
       <div class="user-profile">
-        <select class="hotel-selector">
+        <select class="hotel-selector" onchange="alert('Switched to ' + this.value)">
           <option>Grand Royale Resort (Hotel A)</option>
           <option>Seaside Plaza (Hotel B)</option>
         </select>
@@ -116,7 +123,7 @@
         </div>
         <div class="card stat-card">
           <span class="stat-label">Occupied Rooms</span>
-          <span class="stat-value">94</span>
+          <span class="stat-value" id="occupied-count">94</span>
           <span class="stat-subtext">78.3% Occupancy</span>
         </div>
         <div class="card stat-card">
@@ -135,7 +142,7 @@
         <div class="card">
           <div class="table-header">
             <h2 class="table-title">Recent Reservations</h2>
-            <button class="btn-gold"><i class="fa-solid fa-plus"></i> New Booking</button>
+            <button class="btn-gold" onclick="openModal()"><i class="fa-solid fa-plus"></i> New Booking</button>
           </div>
           <table>
             <thead>
@@ -148,7 +155,7 @@
                 <th>Amount</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="res-table">
               <tr>
                 <td>#RES-8041</td>
                 <td>Eleanor Vance</td>
@@ -180,15 +187,68 @@
         <div class="card">
           <h2 class="table-title" style="margin-bottom: 16px;">Quick Actions</h2>
           <div class="actions-list">
-            <button class="action-btn"><i class="fa-solid fa-key"></i> Check-In Guest</button>
-            <button class="action-btn"><i class="fa-solid fa-receipt"></i> Check-Out & Bill</button>
-            <button class="action-btn"><i class="fa-solid fa-broom"></i> Assign Housekeeping</button>
-            <button class="action-btn"><i class="fa-solid fa-screwdriver-wrench"></i> Report Maintenance</button>
+            <button class="action-btn" onclick="quickCheckIn()"><i class="fa-solid fa-key"></i> Check-In Guest</button>
+            <button class="action-btn" onclick="alert('Checkout process initiated!')"><i class="fa-solid fa-receipt"></i> Check-Out & Bill</button>
+            <button class="action-btn" onclick="alert('Housekeeping notified!')"><i class="fa-solid fa-broom"></i> Assign Housekeeping</button>
+            <button class="action-btn" onclick="alert('Maintenance ticket created!')"><i class="fa-solid fa-screwdriver-wrench"></i> Report Maintenance</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Booking Modal -->
+  <div class="modal-overlay" id="booking-modal">
+    <div class="modal">
+      <div class="modal-title">Create New Booking</div>
+      <div class="modal-field">
+        <label>Guest Name</label>
+        <input type="text" id="guest-name" placeholder="John Doe">
+      </div>
+      <div class="modal-field">
+        <label>Room Type</label>
+        <input type="text" id="room-type" placeholder="101 (Deluxe)">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-gold" onclick="addBooking()">Save Reservation</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('booking-modal').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('booking-modal').style.display = 'none';
+    }
+    function addBooking() {
+      const name = document.getElementById('guest-name').value || 'New Guest';
+      const room = document.getElementById('room-type').value || '104 (Standard)';
+      const tbody = document.getElementById('res-table');
+      const newRow = `<tr>
+        <td>#RES-${Math.floor(1000 + Math.random() * 9000)}</td>
+        <td>${name}</td>
+        <td>${room}</td>
+        <td>Today</td>
+        <td><span class="badge badge-ready">Confirmed</span></td>
+        <td>$350.00</td>
+      </tr>`;
+      tbody.innerHTML += newRow;
+      closeModal();
+    }
+    function quickCheckIn() {
+      const countEl = document.getElementById('occupied-count');
+      countEl.innerText = parseInt(countEl.innerText) + 1;
+      alert('Guest checked in successfully! Occupied count updated.');
+    }
+    function setActiveTab(el) {
+      document.querySelectorAll('.nav-item').forEach(li => li.classList.remove('active'));
+      el.parentElement.classList.add('active');
+      document.getElementById('page-heading').innerText = el.innerText.trim() + ' View';
+    }
+  </script>
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HotelPro - Modern Hotel Management SaaS</title>
+  <title>HotelPro - Operations Suite</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -13,13 +13,11 @@
       --navy-light: #273459;
       --gold-primary: #D4AF37;
       --gold-hover: #C5A028;
-      --gold-light: #F9F6EE;
       --bg-light: #F4F6F9;
       --card-bg: #FFFFFF;
       --text-main: #1E293B;
       --text-muted: #64748B;
       --border-color: #E2E8F0;
-      
       --status-ready: #10B981;
       --status-occupied: #3B82F6;
       --status-cleaning: #F59E0B;
@@ -28,25 +26,31 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background-color: var(--bg-light); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-    .sidebar { width: 260px; background-color: var(--navy-dark); color: #FFF; display: flex; flex-direction: column; padding: 24px 16px; }
+    /* Sidebar */
+    .sidebar { width: 260px; background-color: var(--navy-dark); color: #FFF; display: flex; flex-direction: column; padding: 24px 16px; flex-shrink: 0; }
     .brand { display: flex; align-items: center; gap: 12px; padding-bottom: 32px; border-bottom: 1px solid var(--navy-light); margin-bottom: 24px; }
     .brand-logo { width: 40px; height: 40px; background: linear-gradient(135deg, var(--gold-primary), #B8860B); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; color: var(--navy-dark); }
     .brand-title { font-size: 20px; font-weight: 700; }
     .brand-title span { color: var(--gold-primary); }
 
-    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #94A3B8; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; cursor: pointer; }
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #94A3B8; text-decoration: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
     .nav-item.active a, .nav-item a:hover { background-color: var(--navy-light); color: #FFF; }
     .nav-item.active a { border-left: 4px solid var(--gold-primary); }
 
+    /* Main Content Area */
     .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
-    .header { background-color: var(--card-bg); padding: 16px 32px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .header { background-color: var(--card-bg); padding: 16px 32px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; sticky: top; }
     .header-title h1 { font-size: 24px; font-weight: 700; color: var(--navy-dark); }
     .user-profile { display: flex; align-items: center; gap: 16px; }
-    .hotel-selector { background: var(--bg-light); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 14px; }
+    .hotel-selector { background: var(--bg-light); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; }
     .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--navy-main); color: var(--gold-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; border: 2px solid var(--gold-primary); }
 
     .content { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+    .view-section { display: none; flex-direction: column; gap: 24px; }
+    .view-section.active-view { display: flex; }
+
+    /* Cards & Grids */
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
     .card { background-color: var(--card-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .stat-card { display: flex; flex-direction: column; gap: 8px; }
@@ -60,6 +64,7 @@
     .btn-gold { background-color: var(--gold-primary); color: var(--navy-dark); padding: 10px 18px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .btn-gold:hover { background-color: var(--gold-hover); }
 
+    /* Tables */
     table { width: 100%; border-collapse: collapse; text-align: left; }
     th { padding: 12px; font-size: 12px; color: var(--text-muted); border-bottom: 2px solid var(--border-color); text-transform: uppercase; }
     td { padding: 14px 12px; border-bottom: 1px solid var(--border-color); font-size: 14px; }
@@ -73,40 +78,46 @@
     .action-btn:hover { background: #E2E8F0; }
     .action-btn i { margin-right: 8px; color: var(--gold-primary); }
 
-    /* Modal Styles */
+    /* Room Cards Grid */
+    .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+    .room-card { background: #FFF; border: 1px solid var(--border-color); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 8px; text-align: center; }
+    .room-number { font-size: 20px; font-weight: 700; color: var(--navy-dark); }
+
+    /* Modals */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal { background: #FFF; padding: 24px; border-radius: 12px; width: 400px; display: flex; flex-direction: column; gap: 16px; }
     .modal-title { font-size: 18px; font-weight: 700; color: var(--navy-dark); }
     .modal-field { display: flex; flex-direction: column; gap: 6px; }
-    .modal-field input { padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; }
+    .modal-field input, .modal-field select { padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 12px; }
     .btn-cancel { background: #CBD5E1; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
   </style>
 </head>
 <body>
 
+  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="brand">
       <div class="brand-logo"><i class="fa-solid fa-hotel"></i></div>
       <div class="brand-title">Hotel<span>Pro</span></div>
     </div>
     <ul class="nav-list">
-      <li class="nav-item active"><a onclick="setActiveTab(this)"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
-      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-calendar-check"></i> Reservations</a></li>
-      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-bed"></i> Rooms</a></li>
-      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-users"></i> Guests</a></li>
-      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-user-tie"></i> Staff</a></li>
-      <li class="nav-item"><a onclick="setActiveTab(this)"><i class="fa-solid fa-wallet"></i> Accounts</a></li>
+      <li class="nav-item active" onclick="switchView('dashboard', this)"><a><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+      <li class="nav-item" onclick="switchView('reservations', this)"><a><i class="fa-solid fa-calendar-check"></i> Reservations</a></li>
+      <li class="nav-item" onclick="switchView('rooms', this)"><a><i class="fa-solid fa-bed"></i> Rooms Layout</a></li>
+      <li class="nav-item" onclick="switchView('guests', this)"><a><i class="fa-solid fa-users"></i> Guest Directory</a></li>
+      <li class="nav-item" onclick="switchView('staff', this)"><a><i class="fa-solid fa-user-tie"></i> Staff Roster</a></li>
+      <li class="nav-item" onclick="switchView('billing', this)"><a><i class="fa-solid fa-file-invoice-dollar"></i> Billing & Invoices</a></li>
     </ul>
   </aside>
 
   <div class="main-wrapper">
     <header class="header">
       <div class="header-title">
-        <h1 id="page-heading">Operations Control Panel</h1>
+        <h1 id="page-title">Operations Control Panel</h1>
       </div>
       <div class="user-profile">
-        <select class="hotel-selector" onchange="alert('Switched to ' + this.value)">
+        <select class="hotel-selector" onchange="alert('Switching view to ' + this.value)">
           <option>Grand Royale Resort (Hotel A)</option>
           <option>Seaside Plaza (Hotel B)</option>
         </select>
@@ -115,85 +126,149 @@
     </header>
 
     <div class="content">
-      <div class="metrics-grid">
-        <div class="card stat-card">
-          <span class="stat-label">Total Rooms</span>
-          <span class="stat-value">120</span>
-          <span class="stat-subtext">Capacity: 240 Guests</span>
+
+      <!-- DASHBOARD VIEW -->
+      <div id="view-dashboard" class="view-section active-view">
+        <div class="metrics-grid">
+          <div class="card stat-card">
+            <span class="stat-label">Total Rooms</span>
+            <span class="stat-value">120</span>
+            <span class="stat-subtext">Capacity: 240 Guests</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">Occupied Rooms</span>
+            <span class="stat-value" id="occupied-count">94</span>
+            <span class="stat-subtext">78.3% Occupancy</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">Today's Revenue</span>
+            <span class="stat-value">$14,250</span>
+            <span class="stat-subtext">+12% vs yesterday</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">Pending Cleaning</span>
+            <span class="stat-value">8</span>
+            <span class="stat-subtext" style="color: var(--status-cleaning);">Housekeeping active</span>
+          </div>
         </div>
-        <div class="card stat-card">
-          <span class="stat-label">Occupied Rooms</span>
-          <span class="stat-value" id="occupied-count">94</span>
-          <span class="stat-subtext">78.3% Occupancy</span>
-        </div>
-        <div class="card stat-card">
-          <span class="stat-label">Today's Revenue</span>
-          <span class="stat-value">$14,250</span>
-          <span class="stat-subtext">+12% vs yesterday</span>
-        </div>
-        <div class="card stat-card">
-          <span class="stat-label">Pending Cleaning</span>
-          <span class="stat-value">8</span>
-          <span class="stat-subtext" style="color: var(--status-cleaning);">Housekeeping active</span>
+
+        <div class="dashboard-split">
+          <div class="card">
+            <div class="table-header">
+              <h2 class="table-title">Recent Bookings</h2>
+              <button class="btn-gold" onclick="openModal()"><i class="fa-solid fa-plus"></i> New Booking</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th><th>Guest</th><th>Room</th><th>Status</th><th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-table">
+                <tr><td>#RES-8041</td><td>Eleanor Vance</td><td>105 (Deluxe)</td><td><span class="badge badge-ready">Confirmed</span></td><td>$450.00</td></tr>
+                <tr><td>#RES-8042</td><td>Marcus Brody</td><td>202 (Suite)</td><td><span class="badge badge-occupied">Checked In</span></td><td>$1,200.00</td></tr>
+                <tr><td>#RES-8043</td><td>Sophia Chen</td><td>108 (Standard)</td><td><span class="badge badge-cleaning">Cleaning Req.</span></td><td>$280.00</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2 class="table-title" style="margin-bottom: 16px;">Quick Actions</h2>
+            <div class="actions-list">
+              <button class="action-btn" onclick="quickCheckIn()"><i class="fa-solid fa-key"></i> Fast Check-In Guest</button>
+              <button class="action-btn" onclick="alert('Receipt printed successfully!')"><i class="fa-solid fa-receipt"></i> Print Guest Invoice</button>
+              <button class="action-btn" onclick="alert('Housekeeping alert dispatched!')"><i class="fa-solid fa-broom"></i> Dispatch Cleaning</button>
+              <button class="action-btn" onclick="alert('Maintenance ticket log opened.')"><i class="fa-solid fa-screwdriver-wrench"></i> Report Issue</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="dashboard-split">
+      <!-- RESERVATIONS VIEW -->
+      <div id="view-reservations" class="view-section">
         <div class="card">
           <div class="table-header">
-            <h2 class="table-title">Recent Reservations</h2>
-            <button class="btn-gold" onclick="openModal()"><i class="fa-solid fa-plus"></i> New Booking</button>
+            <h2 class="table-title">All Reservations</h2>
+            <button class="btn-gold" onclick="openModal()"><i class="fa-solid fa-plus"></i> Add Reservation</button>
           </div>
           <table>
             <thead>
-              <tr>
-                <th>ID</th>
-                <th>Guest</th>
-                <th>Room</th>
-                <th>Check-In</th>
-                <th>Status</th>
-                <th>Amount</th>
-              </tr>
+              <tr><th>Booking ID</th><th>Guest Name</th><th>Room</th><th>Dates</th><th>Status</th><th>Total Price</th></tr>
             </thead>
-            <tbody id="res-table">
-              <tr>
-                <td>#RES-8041</td>
-                <td>Eleanor Vance</td>
-                <td>105 (Deluxe)</td>
-                <td>Today</td>
-                <td><span class="badge badge-ready">Confirmed</span></td>
-                <td>$450.00</td>
-              </tr>
-              <tr>
-                <td>#RES-8042</td>
-                <td>Marcus Brody</td>
-                <td>202 (Suite)</td>
-                <td>Today</td>
-                <td><span class="badge badge-occupied">Checked In</span></td>
-                <td>$1,200.00</td>
-              </tr>
-              <tr>
-                <td>#RES-8043</td>
-                <td>Sophia Chen</td>
-                <td>108 (Standard)</td>
-                <td>Tomorrow</td>
-                <td><span class="badge badge-cleaning">Cleaning Req.</span></td>
-                <td>$280.00</td>
-              </tr>
+            <tbody id="all-res-table">
+              <tr><td>#RES-8041</td><td>Eleanor Vance</td><td>105 - Deluxe King</td><td>Oct 12 - Oct 15</td><td><span class="badge badge-ready">Confirmed</span></td><td>$450.00</td></tr>
+              <tr><td>#RES-8042</td><td>Marcus Brody</td><td>202 - Executive Suite</td><td>Oct 11 - Oct 16</td><td><span class="badge badge-occupied">Checked In</span></td><td>$1,200.00</td></tr>
+              <tr><td>#RES-8043</td><td>Sophia Chen</td><td>108 - Standard Twin</td><td>Oct 14 - Oct 18</td><td><span class="badge badge-cleaning">Pending</span></td><td>$280.00</td></tr>
+              <tr><td>#RES-8044</td><td>David Miller</td><td>301 - Penthouse</td><td>Oct 15 - Oct 20</td><td><span class="badge badge-ready">Confirmed</span></td><td>$2,400.00</td></tr>
             </tbody>
           </table>
         </div>
+      </div>
 
-        <div class="card">
-          <h2 class="table-title" style="margin-bottom: 16px;">Quick Actions</h2>
-          <div class="actions-list">
-            <button class="action-btn" onclick="quickCheckIn()"><i class="fa-solid fa-key"></i> Check-In Guest</button>
-            <button class="action-btn" onclick="alert('Checkout process initiated!')"><i class="fa-solid fa-receipt"></i> Check-Out & Bill</button>
-            <button class="action-btn" onclick="alert('Housekeeping notified!')"><i class="fa-solid fa-broom"></i> Assign Housekeeping</button>
-            <button class="action-btn" onclick="alert('Maintenance ticket created!')"><i class="fa-solid fa-screwdriver-wrench"></i> Report Maintenance</button>
-          </div>
+      <!-- ROOMS VIEW -->
+      <div id="view-rooms" class="view-section">
+        <h2 class="table-title">Live Room Status Matrix</h2>
+        <div class="rooms-grid">
+          <div class="room-card"><div class="room-number">101</div><div>Deluxe King</div><span class="badge badge-ready">Ready</span></div>
+          <div class="room-card"><div class="room-number">102</div><div>Deluxe King</div><span class="badge badge-occupied">Occupied</span></div>
+          <div class="room-card"><div class="room-number">103</div><div>Standard Twin</div><span class="badge badge-cleaning">Cleaning</span></div>
+          <div class="room-card"><div class="room-number">104</div><div>Standard Twin</div><span class="badge badge-ready">Ready</span></div>
+          <div class="room-card"><div class="room-number">201</div><div>Executive Suite</div><span class="badge badge-occupied">Occupied</span></div>
+          <div class="room-card"><div class="room-number">202</div><div>Executive Suite</div><span class="badge badge-occupied">Occupied</span></div>
+          <div class="room-card"><div class="room-number">301</div><div>Penthouse</div><span class="badge badge-ready">Ready</span></div>
         </div>
       </div>
+
+      <!-- GUESTS VIEW -->
+      <div id="view-guests" class="view-section">
+        <div class="card">
+          <h2 class="table-title" style="margin-bottom: 16px;">Guest Directory</h2>
+          <table>
+            <thead>
+              <tr><th>Guest Name</th><th>Email</th><th>Phone</th><th>Stays</th><th>VIP Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Eleanor Vance</td><td>e.vance@example.com</td><td>+1 (555) 234-5678</td><td>4 Stays</td><td><span class="badge badge-ready">Gold VIP</span></td></tr>
+              <tr><td>Marcus Brody</td><td>m.brody@example.com</td><td>+1 (555) 876-5432</td><td>12 Stays</td><td><span class="badge badge-ready">Platinum VIP</span></td></tr>
+              <tr><td>Sophia Chen</td><td>s.chen@example.com</td><td>+1 (555) 345-6789</td><td>1 Stay</td><td><span class="badge badge-occupied">Regular</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- STAFF VIEW -->
+      <div id="view-staff" class="view-section">
+        <div class="card">
+          <h2 class="table-title" style="margin-bottom: 16px;">On-Duty Staff Roster</h2>
+          <table>
+            <thead>
+              <tr><th>Employee</th><th>Role</th><th>Shift</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Sarah Connor</td><td>Front Desk Manager</td><td>Morning (7 AM - 3 PM)</td><td><span class="badge badge-ready">Active</span></td></tr>
+              <tr><td>James Logan</td><td>Head Housekeeper</td><td>Day (9 AM - 5 PM)</td><td><span class="badge badge-ready">Active</span></td></tr>
+              <tr><td>Carlos Mendez</td><td>Maintenance Tech</td><td>Night (4 PM - 12 AM)</td><td><span class="badge badge-cleaning">On Call</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BILLING VIEW -->
+      <div id="view-billing" class="view-section">
+        <div class="card">
+          <h2 class="table-title" style="margin-bottom: 16px;">Recent Financial Transactions</h2>
+          <table>
+            <thead>
+              <tr><th>Invoice #</th><th>Guest</th><th>Payment Method</th><th>Date</th><th>Amount</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>#INV-9901</td><td>Marcus Brody</td><td>Visa ending in 4242</td><td>Today</td><td>$1,200.00</td></tr>
+              <tr><td>#INV-9902</td><td>Eleanor Vance</td><td>MasterCard ending in 8819</td><td>Yesterday</td><td>$450.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -206,8 +281,8 @@
         <input type="text" id="guest-name" placeholder="John Doe">
       </div>
       <div class="modal-field">
-        <label>Room Type</label>
-        <input type="text" id="room-type" placeholder="101 (Deluxe)">
+        <label>Room Assignment</label>
+        <input type="text" id="room-type" placeholder="104 (Standard)">
       </div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -217,36 +292,43 @@
   </div>
 
   <script>
-    function openModal() {
-      document.getElementById('booking-modal').style.display = 'flex';
+    function switchView(viewName, el) {
+      document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active-view'));
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      
+      document.getElementById('view-' + viewName).classList.add('active-view');
+      el.classList.add('active');
+      
+      const titleMap = {
+        'dashboard': 'Operations Control Panel',
+        'reservations': 'Reservation Management',
+        'rooms': 'Live Room Inventory Grid',
+        'guests': 'Guest Profiles & History',
+        'staff': 'Staff Schedule & Roster',
+        'billing': 'Invoicing & Accounting'
+      };
+      document.getElementById('page-title').innerText = titleMap[viewName];
     }
-    function closeModal() {
-      document.getElementById('booking-modal').style.display = 'none';
-    }
+
+    function openModal() { document.getElementById('booking-modal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('booking-modal').style.display = 'none'; }
+
     function addBooking() {
       const name = document.getElementById('guest-name').value || 'New Guest';
       const room = document.getElementById('room-type').value || '104 (Standard)';
-      const tbody = document.getElementById('res-table');
-      const newRow = `<tr>
-        <td>#RES-${Math.floor(1000 + Math.random() * 9000)}</td>
-        <td>${name}</td>
-        <td>${room}</td>
-        <td>Today</td>
-        <td><span class="badge badge-ready">Confirmed</span></td>
-        <td>$350.00</td>
-      </tr>`;
-      tbody.innerHTML += newRow;
+      const id = '#RES-' + Math.floor(1000 + Math.random() * 9000);
+
+      const row = `<tr><td>${id}</td><td>${name}</td><td>${room}</td><td><span class="badge badge-ready">Confirmed</span></td><td>$350.00</td></tr>`;
+      document.getElementById('dashboard-table').innerHTML += row;
+
       closeModal();
+      alert('New booking added to database!');
     }
+
     function quickCheckIn() {
       const countEl = document.getElementById('occupied-count');
       countEl.innerText = parseInt(countEl.innerText) + 1;
-      alert('Guest checked in successfully! Occupied count updated.');
-    }
-    function setActiveTab(el) {
-      document.querySelectorAll('.nav-item').forEach(li => li.classList.remove('active'));
-      el.parentElement.classList.add('active');
-      document.getElementById('page-heading').innerText = el.innerText.trim() + ' View';
+      alert('Guest checked in! Live room count updated.');
     }
   </script>
 

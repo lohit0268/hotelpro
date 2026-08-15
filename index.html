@@ -1,108 +1,4468 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HotelPro</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HotelPro - Hotel Management System</title>
+
 <style>
-:root{--n:#0a1128;--n2:#1c2541;--g:#d4af37;--bg:#f4f6f9;--b:#e2e8f0;--t:#1e293b;--m:#64748b;--green:#10b981;--blue:#3b82f6;--red:#ef4444;--orange:#f59e0b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:Arial,sans-serif}.side{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--n);color:white;padding:20px 14px}.brand{font-size:22px;font-weight:bold;padding:12px;border-bottom:1px solid #273459;margin-bottom:15px}.brand span{color:var(--g)}button{border:0;border-radius:8px;padding:10px 14px;font-weight:bold;cursor:pointer}.nav button{display:block;width:100%;background:transparent;color:#aab5c9;text-align:left;margin:4px 0}.nav button:hover,.nav .active{background:#273459;color:white;border-left:4px solid var(--g)}.main{margin-left:245px}.top{height:70px;background:white;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0}.top h1{color:var(--n);font-size:21px}.top select{padding:9px;border:1px solid var(--b);border-radius:8px}.content{padding:25px}.page{display:none}.page.active{display:block}.grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:2fr 1fr}.rooms{grid-template-columns:repeat(3,1fr)}.card{background:white;border:1px solid var(--b);border-radius:12px;padding:18px;box-shadow:0 2px 8px #0000000a}.label{font-size:11px;color:var(--m);font-weight:bold;text-transform:uppercase}.value{display:block;font-size:27px;font-weight:bold;color:var(--n);margin:8px 0}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.primary{background:var(--g);color:var(--n)}.secondary{background:#eef2f7;color:var(--n)}.danger{background:#fee2e2;color:#b91c1c}.filters{display:flex;gap:10px;margin-bottom:15px}.filters input,.filters select,.form input,.form select,.form textarea{padding:10px;border:1px solid var(--b);border-radius:8px;width:100%}.table{overflow:auto}table{width:100%;border-collapse:collapse;min-width:700px}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--b);font-size:13px}th{font-size:10px;color:var(--m);text-transform:uppercase}.badge{padding:5px 8px;border-radius:20px;font-size:10px;font-weight:bold}.ready,.paid{background:#ecfdf5;color:#059669}.occupied{background:#eff6ff;color:#2563eb}.reserved{background:#f5f3ff;color:#7c3aed}.cleaning{background:#fffbeb;color:#b45309}.maintenance{background:#fef2f2;color:#dc2626}.modalbg{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:50;padding:20px}.modalbg.open{display:flex}.modal{background:white;border-radius:14px;width:min(650px,100%);padding:22px;max-height:90vh;overflow:auto}.form{display:grid;grid-template-columns:1fr 1fr;gap:13px}.full{grid-column:1/-1}.modalfoot{text-align:right;margin-top:18px}.room{border-left:5px solid var(--green)}.room.occupied{border-left-color:var(--blue)}.room.reserved{border-left-color:#7c3aed}.room.cleaning{border-left-color:var(--orange)}.room.maintenance{border-left-color:var(--red)}.quick button{width:100%;margin:5px 0;text-align:left}.toast{display:none;position:fixed;right:20px;bottom:20px;background:var(--n);color:white;padding:13px 18px;border-radius:8px}.toast.show{display:block}@media(max-width:900px){.side{width:210px}.main{margin-left:210px}.stats,.rooms{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}}@media(max-width:650px){.side{position:relative;width:100%;height:auto}.main{margin-left:0}.stats,.rooms,.form{grid-template-columns:1fr}.full{grid-column:auto}}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+/* ================= LOGIN ================= */
+
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #07152f, #183a68);
+}
+
+.loginbox {
+  width: 390px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow: 0 20px 60px #0005;
+}
+
+.logo {
+  font-size: 30px;
+  font-weight: 800;
+  color: #0b2348;
+  margin-bottom: 8px;
+}
+
+.logo span {
+  color: #c99b2e;
+}
+
+.muted {
+  color: #718096;
+}
+
+.loginbox input {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0 14px;
+  border: 1px solid #dbe2ec;
+  border-radius: 8px;
+}
+
+.primary {
+  background: #c99b2e;
+  color: #07152f;
+  font-weight: 700;
+}
+
+.full {
+  width: 100%;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 13px;
+  display: none;
+  margin-bottom: 10px;
+}
+
+/* ================= APP ================= */
+
+.app {
+  display: none;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 235px;
+  background: #07152f;
+  color: #fff;
+  padding: 18px 12px;
+  z-index: 5;
+}
+
+.brand {
+  font-size: 23px;
+  font-weight: 800;
+  padding: 10px 12px 20px;
+}
+
+.brand span {
+  color: #c99b2e;
+}
+
+.nav button {
+  display: block;
+  width: 100%;
+  background: transparent;
+  color: #aebbd0;
+  text-align: left;
+  margin: 3px 0;
+  padding: 12px;
+}
+
+.nav button:hover,
+.nav button.active {
+  background: #1b3153;
+  color: #fff;
+}
+
+.main {
+  margin-left: 235px;
+}
+
+.topbar {
+  height: 68px;
+  background: #fff;
+  border-bottom: 1px solid #e4e9f1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+}
+
+.topbar h1 {
+  font-size: 20px;
+}
+
+.user {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #c99b2e;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.content {
+  padding: 24px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ================= CARDS ================= */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e4e9f1;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 2px 8px #17203308;
+}
+
+.metric {
+  font-size: 27px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+
+.label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #718096;
+  font-weight: 700;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.secondary {
+  background: #edf2f7;
+  color: #172033;
+}
+
+.danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* ================= TABLE ================= */
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.filters input,
+.filters select,
+.form input,
+.form select,
+.form textarea {
+  padding: 10px;
+  border: 1px solid #dbe2ec;
+  border-radius: 8px;
+  width: 100%;
+  background: #fff;
+}
+
+.table {
+  overflow: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 750px;
+}
+
+th,
+td {
+  padding: 11px;
+  border-bottom: 1px solid #e9edf3;
+  text-align: left;
+  font-size: 13px;
+}
+
+th {
+  font-size: 10px;
+  color: #718096;
+  text-transform: uppercase;
+}
+
+/* ================= BADGES ================= */
+
+.badge {
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 15px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.ready,
+.paid,
+.present,
+.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.reserved,
+.leave {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.occupied,
+.checked {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.cleaning,
+.half {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.maintenance,
+.absent,
+.unpaid {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ================= ROOMS ================= */
+
+.roomgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.room {
+  border-left: 5px solid #16a34a;
+}
+
+.room.occupied {
+  border-left-color: #2563eb;
+}
+
+.room.reserved {
+  border-left-color: #7c3aed;
+}
+
+.room.cleaning {
+  border-left-color: #d97706;
+}
+
+.room.maintenance {
+  border-left-color: #dc2626;
+}
+
+.room.out {
+  border-left-color: #64748b;
+}
+
+.room h3 {
+  margin: 0;
+}
+
+.room .rate {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+/* ================= MODAL ================= */
+
+.modalbg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0008;
+  z-index: 20;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modalbg.open {
+  display: flex;
+}
+
+.modal {
+  width: min(700px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 15px;
+  padding: 22px;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+
+.span2 {
+  grid-column: 1 / -1;
+}
+
+.modalfoot {
+  text-align: right;
+  margin-top: 18px;
+}
+
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  background: #07152f;
+  color: #fff;
+  padding: 13px 18px;
+  border-radius: 8px;
+  display: none;
+  z-index: 50;
+}
+
+.toast.show {
+  display: block;
+}
+
+.quick button {
+  width: 100%;
+  text-align: left;
+  margin: 5px 0;
+}
+
+.checklist label {
+  display: block;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.empty {
+  text-align: center;
+  color: #718096;
+  padding: 25px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px) {
+  .sidebar {
+    width: 190px;
+  }
+
+  .main {
+    margin-left: 190px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .roomgrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(max-width:650px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .main {
+    margin-left: 0;
+  }
+
+  .cards,
+  .roomgrid,
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .span2 {
+    grid-column: auto;
+  }
+
+  .topbar {
+    position: relative;
+  }
+}
+
+@media print {
+  .sidebar,
+  .topbar,
+  .no-print {
+    display: none !important;
+  }
+
+  .main {
+    margin: 0;
+  }
+
+  .page {
+    display: none !important;
+  }
+
+  .page.active {
+    display: block;
+  }
+}
 </style>
 </head>
+
 <body>
-<aside class="side"><div class="brand">🏨 Hotel<span>Pro</span></div><div class="nav">
-<button class="active" onclick="go('dashboard',this)">Dashboard</button>
-<button onclick="go('reservations',this)">Reservations</button><button onclick="go('rooms',this)">Rooms</button><button onclick="go('guests',this)">Guests</button><button onclick="go('staff',this)">Staff</button><button onclick="go('accounts',this)">Accounts & Finance</button><button onclick="go('maintenance',this)">Maintenance</button><button onclick="go('billing',this)">Billing</button><button onclick="go('reports',this)">Reports</button><button onclick="go('settings',this)">Settings</button>
-</div></aside>
-<main class="main"><header class="top"><h1 id="title">Operations Control Panel</h1><select id="hotel"><option>Grand Royale Resort</option><option>Seaside Plaza</option></select></header>
+
+<!-- ================= LOGIN ================= -->
+
+<div id="login" class="login">
+
+  <div class="loginbox">
+
+    <div class="logo">
+      Hotel<span>Pro</span>
+    </div>
+
+    <p class="muted">
+      Hotel Management System
+    </p>
+
+    <label>Username</label>
+
+    <input
+      id="loginUser"
+      value="admin"
+    >
+
+    <label>Password</label>
+
+    <input
+      id="loginPass"
+      type="password"
+      value="admin"
+    >
+
+    <div
+      id="loginError"
+      class="error"
+    >
+      Invalid login. Try admin / admin.
+    </div>
+
+    <button
+      class="primary full"
+      onclick="login()"
+    >
+      Login
+    </button>
+
+    <p
+      class="muted"
+      style="font-size:12px;margin-top:16px"
+    >
+      Demo login: admin / admin
+    </p>
+
+  </div>
+
+</div>
+
+
+<!-- ================= APPLICATION ================= -->
+
+<div id="app" class="app">
+
+<aside class="sidebar">
+
+  <div class="brand">
+    Hotel<span>Pro</span>
+  </div>
+
+  <div class="nav">
+
+    <button
+      class="active"
+      onclick="showPage('dashboard',this)"
+    >
+      🏠 Dashboard
+    </button>
+
+    <button
+      onclick="showPage('reservations',this)"
+    >
+      📅 Reservations
+    </button>
+
+    <button
+      onclick="showPage('rooms',this)"
+    >
+      🛏️ Rooms
+    </button>
+
+    <button
+      onclick="showPage('guests',this)"
+    >
+      👥 Guests
+    </button>
+
+    <button
+      onclick="showPage('staff',this)"
+    >
+      👨‍💼 Staff & Attendance
+    </button>
+
+    <button
+      onclick="showPage('billing',this)"
+    >
+      🧾 Billing
+    </button>
+
+    <button
+      onclick="showPage('finance',this)"
+    >
+      💰 Income & Expenses
+    </button>
+
+    <button
+      onclick="showPage('maintenance',this)"
+    >
+      🔧 Maintenance
+    </button>
+
+    <button
+      onclick="showPage('housekeeping',this)"
+    >
+      🧹 Housekeeping
+    </button>
+
+    <button
+      onclick="showPage('reports',this)"
+    >
+      📊 Reports
+    </button>
+
+    <button
+      onclick="showPage('settings',this)"
+    >
+      ⚙️ Settings
+    </button>
+
+    <button onclick="logout()">
+      🚪 Logout
+    </button>
+
+  </div>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+  <h1 id="pageTitle">
+    Dashboard
+  </h1>
+
+  <div class="user">
+
+    <span id="clock"></span>
+
+    <div class="avatar">
+      A
+    </div>
+
+    <b>Admin</b>
+
+  </div>
+
+</header>
+
+
 <div class="content">
 
-<section id="dashboard" class="page active"><div class="grid stats">
-<div class="card"><span class="label">Total Rooms</span><span id="drooms" class="value">9</span></div><div class="card"><span class="label">Occupied</span><span id="docc" class="value">0</span></div><div class="card"><span class="label">Revenue</span><span id="drev" class="value">₹0</span></div><div class="card"><span class="label">Cleaning</span><span id="dclean" class="value">0</span></div></div>
-<div class="grid two" style="margin-top:16px"><div class="card"><div class="head"><h2>Recent Reservations</h2><button class="primary" onclick="modal('reservation')">+ New Reservation</button></div><div class="table"><table><thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Status</th><th>Amount</th></tr></thead><tbody id="dashRes"></tbody></table></div></div><div class="card"><h2>Quick Actions</h2><div class="quick"><button class="secondary" onclick="modal('reservation')">➕ New Reservation</button><button class="secondary" onclick="go('billing');modal('bill')">🧾 Create Invoice</button><button class="secondary" onclick="go('maintenance');modal('maintenance')">🔧 Report Maintenance</button><button class="secondary" onclick="go('accounts');modal('transaction')">💰 Add Transaction</button></div></div></div></section>
 
-<section id="reservations" class="page"><div class="card"><div class="head"><h2>Reservations</h2><button class="primary" onclick="modal('reservation')">+ New Reservation</button></div><div class="filters"><input id="rs" placeholder="Search guest/room..." oninput="render()"><select id="rf" onchange="render()"><option value="">All</option><option>Confirmed</option><option>Checked In</option><option>Checked Out</option></select></div><div class="table"><table><thead><tr><th>ID</th><th>Guest</th><th>Phone</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Status</th><th>Payment</th><th>Amount</th><th></th></tr></thead><tbody id="res"></tbody></table></div></div></section>
+<!-- ================= DASHBOARD ================= -->
 
-<section id="rooms" class="page"><div class="card"><div class="head"><h2>Room Management</h2><button class="primary" onclick="modal('room')">+ Add Room</button></div><div id="roomGrid" class="grid rooms"></div></div></section>
+<section
+  id="dashboard"
+  class="page active"
+>
 
-<section id="guests" class="page"><div class="card"><div class="head"><h2>Guests</h2><button class="primary" onclick="modal('guest')">+ Add Guest</button></div><input id="gs" class="filters" placeholder="Search guest..." oninput="render()" style="padding:10px;border:1px solid var(--b);border-radius:8px;width:280px"><div class="table" style="margin-top:12px"><table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Room</th><th>Stays</th><th>Remarks</th></tr></thead><tbody id="guests"></tbody></table></div></div></section>
+<div class="cards">
 
-<section id="staff" class="page"><div class="card"><div class="head"><h2>Staff</h2><button class="primary" onclick="modal('staff')">+ Add Staff</button></div><div class="table"><table><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Position</th><th>Shift</th><th>Attendance</th><th>Salary</th><th>Paid</th></tr></thead><tbody id="staff"></tbody></table></div></div></section>
+  <div class="card">
 
-<section id="accounts" class="page"><div class="grid stats"><div class="card"><span class="label">Income</span><span id="income" class="value">₹0</span></div><div class="card"><span class="label">Expenses</span><span id="expense" class="value">₹0</span></div><div class="card"><span class="label">Profit / Loss</span><span id="profit" class="value">₹0</span></div></div><div class="card" style="margin-top:16px"><div class="head"><h2>Transactions</h2><button class="primary" onclick="modal('transaction')">+ Add Transaction</button></div><div class="table"><table><thead><tr><th>Date</th><th>Type</th><th>Category</th><th>Description</th><th>Amount</th><th>Method</th></tr></thead><tbody id="transactions"></tbody></table></div></div></section>
+    <span class="label">
+      Total Rooms
+    </span>
 
-<section id="maintenance" class="page"><div class="card"><div class="head"><h2>Maintenance & Complaints</h2><button class="primary" onclick="modal('maintenance')">+ Report Issue</button></div><div class="table"><table><thead><tr><th>ID</th><th>Room/Area</th><th>Problem</th><th>Priority</th><th>Assigned</th><th>Cost</th><th>Status</th><th></th></tr></thead><tbody id="maint"></tbody></table></div></div></section>
+    <div
+      class="metric"
+      id="mRooms"
+    >
+      9
+    </div>
 
-<section id="billing" class="page"><div class="card"><div class="head"><h2>Billing & Invoices</h2><button class="primary" onclick="modal('bill')">+ Create Invoice</button></div><div class="table"><table><thead><tr><th>Invoice</th><th>Guest</th><th>Room</th><th>Date</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th></th></tr></thead><tbody id="bills"></tbody></table></div></div></section>
+  </div>
 
-<section id="reports" class="page"><div class="grid stats"><div class="card"><span class="label">Reservations</span><span id="rr" class="value">0</span></div><div class="card"><span class="label">Guests</span><span id="rg" class="value">0</span></div><div class="card"><span class="label">Staff</span><span id="rst" class="value">0</span></div><div class="card"><span class="label">Open Maintenance</span><span id="rm" class="value">0</span></div></div><div class="card" style="margin-top:16px"><h2>Management Summary</h2><p id="summary" style="line-height:1.8;color:var(--m)"></p><button class="secondary" onclick="window.print()">Print Report</button></div></section>
 
-<section id="settings" class="page"><div class="card"><div class="head"><h2>Hotel Settings</h2><button class="primary" onclick="saveSettings()">Save</button></div><div class="form"><div><label>Hotel Name</label><input id="sn"></div><div><label>Currency</label><select id="sc"><option>₹</option><option>$</option><option>€</option></select></div><div><label>Tax %</label><input id="st" type="number"></div><div><label>Phone</label><input id="sp"></div><div class="full"><label>Address</label><textarea id="sa" rows="3"></textarea></div></div></div><div class="card" style="margin-top:16px"><h2>Data Backup</h2><button class="secondary" onclick="backup()">Export Backup</button> <button class="danger" onclick="resetData()">Reset Demo Data</button></div></section>
+  <div class="card">
 
-</div></main>
+    <span class="label">
+      Occupied
+    </span>
 
-<div id="modalBg" class="modalbg"><div class="modal"><h2 id="mt"></h2><div id="mb"></div><div class="modalfoot"><button class="secondary" onclick="closeModal()">Cancel</button><button id="ms" class="primary">Save</button></div></div></div><div id="toast" class="toast"></div>
+    <div
+      class="metric"
+      id="mOccupied"
+    >
+      0
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <span class="label">
+      Today's Revenue
+    </span>
+
+    <div
+      class="metric"
+      id="mRevenue"
+    >
+      ₹0
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <span class="label">
+      Open Maintenance
+    </span>
+
+    <div
+      class="metric"
+      id="mIssues"
+    >
+      0
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="grid2">
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Today's Operations
+</h2>
+
+<button
+class="primary no-print"
+onclick="openModal('reservation')"
+>
++ Reservation
+</button>
+
+</div>
+
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Guest</th>
+<th>Room</th>
+<th>Check-in</th>
+<th>Check-out</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="dashTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Quick Actions
+</h2>
+
+<div class="quick">
+
+<button
+class="secondary"
+onclick="openModal('reservation')"
+>
+📅 New Reservation
+</button>
+
+<button
+class="secondary"
+onclick="openModal('checkin')"
+>
+✅ Walk-in Check-in
+</button>
+
+<button
+class="secondary"
+onclick="openModal('bill')"
+>
+🧾 Create Bill
+</button>
+
+<button
+class="secondary"
+onclick="openModal('expense')"
+>
+💸 Add Expense
+</button>
+
+<button
+class="secondary"
+onclick="openModal('maintenance')"
+>
+🔧 Report Issue
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= RESERVATIONS ================= -->
+
+<section
+id="reservations"
+class="page"
+>
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Reservations & Check-in / Check-out
+</h2>
+
+<button
+class="primary no-print"
+onclick="openModal('reservation')"
+>
++ New Reservation
+</button>
+
+</div>
+
+
+<div class="filters">
+
+<input
+id="resSearch"
+placeholder="Search guest, phone or room"
+oninput="render()"
+>
+
+<select
+id="resFilter"
+onchange="render()"
+>
+
+<option value="">
+All statuses
+</option>
+
+<option>
+Reserved
+</option>
+
+<option>
+Checked In
+</option>
+
+<option>
+Checked Out
+</option>
+
+<option>
+Cancelled
+</option>
+
+</select>
+
+</div>
+
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Guest</th>
+<th>Phone</th>
+<th>Room</th>
+<th>Check-in</th>
+<th>Check-out</th>
+<th>Status</th>
+<th>Amount</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="resTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ROOMS ================= -->
+
+<section
+id="rooms"
+class="page"
+>
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Room Management
+</h2>
+
+<button
+class="primary no-print"
+onclick="openModal('room')"
+>
++ Add Room
+</button>
+
+</div>
+
+
+<div class="filters">
+
+<select
+id="roomFilter"
+onchange="render()"
+>
+
+<option value="">
+All room status
+</option>
+
+<option>
+Ready
+</option>
+
+<option>
+Reserved
+</option>
+
+<option>
+Occupied
+</option>
+
+<option>
+Cleaning
+</option>
+
+<option>
+Maintenance
+</option>
+
+<option>
+Out of Service
+</option>
+
+</select>
+
+</div>
+
+
+<div
+id="roomGrid"
+class="roomgrid"
+></div>
+
+</div>
+
+</section>
+
+
+<!-- ================= GUESTS ================= -->
+
+<section
+id="guests"
+class="page"
+>
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Guest Management
+</h2>
+
+<button
+class="primary no-print"
+onclick="openModal('guest')"
+>
++ Add Guest
+</button>
+
+</div>
+
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+<th>Phone</th>
+<th>Email</th>
+<th>ID Type</th>
+<th>ID Number</th>
+<th>Room</th>
+<th>Visits</th>
+<th>Remarks</th>
+
+</tr>
+
+</thead>
+
+<tbody id="guestTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= STAFF ================= -->
+
+<section
+id="staff"
+class="page"
+>
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Staff & Attendance
+</h2>
+
+<button
+class="primary no-print"
+onclick="openModal('staff')"
+>
++ Add Staff
+</button>
+
+</div>
+
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Staff</th>
+<th>Department</th>
+<th>Role</th>
+<th>Shift</th>
+<th>Attendance</th>
+<th>Salary</th>
+<th>Paid</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="staffTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= BILLING ================= -->
+
+<section
+id="billing"
+class="page"
+>
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Billing & Invoices
+</h2>
+
+<button
+class="primary no-print"
+onclick="openModal('bill')"
+>
++ Create Invoice
+</button>
+
+</div>
+
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Invoice</th>
+<th>Guest</th>
+<th>Room</th>
+<th>Date</th>
+<th>Total</th>
+<th>Paid</th>
+<th>Balance</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="billTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= FINANCE ================= -->
+
+<section
+id="finance"
+class="page"
+>
+
+<div class="cards">
+
+<div class="card">
+
+<span class="label">
+Income
+</span>
+
+<div
+class="metric"
+id="income"
+>
+₹0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<span class="label">
+Expenses
+</span>
+
+<div
+class="metric"
+id="expenses"
+>
+₹0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<span class="label">
+Profit / Loss
+</span>
+
+<div
+class="metric"
+id="profit"
+>
+₹0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<span class="label">
+Transactions
+</span>
+
+<div
+class="metric"
+id="txcount"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:16px"
+>
+
+<div class="head">
+
+<h2>
+Income & Expenses
+</h2>
+
+<button
+class="primary no-print"
+onclick="openModal('transaction')"
+>
++ Add Transaction
+</button>
+
+</div>
+
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+<th>Type</th>
+<th>Category</th>
+<th>Description</th>
+<th>Amount</th>
+<th>Method</th>
+
+</tr>
+
+</thead>
+
+<tbody id="txTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= MAINTENANCE ================= -->
+
+<section
+id="maintenance"
+class="page"
+>
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Maintenance & Complaints
+</h2>
+
+<button
+class="primary no-print"
+onclick="openModal('maintenance')"
+>
++ Report Issue
+</button>
+
+</div>
+
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Room/Area</th>
+<th>Problem</th>
+<th>Priority</th>
+<th>Assigned</th>
+<th>Cost</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="maintTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= HOUSEKEEPING ================= -->
+
+<section
+id="housekeeping"
+class="page"
+>
+
+<div class="grid2">
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Housekeeping Board
+</h2>
+
+</div>
+
+<div id="cleanList"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Cleaning Checklist
+</h2>
+
+<div class="checklist">
+
+<label>
+<input type="checkbox">
+Bed linen changed
+</label>
+
+<label>
+<input type="checkbox">
+Bathroom cleaned
+</label>
+
+<label>
+<input type="checkbox">
+Towels replaced
+</label>
+
+<label>
+<input type="checkbox">
+Amenities refilled
+</label>
+
+<label>
+<input type="checkbox">
+Floor cleaned
+</label>
+
+<label>
+<input type="checkbox">
+Final inspection
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= REPORTS ================= -->
+
+<section
+id="reports"
+class="page"
+>
+
+<div class="cards">
+
+<div class="card">
+
+<span class="label">
+Reservations
+</span>
+
+<div
+class="metric"
+id="repRes"
+>
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<span class="label">
+Guests
+</span>
+
+<div
+class="metric"
+id="repGuests"
+>
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<span class="label">
+Staff
+</span>
+
+<div
+class="metric"
+id="repStaff"
+>
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<span class="label">
+Occupancy
+</span>
+
+<div
+class="metric"
+id="repOcc"
+>
+0%
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:16px"
+>
+
+<h2>
+Management Summary
+</h2>
+
+<p id="summary"></p>
+
+<button
+class="secondary no-print"
+onclick="window.print()"
+>
+🖨️ Print Report
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<section
+id="settings"
+class="page"
+>
+
+<div class="card">
+
+<div class="head">
+
+<h2>
+Hotel Settings
+</h2>
+
+<button
+class="primary no-print"
+onclick="saveSettings()"
+>
+Save
+</button>
+
+</div>
+
+
+<div class="form">
+
+<div>
+
+<label>
+Hotel Name
+</label>
+
+<input id="hotelName">
+
+</div>
+
+
+<div>
+
+<label>
+Currency
+</label>
+
+<select id="currency">
+
+<option>₹</option>
+<option>$</option>
+<option>€</option>
+<option>£</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Tax %
+</label>
+
+<input
+id="tax"
+type="number"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Phone
+</label>
+
+<input id="hotelPhone">
+
+</div>
+
+
+<div class="span2">
+
+<label>
+Address
+</label>
+
+<textarea
+id="hotelAddress"
+rows="3"
+></textarea>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:16px"
+>
+
+<h2>
+Backup
+</h2>
+
+<button
+class="secondary"
+onclick="backup()"
+>
+Export Data
+</button>
+
+<button
+class="danger"
+onclick="resetData()"
+>
+Reset Demo Data
+</button>
+
+</div>
+
+</section>
+
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- ================= MODAL ================= -->
+
+<div
+id="modalBg"
+class="modalbg"
+>
+
+<div class="modal">
+
+<h2 id="modalTitle"></h2>
+
+<div id="modalBody"></div>
+
+<div class="modalfoot">
+
+<button
+class="secondary"
+onclick="closeModal()"
+>
+Cancel
+</button>
+
+<button
+class="primary"
+id="saveModal"
+>
+Save
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+id="toast"
+class="toast"
+></div>
+
 
 <script>
-const K="hotelpro_data_v1";
-const base={rooms:Array.from({length:9},(_,i)=>({no:101+i,type:i<6?"Deluxe":"Suite",price:i<6?2500:4000,status:"Ready"})),res:[],guests:[],staff:[{id:"S001",name:"Rahul Kumar",dept:"Front Office",pos:"Receptionist",shift:"Morning",att:"Present",salary:25000,paid:"Yes"},{id:"S002",name:"Priya Sharma",dept:"Housekeeping",pos:"Supervisor",shift:"Day",att:"Present",salary:22000,paid:"No"}],tx:[],maint:[],bills:[],settings:{name:"Grand Royale Resort",currency:"₹",tax:18,phone:"+91 90000 00000",address:"Hyderabad, Telangana, India"}};
-let d=JSON.parse(localStorage.getItem(K)||"null")||JSON.parse(JSON.stringify(base));
-const money=n=>(d.settings.currency||"₹")+Number(n||0).toLocaleString("en-IN");
-const today=()=>new Date().toISOString().slice(0,10);
-const esc=x=>String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-function save(){localStorage.setItem(K,JSON.stringify(d));render()}
-function toast(x){let t=document.getElementById("toast");t.textContent=x;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2000)}
-function go(id,btn){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");else{let b=[...document.querySelectorAll(".nav button")].find(x=>x.textContent.toLowerCase().includes(id==="accounts"?"accounts":id));if(b)b.classList.add("active")}document.getElementById("title").textContent={dashboard:"Operations Control Panel",reservations:"Reservations",rooms:"Room Management",guests:"Guests",staff:"Staff",accounts:"Accounts & Finance",maintenance:"Maintenance",billing:"Billing & Invoices",reports:"Reports & Analytics",settings:"Settings"}[id]}
-function badge(s){let x=String(s).toLowerCase().replaceAll(" ","");return `<span class="badge ${x}">${esc(s)}</span>`}
-function render(){
-let occ=d.rooms.filter(x=>x.status==="Occupied").length,cl=d.rooms.filter(x=>x.status==="Cleaning Required").length,inc=d.tx.filter(x=>x.type==="Income").reduce((a,x)=>a+ +x.amount,0),exp=d.tx.filter(x=>x.type==="Expense").reduce((a,x)=>a+ +x.amount,0);
-drooms.textContent=d.rooms.length;docc.textContent=occ;drev.textContent=money(inc);dclean.textContent=cl;
-dashRes.innerHTML=d.res.slice(-5).reverse().map(x=>`<tr><td>${x.id}</td><td>${esc(x.guest)}</td><td>${x.room}</td><td>${badge(x.status)}</td><td>${money(x.amount)}</td></tr>`).join("")||empty(5);
-let q=(rs?.value||"").toLowerCase(),f=rf?.value||"";res.innerHTML=d.res.filter(x=>(!q||(`${x.guest} ${x.room} ${x.id}`).toLowerCase().includes(q))&&(!f||x.status===f)).map(x=>`<tr><td>${x.id}</td><td>${esc(x.guest)}</td><td>${esc(x.phone)}</td><td>${x.room}</td><td>${x.in}</td><td>${x.out}</td><td>${badge(x.status)}</td><td>${badge(x.pay)}</td><td>${money(x.amount)}</td><td><button class="secondary" onclick="advance('${x.id}')">${x.status==="Confirmed"?"Check In":x.status==="Checked In"?"Check Out":"View"}</button></td></tr>`).join("")||empty(10);
-roomGrid.innerHTML=d.rooms.map(r=>`<div class="card room ${r.status.toLowerCase().replaceAll(" ","")}"><div class="head"><b style="font-size:20px">Room ${r.no}</b>${badge(r.status)}</div><p style="color:var(--m);line-height:1.8">${r.type}<br>${money(r.price)} / night</p><button class="secondary" onclick="roomStatus(${r.no})">Change Status</button></div>`).join("");
-let gq=(gs?.value||"").toLowerCase();guests.innerHTML=d.guests.filter(x=>`${x.name} ${x.phone}`.toLowerCase().includes(gq)).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone)}</td><td>${esc(x.email)}</td><td>${x.room||"-"}</td><td>${x.stays||0}</td><td>${esc(x.remark||"-")}</td></tr>`).join("")||empty(6);
-staff.innerHTML=d.staff.map(x=>`<tr><td>${x.id}</td><td>${esc(x.name)}</td><td>${esc(x.dept)}</td><td>${esc(x.pos)}</td><td>${x.shift}</td><td><button class="secondary" onclick="attendance('${x.id}')">${x.att}</button></td><td>${money(x.salary)}</td><td>${badge(x.paid==="Yes"?"Paid":"Unpaid")}</td></tr>`).join("");
-income.textContent=money(inc);expense.textContent=money(exp);profit.textContent=money(inc-exp);transactions.innerHTML=d.tx.slice().reverse().map(x=>`<tr><td>${x.date}</td><td>${x.type}</td><td>${esc(x.cat)}</td><td>${esc(x.desc)}</td><td>${money(x.amount)}</td><td>${x.method}</td></tr>`).join("")||empty(6);
-maint.innerHTML=d.maint.map(x=>`<tr><td>${x.id}</td><td>${esc(x.area)}</td><td>${esc(x.problem)}</td><td>${badge(x.priority)}</td><td>${esc(x.assigned)}</td><td>${money(x.cost)}</td><td>${badge(x.status)}</td><td><button class="secondary" onclick="advanceM('${x.id}')">Update</button></td></tr>`).join("")||empty(8);
-bills.innerHTML=d.bills.map(x=>`<tr><td>${x.id}</td><td>${esc(x.guest)}</td><td>${x.room}</td><td>${x.date}</td><td>${money(x.total)}</td><td>${money(x.paid)}</td><td>${money(x.total-x.paid)}</td><td>${badge(x.total<=x.paid?"Paid":"Unpaid")}</td><td><button class="secondary" onclick="printBill('${x.id}')">Print</button></td></tr>`).join("")||empty(9);
-rr.textContent=d.res.length;rg.textContent=d.guests.length;rst.textContent=d.staff.length;rm.textContent=d.maint.filter(x=>x.status!=="Completed").length;summary.innerHTML=`<b>${esc(d.settings.name)}</b> has ${d.rooms.length} rooms, ${d.res.length} reservations and ${d.guests.length} guests. Income: <b>${money(inc)}</b>. Expenses: <b>${money(exp)}</b>. Profit/Loss: <b>${money(inc-exp)}</b>. Open maintenance issues: <b>${d.maint.filter(x=>x.status!=="Completed").length}</b>.`;
+
+/* =========================================================
+   HOTELPRO DATABASE
+========================================================= */
+
+const KEY = "hotelpro_v2";
+
+
+const initial = {
+
+  rooms: Array.from(
+    {length:9},
+    (_,i) => ({
+      no:101+i,
+      type:i<6 ? "Deluxe" : "Suite",
+      rate:i<6 ? 2500 : 4000,
+      status:"Ready"
+    })
+  ),
+
+  reservations: [],
+
+  guests: [],
+
+  staff: [
+
+    {
+      id:"S001",
+      name:"Rahul Kumar",
+      dept:"Front Office",
+      role:"Receptionist",
+      shift:"Morning",
+      attendance:"Present",
+      salary:25000,
+      paid:"No"
+    },
+
+    {
+      id:"S002",
+      name:"Priya Sharma",
+      dept:"Housekeeping",
+      role:"Supervisor",
+      shift:"Day",
+      attendance:"Present",
+      salary:22000,
+      paid:"No"
+    }
+
+  ],
+
+  transactions: [],
+
+  maintenance: [],
+
+  bills: [],
+
+  settings: {
+
+    name:"Grand Royale Hotel",
+
+    currency:"₹",
+
+    tax:18,
+
+    phone:"+91 90000 00000",
+
+    address:"Hyderabad, Telangana"
+
+  }
+
+};
+
+
+let data =
+  JSON.parse(localStorage.getItem(KEY) || "null")
+  ||
+  JSON.parse(JSON.stringify(initial));
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+const money = n =>
+  (data.settings.currency || "₹") +
+  Number(n || 0).toLocaleString("en-IN");
+
+
+const dateNow = () =>
+  new Date().toISOString().slice(0,10);
+
+
+function persist() {
+
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(data)
+  );
+
+  render();
+
 }
-function empty(n){return `<tr><td colspan="${n}" style="text-align:center;padding:30px;color:var(--m)">No records yet.</td></tr>`}
-function roomStatus(n){let r=d.rooms.find(x=>x.no==n),a=["Ready","Reserved","Occupied","Cleaning Required","Maintenance","Out of Service"],v=prompt("Enter status:
-"+a.join("
-"),r.status);if(v&&a.includes(v)){r.status=v;save();toast("Room updated")}}
-function advance(id){let r=d.res.find(x=>x.id===id);if(r.status==="Confirmed"){r.status="Checked In";d.rooms.find(x=>x.no==r.room).status="Occupied"}else if(r.status==="Checked In"){r.status="Checked Out";d.rooms.find(x=>x.no==r.room).status="Cleaning Required"}save();toast("Reservation updated")}
-function attendance(id){let s=d.staff.find(x=>x.id===id);s.att=s.att==="Present"?"Absent":"Present";save()}
-function advanceM(id){let m=d.maint.find(x=>x.id===id),a=["Reported","Assigned","In Progress","Completed"],i=a.indexOf(m.status);m.status=a[Math.min(i+1,3)];save()}
-function modal(type){
-modalBg.classList.add("open");ms.onclick=()=>submit(type);
-let rooms=d.rooms.map(r=>`<option>${r.no}</option>`).join(""),staffs=d.staff.map(s=>`<option>${esc(s.name)}</option>`).join("");
-let forms={
-reservation:["New Reservation",`<div class="form"><div><label>Guest Name</label><input id="mguest"></div><div><label>Phone</label><input id="mphone"></div><div><label>Room</label><select id="mroom">${rooms}</select></div><div><label>Amount</label><input id="mamount" type="number" value="2500"></div><div><label>Check-in</label><input id="min" type="date" value="${today()}"></div><div><label>Check-out</label><input id="mout" type="date"></div><div><label>Payment</label><select id="mpay"><option>Unpaid</option><option>Paid</option></select></div></div>`],
-guest:["Add Guest",`<div class="form"><div><label>Name</label><input id="gname"></div><div><label>Phone</label><input id="gphone"></div><div><label>Email</label><input id="gemail"></div><div><label>Room</label><select id="groom"><option value="">Not assigned</option>${rooms}</select></div><div><label>Previous Stays</label><input id="gstays" type="number" value="0"></div><div><label>Remarks</label><input id="gremark"></div></div>`],
-staff:["Add Staff",`<div class="form"><div><label>Name</label><input id="sname"></div><div><label>Department</label><input id="sdept"></div><div><label>Position</label><input id="spos"></div><div><label>Shift</label><select id="sshift"><option>Morning</option><option>Day</option><option>Evening</option><option>Night</option></select></div><div><label>Salary</label><input id="ssal" type="number"></div><div><label>Remarks</label><input id="sremark"></div></div>`],
-transaction:["Add Transaction",`<div class="form"><div><label>Type</label><select id="ttype"><option>Income</option><option>Expense</option></select></div><div><label>Category</label><input id="tcat"></div><div><label>Amount</label><input id="tamt" type="number"></div><div><label>Date</label><input id="tdate" type="date" value="${today()}"></div><div><label>Method</label><select id="tmethod"><option>Cash</option><option>UPI</option><option>Card</option><option>Bank Transfer</option></select></div><div><label>Description</label><input id="tdesc"></div></div>`],
-maintenance:["Report Maintenance",`<div class="form"><div><label>Room / Area</label><input id="marea"></div><div><label>Priority</label><select id="mpriority"><option>Low</option><option>Medium</option><option>High</option></select></div><div class="full"><label>Problem</label><textarea id="mproblem" rows="3"></textarea></div><div><label>Assigned To</label><select id="massigned"><option>Unassigned</option>${staffs}</select></div><div><label>Cost</label><input id="mcost" type="number" value="0"></div></div>`],
-bill:["Create Invoice",`<div class="form"><div><label>Guest</label><input id="bguest"></div><div><label>Room</label><select id="broom">${rooms}</select></div><div><label>Total</label><input id="btotal" type="number"></div><div><label>Paid</label><input id="bpaid" type="number" value="0"></div></div>`],
-room:["Add Room",`<div class="form"><div><label>Room Number</label><input id="rno"></div><div><label>Type</label><select id="rtype"><option>Standard</option><option>Deluxe</option><option>Suite</option></select></div><div><label>Rate</label><input id="rprice" type="number" value="2500"></div></div>`]};
-mt.textContent=forms[type][0];mb.innerHTML=forms[type][1];
+
+
+function toast(msg) {
+
+  const t = $("toast");
+
+  t.textContent = msg;
+
+  t.classList.add("show");
+
+  setTimeout(
+    () => t.classList.remove("show"),
+    2200
+  );
+
 }
-function closeModal(){modalBg.classList.remove("open")}
-function submit(t){
-if(t==="reservation"){if(!mguest.value.trim())return alert("Enter guest name");let r={id:"RES-"+Date.now().toString().slice(-6),guest:mguest.value,phone:mphone.value,room:+mroom.value,amount:+mamount.value||0,in:min.value,out:mout.value,status:"Confirmed",pay:mpay.value};d.res.push(r);d.rooms.find(x=>x.no==r.room).status="Reserved";if(!d.guests.some(x=>x.name.toLowerCase()===r.guest.toLowerCase()))d.guests.push({name:r.guest,phone:r.phone,email:"",room:r.room,stays:0});toast("Reservation created")}
-if(t==="guest"){if(!gname.value.trim())return alert("Enter name");d.guests.push({name:gname.value,phone:gphone.value,email:gemail.value,room:groom.value,stays:gstays.value,remark:gremark.value});toast("Guest added")}
-if(t==="staff"){if(!sname.value.trim())return alert("Enter name");d.staff.push({id:"S"+Date.now().toString().slice(-4),name:sname.value,dept:sdept.value,pos:spos.value,shift:sshift.value,att:"Present",salary:+ssal.value||0,paid:"No"});toast("Staff added")}
-if(t==="transaction"){if(!(+tamt.value))return alert("Enter amount");d.tx.push({type:ttype.value,cat:tcat.value,amount:+tamt.value,date:tdate.value,method:tmethod.value,desc:tdesc.value});toast("Transaction saved")}
-if(t==="maintenance"){if(!mproblem.value.trim())return alert("Enter problem");d.maint.push({id:"M-"+Date.now().toString().slice(-5),area:marea.value,problem:mproblem.value,priority:mpriority.value,assigned:massigned.value,cost:+mcost.value||0,status:"Reported"});toast("Issue reported")}
-if(t==="bill"){if(!bguest.value.trim())return alert("Enter guest");let id="INV-"+Date.now().toString().slice(-6);d.bills.push({id,guest:bguest.value,room:+broom.value,total:+btotal.value||0,paid:+bpaid.value||0,date:today()});if(+bpaid.value)d.tx.push({type:"Income",cat:"Billing",amount:+bpaid.value,date:today(),method:"Cash",desc:id});toast("Invoice created")}
-if(t==="room"){if(!rno.value)return alert("Enter room");if(d.rooms.some(x=>x.no==rno.value))return alert("Room exists");d.rooms.push({no:+rno.value,type:rtype.value,price:+rprice.value||0,status:"Ready"});toast("Room added")}
-save();closeModal()
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+function login() {
+
+  if (
+    $("loginUser").value === "admin" &&
+    $("loginPass").value === "admin"
+  ) {
+
+    $("login").style.display = "none";
+
+    $("app").style.display = "block";
+
+    render();
+
+  }
+
+  else {
+
+    $("loginError").style.display = "block";
+
+  }
+
 }
-function printBill(id){let b=d.bills.find(x=>x.id===id),w=open("","_blank");w.document.write(`<h1>HotelPro</h1><h2>Invoice ${b.id}</h2><p>Guest: ${esc(b.guest)} | Room: ${b.room}</p><p>Total: ${money(b.total)}</p><p>Paid: ${money(b.paid)}</p><p>Balance: ${money(b.total-b.paid)}</p><script>print()<\/script>`);w.document.close()}
-function saveSettings(){d.settings={name:sn.value,currency:sc.value,tax:+st.value||0,phone:sp.value,address:sa.value};hotel.options[0].textContent=d.settings.name;save();toast("Settings saved")}
-function backup(){let a=document.createElement("a"),b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});a.href=URL.createObjectURL(b);a.download="hotelpro-backup.json";a.click()}
-function resetData(){if(confirm("Reset all demo data?")){localStorage.removeItem(K);location.reload()}}
-sn.value=d.settings.name;sc.value=d.settings.currency;st.value=d.settings.tax;sp.value=d.settings.phone;sa.value=d.settings.address;hotel.options[0].textContent=d.settings.name;render();
+
+
+function logout() {
+
+  $("app").style.display = "none";
+
+  $("login").style.display = "flex";
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(id,btn) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(
+      x => x.classList.remove("active")
+    );
+
+
+  $(id).classList.add("active");
+
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(
+      x => x.classList.remove("active")
+    );
+
+
+  if(btn)
+    btn.classList.add("active");
+
+
+  const titles = {
+
+    dashboard:"Dashboard",
+
+    reservations:
+      "Reservations & Check-in / Check-out",
+
+    rooms:
+      "Room Management",
+
+    guests:
+      "Guest Management",
+
+    staff:
+      "Staff & Attendance",
+
+    billing:
+      "Billing & Invoices",
+
+    finance:
+      "Income & Expenses",
+
+    maintenance:
+      "Maintenance & Complaints",
+
+    housekeeping:
+      "Housekeeping",
+
+    reports:
+      "Reports & Analytics",
+
+    settings:
+      "Settings"
+
+  };
+
+
+  $("pageTitle").textContent =
+    titles[id];
+
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+function badge(s) {
+
+  const c =
+    String(s)
+      .toLowerCase()
+      .replaceAll(" ","-");
+
+
+  return `
+    <span class="badge ${c}">
+      ${s}
+    </span>
+  `;
+
+}
+
+
+function empty(n) {
+
+  return `
+    <tr>
+      <td colspan="${n}" class="empty">
+        No records found.
+      </td>
+    </tr>
+  `;
+
+}
+
+
+/* =========================================================
+   RENDER EVERYTHING
+========================================================= */
+
+function render() {
+
+  const occupied =
+    data.rooms.filter(
+      r => r.status === "Occupied"
+    ).length;
+
+
+  const income =
+    data.transactions
+      .filter(t => t.type === "Income")
+      .reduce(
+        (a,t) => a + Number(t.amount),
+        0
+      );
+
+
+  const expense =
+    data.transactions
+      .filter(t => t.type === "Expense")
+      .reduce(
+        (a,t) => a + Number(t.amount),
+        0
+      );
+
+
+  /* DASHBOARD */
+
+  $("mRooms").textContent =
+    data.rooms.length;
+
+  $("mOccupied").textContent =
+    occupied;
+
+  $("mRevenue").textContent =
+    money(income);
+
+  $("mIssues").textContent =
+    data.maintenance.filter(
+      m => m.status !== "Completed"
+    ).length;
+
+
+  /* RESERVATIONS */
+
+  let q =
+    ($("resSearch")?.value || "")
+      .toLowerCase();
+
+
+  let f =
+    $("resFilter")?.value || "";
+
+
+  let rows =
+    data.reservations.filter(
+      r =>
+        (
+          !q ||
+          `${r.guest} ${r.phone} ${r.room}`
+            .toLowerCase()
+            .includes(q)
+        )
+        &&
+        (
+          !f ||
+          r.status === f
+        )
+    );
+
+
+  $("resTable").innerHTML =
+
+    rows.map(r => `
+
+      <tr>
+
+        <td>${r.id}</td>
+
+        <td>${r.guest}</td>
+
+        <td>${r.phone}</td>
+
+        <td>${r.room}</td>
+
+        <td>${r.checkin}</td>
+
+        <td>${r.checkout}</td>
+
+        <td>${badge(r.status)}</td>
+
+        <td>${money(r.amount)}</td>
+
+        <td>
+
+          ${
+            r.status === "Reserved"
+
+            ?
+
+            `
+            <button
+              class="success"
+              onclick="checkIn('${r.id}')"
+            >
+              Check In
+            </button>
+            `
+
+            :
+
+            r.status === "Checked In"
+
+            ?
+
+            `
+            <button
+              class="warning"
+              onclick="checkOut('${r.id}')"
+            >
+              Check Out
+            </button>
+            `
+
+            :
+
+            `
+            <button
+              class="secondary"
+              onclick="viewReservation('${r.id}')"
+            >
+              View
+            </button>
+            `
+          }
+
+        </td>
+
+      </tr>
+
+    `).join("")
+
+    ||
+
+    empty(9);
+
+
+  /* DASHBOARD TABLE */
+
+  $("dashTable").innerHTML =
+
+    data.reservations
+      .slice(-6)
+      .reverse()
+      .map(r => `
+
+        <tr>
+
+          <td>${r.guest}</td>
+
+          <td>${r.room}</td>
+
+          <td>${r.checkin}</td>
+
+          <td>${r.checkout}</td>
+
+          <td>${badge(r.status)}</td>
+
+          <td>
+
+            ${
+              r.status === "Reserved"
+
+              ?
+
+              `
+              <button
+                class="success"
+                onclick="checkIn('${r.id}')"
+              >
+                Check In
+              </button>
+              `
+
+              :
+
+              r.status === "Checked In"
+
+              ?
+
+              `
+              <button
+                class="warning"
+                onclick="checkOut('${r.id}')"
+              >
+                Check Out
+              </button>
+              `
+
+              :
+
+              "-"
+            }
+
+          </td>
+
+        </tr>
+
+      `).join("")
+
+    ||
+
+    empty(6);
+
+
+  /* ROOMS */
+
+  let rf =
+    $("roomFilter")?.value || "";
+
+
+  $("roomGrid").innerHTML =
+
+    data.rooms
+      .filter(
+        r => !rf || r.status === rf
+      )
+      .map(r => `
+
+        <div
+          class="
+            card
+            room
+            ${r.status
+              .toLowerCase()
+              .replaceAll(" ","-")
+              .replace("out-of-service","out")}
+          "
+        >
+
+          <div class="head">
+
+            <h3>
+              Room ${r.no}
+            </h3>
+
+            ${badge(r.status)}
+
+          </div>
+
+          <div>
+            ${r.type}
+          </div>
+
+          <div class="rate">
+            ${money(r.rate)}
+            <small>/ night</small>
+          </div>
+
+          <button
+            class="secondary"
+            onclick="changeRoom(${r.no})"
+          >
+            Change Status
+          </button>
+
+        </div>
+
+      `)
+      .join("");
+
+
+  /* GUESTS */
+
+  $("guestTable").innerHTML =
+
+    data.guests
+      .map(g => `
+
+        <tr>
+
+          <td>${g.name}</td>
+
+          <td>${g.phone}</td>
+
+          <td>${g.email}</td>
+
+          <td>${g.idtype || "-"}</td>
+
+          <td>${g.idno || "-"}</td>
+
+          <td>${g.room || "-"}</td>
+
+          <td>${g.visits || 0}</td>
+
+          <td>${g.remark || "-"}</td>
+
+        </tr>
+
+      `)
+      .join("")
+
+    ||
+
+    empty(8);
+
+
+  /* STAFF */
+
+  $("staffTable").innerHTML =
+
+    data.staff
+      .map(s => `
+
+        <tr>
+
+          <td>${s.name}</td>
+
+          <td>${s.dept}</td>
+
+          <td>${s.role}</td>
+
+          <td>${s.shift}</td>
+
+          <td>
+
+            <button
+              class="secondary"
+              onclick="toggleAttendance('${s.id}')"
+            >
+              ${badge(s.attendance)}
+            </button>
+
+          </td>
+
+          <td>${money(s.salary)}</td>
+
+          <td>
+            ${badge(
+              s.paid === "Yes"
+                ? "Paid"
+                : "Unpaid"
+            )}
+          </td>
+
+          <td>
+
+            <button
+              class="secondary"
+              onclick="toggleSalary('${s.id}')"
+            >
+              ${
+                s.paid === "Yes"
+                ? "Mark Unpaid"
+                : "Mark Paid"
+              }
+            </button>
+
+          </td>
+
+        </tr>
+
+      `)
+      .join("");
+
+
+  /* BILLING */
+
+  $("billTable").innerHTML =
+
+    data.bills
+      .map(b => `
+
+        <tr>
+
+          <td>${b.id}</td>
+
+          <td>${b.guest}</td>
+
+          <td>${b.room}</td>
+
+          <td>${b.date}</td>
+
+          <td>${money(b.total)}</td>
+
+          <td>${money(b.paid)}</td>
+
+          <td>
+            ${money(b.total - b.paid)}
+          </td>
+
+          <td>
+
+            ${badge(
+              b.total <= b.paid
+                ? "Paid"
+                : "Unpaid"
+            )}
+
+          </td>
+
+          <td>
+
+            <button
+              class="secondary"
+              onclick="printBill('${b.id}')"
+            >
+              Print
+            </button>
+
+          </td>
+
+        </tr>
+
+      `)
+      .join("")
+
+    ||
+
+    empty(9);
+
+
+  /* FINANCE */
+
+  $("txTable").innerHTML =
+
+    data.transactions
+      .slice()
+      .reverse()
+      .map(t => `
+
+        <tr>
+
+          <td>${t.date}</td>
+
+          <td>${t.type}</td>
+
+          <td>${t.category}</td>
+
+          <td>${t.description}</td>
+
+          <td>${money(t.amount)}</td>
+
+          <td>${t.method}</td>
+
+        </tr>
+
+      `)
+      .join("")
+
+    ||
+
+    empty(6);
+
+
+  $("income").textContent =
+    money(income);
+
+  $("expenses").textContent =
+    money(expense);
+
+  $("profit").textContent =
+    money(income - expense);
+
+  $("txcount").textContent =
+    data.transactions.length;
+
+
+  /* MAINTENANCE */
+
+  $("maintTable").innerHTML =
+
+    data.maintenance
+      .map(m => `
+
+        <tr>
+
+          <td>${m.id}</td>
+
+          <td>${m.area}</td>
+
+          <td>${m.problem}</td>
+
+          <td>${badge(m.priority)}</td>
+
+          <td>${m.assigned}</td>
+
+          <td>${money(m.cost)}</td>
+
+          <td>${badge(m.status)}</td>
+
+          <td>
+
+            <button
+              class="secondary"
+              onclick="advanceMaintenance('${m.id}')"
+            >
+              Update
+            </button>
+
+          </td>
+
+        </tr>
+
+      `)
+      .join("")
+
+    ||
+
+    empty(8);
+
+
+  /* HOUSEKEEPING */
+
+  $("cleanList").innerHTML =
+
+    data.rooms
+      .filter(
+        r => r.status === "Cleaning"
+      )
+      .map(r => `
+
+        <div
+          class="card"
+          style="margin-bottom:10px"
+        >
+
+          <b>
+            Room ${r.no}
+          </b>
+
+          <p class="muted">
+            Cleaning required
+          </p>
+
+          <button
+            class="success"
+            onclick="setRoom(${r.no},'Ready')"
+          >
+            Mark Ready
+          </button>
+
+        </div>
+
+      `)
+      .join("")
+
+    ||
+
+    `
+      <div class="empty">
+        No rooms waiting for cleaning.
+      </div>
+    `;
+
+
+  /* REPORTS */
+
+  $("repRes").textContent =
+    data.reservations.length;
+
+  $("repGuests").textContent =
+    data.guests.length;
+
+  $("repStaff").textContent =
+    data.staff.length;
+
+  $("repOcc").textContent =
+    data.rooms.length
+      ? Math.round(
+          occupied /
+          data.rooms.length *
+          100
+        ) + "%"
+      : "0%";
+
+
+  $("summary").innerHTML = `
+
+    <b>${data.settings.name}</b>
+    currently has
+    <b>${occupied}</b>
+    occupied rooms out of
+    <b>${data.rooms.length}</b>.
+
+    Total recorded income is
+    <b>${money(income)}</b>
+
+    and expenses are
+    <b>${money(expense)}</b>.
+
+    Current profit/loss is
+    <b>${money(income - expense)}</b>.
+
+    There are
+    <b>
+      ${
+        data.maintenance.filter(
+          m => m.status !== "Completed"
+        ).length
+      }
+    </b>
+    open maintenance issues.
+
+  `;
+
+}
+
+
+/* =========================================================
+   ROOM MANAGEMENT
+========================================================= */
+
+function setRoom(no,status) {
+
+  let r =
+    data.rooms.find(
+      x => x.no == no
+    );
+
+
+  if(r) {
+
+    r.status = status;
+
+    persist();
+
+    toast(
+      "Room " +
+      no +
+      " marked " +
+      status
+    );
+
+  }
+
+}
+
+
+function changeRoom(no) {
+
+  let r =
+    data.rooms.find(
+      x => x.no == no
+    );
+
+
+  const statuses = [
+
+    "Ready",
+    "Reserved",
+    "Occupied",
+    "Cleaning",
+    "Maintenance",
+    "Out of Service"
+
+  ];
+
+
+  let value =
+    prompt(
+      "Room " +
+      no +
+      " status:\n" +
+      statuses.join(", "),
+      r.status
+    );
+
+
+  if(
+    value &&
+    statuses.includes(value)
+  ) {
+
+    setRoom(
+      no,
+      value
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CHECK IN / CHECK OUT
+========================================================= */
+
+function checkIn(id) {
+
+  let r =
+    data.reservations.find(
+      x => x.id === id
+    );
+
+
+  if(!r)
+    return;
+
+
+  r.status =
+    "Checked In";
+
+
+  let room =
+    data.rooms.find(
+      x => x.no == r.room
+    );
+
+
+  if(room)
+    room.status = "Occupied";
+
+
+  let g =
+    data.guests.find(
+      x =>
+        x.name.toLowerCase()
+        ===
+        r.guest.toLowerCase()
+    );
+
+
+  if(g)
+    g.visits =
+      Number(g.visits || 0) + 1;
+
+
+  persist();
+
+  toast(
+    "Guest checked in successfully"
+  );
+
+}
+
+
+function checkOut(id) {
+
+  let r =
+    data.reservations.find(
+      x => x.id === id
+    );
+
+
+  if(!r)
+    return;
+
+
+  r.status =
+    "Checked Out";
+
+
+  let room =
+    data.rooms.find(
+      x => x.no == r.room
+    );
+
+
+  if(room)
+    room.status = "Cleaning";
+
+
+  persist();
+
+  toast(
+    "Check-out completed. Room sent to cleaning"
+  );
+
+}
+
+
+/* =========================================================
+   STAFF ATTENDANCE
+========================================================= */
+
+function toggleAttendance(id) {
+
+  let s =
+    data.staff.find(
+      x => x.id === id
+    );
+
+
+  const values = [
+
+    "Present",
+    "Absent",
+    "Half Day",
+    "Leave"
+
+  ];
+
+
+  s.attendance =
+    values[
+      (
+        values.indexOf(
+          s.attendance
+        ) + 1
+      )
+      %
+      values.length
+    ];
+
+
+  persist();
+
+  toast(
+    "Attendance updated"
+  );
+
+}
+
+
+function toggleSalary(id) {
+
+  let s =
+    data.staff.find(
+      x => x.id === id
+    );
+
+
+  s.paid =
+    s.paid === "Yes"
+      ? "No"
+      : "Yes";
+
+
+  persist();
+
+  toast(
+    "Salary status updated"
+  );
+
+}
+
+
+/* =========================================================
+   MAINTENANCE
+========================================================= */
+
+function advanceMaintenance(id) {
+
+  let m =
+    data.maintenance.find(
+      x => x.id === id
+    );
+
+
+  const statuses = [
+
+    "Reported",
+    "Assigned",
+    "In Progress",
+    "Completed"
+
+  ];
+
+
+  let index =
+    statuses.indexOf(
+      m.status
+    );
+
+
+  m.status =
+    statuses[
+      Math.min(
+        index + 1,
+        statuses.length - 1
+      )
+    ];
+
+
+  persist();
+
+  toast(
+    "Maintenance status updated"
+  );
+
+}
+
+
+/* =========================================================
+   VIEW RESERVATION
+========================================================= */
+
+function viewReservation(id) {
+
+  let r =
+    data.reservations.find(
+      x => x.id === id
+    );
+
+
+  alert(
+
+`Reservation ${r.id}
+
+Guest: ${r.guest}
+
+Room: ${r.room}
+
+Check-in: ${r.checkin}
+
+Check-out: ${r.checkout}
+
+Status: ${r.status}
+
+Amount: ${money(r.amount)}`
+
+  );
+
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+function openModal(type) {
+
+  $("modalBg")
+    .classList
+    .add("open");
+
+
+  $("saveModal").onclick =
+    () => submit(type);
+
+
+  let rooms =
+    data.rooms
+      .map(
+        r =>
+          `<option>${r.no}</option>`
+      )
+      .join("");
+
+
+  let staff =
+    data.staff
+      .map(
+        s =>
+          `<option>${s.name}</option>`
+      )
+      .join("");
+
+
+  const forms = {
+
+
+reservation:[
+
+"New Reservation",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Guest Name
+</label>
+
+<input id="fGuest">
+
+</div>
+
+
+<div>
+
+<label>
+Phone
+</label>
+
+<input id="fPhone">
+
+</div>
+
+
+<div>
+
+<label>
+Room
+</label>
+
+<select id="fRoom">
+${rooms}
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Amount
+</label>
+
+<input
+id="fAmount"
+type="number"
+value="2500"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Check-in
+</label>
+
+<input
+id="fIn"
+type="date"
+value="${dateNow()}"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Check-out
+</label>
+
+<input
+id="fOut"
+type="date"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Payment
+</label>
+
+<select id="fPay">
+
+<option>
+Unpaid
+</option>
+
+<option>
+Paid
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+`
+
+],
+
+
+checkin:[
+
+"Walk-in Check-in",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Guest Name
+</label>
+
+<input id="fGuest">
+
+</div>
+
+
+<div>
+
+<label>
+Phone
+</label>
+
+<input id="fPhone">
+
+</div>
+
+
+<div>
+
+<label>
+Room
+</label>
+
+<select id="fRoom">
+${rooms}
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Amount
+</label>
+
+<input
+id="fAmount"
+type="number"
+value="2500"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Check-in
+</label>
+
+<input
+id="fIn"
+type="date"
+value="${dateNow()}"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Check-out
+</label>
+
+<input
+id="fOut"
+type="date"
+>
+
+</div>
+
+</div>
+
+`
+
+],
+
+
+guest:[
+
+"Add Guest",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Name
+</label>
+
+<input id="gName">
+
+</div>
+
+
+<div>
+
+<label>
+Phone
+</label>
+
+<input id="gPhone">
+
+</div>
+
+
+<div>
+
+<label>
+Email
+</label>
+
+<input id="gEmail">
+
+</div>
+
+
+<div>
+
+<label>
+ID Type
+</label>
+
+<select id="gIdType">
+
+<option>
+Aadhaar
+</option>
+
+<option>
+Passport
+</option>
+
+<option>
+Driving Licence
+</option>
+
+<option>
+Other
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+ID Number
+</label>
+
+<input id="gIdNo">
+
+</div>
+
+
+<div>
+
+<label>
+Room
+</label>
+
+<select id="gRoom">
+
+<option value="">
+Not assigned
+</option>
+
+${rooms}
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Remarks
+</label>
+
+<input id="gRemark">
+
+</div>
+
+</div>
+
+`
+
+],
+
+
+staff:[
+
+"Add Staff",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Name
+</label>
+
+<input id="sName">
+
+</div>
+
+
+<div>
+
+<label>
+Department
+</label>
+
+<input id="sDept">
+
+</div>
+
+
+<div>
+
+<label>
+Role
+</label>
+
+<input id="sRole">
+
+</div>
+
+
+<div>
+
+<label>
+Shift
+</label>
+
+<select id="sShift">
+
+<option>
+Morning
+</option>
+
+<option>
+Day
+</option>
+
+<option>
+Evening
+</option>
+
+<option>
+Night
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Salary
+</label>
+
+<input
+id="sSalary"
+type="number"
+>
+
+</div>
+
+</div>
+
+`
+
+],
+
+
+transaction:[
+
+"Add Transaction",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Type
+</label>
+
+<select id="tType">
+
+<option>
+Income
+</option>
+
+<option>
+Expense
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Category
+</label>
+
+<input
+id="tCategory"
+placeholder="Room / Food / Salary / Utility"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Amount
+</label>
+
+<input
+id="tAmount"
+type="number"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Date
+</label>
+
+<input
+id="tDate"
+type="date"
+value="${dateNow()}"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Payment Method
+</label>
+
+<select id="tMethod">
+
+<option>
+Cash
+</option>
+
+<option>
+UPI
+</option>
+
+<option>
+Card
+</option>
+
+<option>
+Bank Transfer
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Description
+</label>
+
+<input id="tDescription">
+
+</div>
+
+</div>
+
+`
+
+],
+
+
+expense:[
+
+"Add Expense",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Category
+</label>
+
+<input id="tCategory">
+
+</div>
+
+
+<div>
+
+<label>
+Amount
+</label>
+
+<input
+id="tAmount"
+type="number"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Date
+</label>
+
+<input
+id="tDate"
+type="date"
+value="${dateNow()}"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Method
+</label>
+
+<select id="tMethod">
+
+<option>
+Cash
+</option>
+
+<option>
+UPI
+</option>
+
+<option>
+Card
+</option>
+
+<option>
+Bank Transfer
+</option>
+
+</select>
+
+</div>
+
+
+<div class="span2">
+
+<label>
+Description
+</label>
+
+<input id="tDescription">
+
+</div>
+
+</div>
+
+`
+
+],
+
+
+maintenance:[
+
+"Report Maintenance",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Room / Area
+</label>
+
+<input id="mArea">
+
+</div>
+
+
+<div>
+
+<label>
+Priority
+</label>
+
+<select id="mPriority">
+
+<option>
+Low
+</option>
+
+<option>
+Medium
+</option>
+
+<option>
+High
+</option>
+
+</select>
+
+</div>
+
+
+<div class="span2">
+
+<label>
+Problem
+</label>
+
+<textarea
+id="mProblem"
+rows="3"
+></textarea>
+
+</div>
+
+
+<div>
+
+<label>
+Assigned To
+</label>
+
+<select id="mAssigned">
+
+<option>
+Unassigned
+</option>
+
+${staff}
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Estimated Cost
+</label>
+
+<input
+id="mCost"
+type="number"
+value="0"
+>
+
+</div>
+
+</div>
+
+`
+
+],
+
+
+bill:[
+
+"Create Invoice",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Guest
+</label>
+
+<input id="bGuest">
+
+</div>
+
+
+<div>
+
+<label>
+Room
+</label>
+
+<select id="bRoom">
+${rooms}
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Total
+</label>
+
+<input
+id="bTotal"
+type="number"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Paid
+</label>
+
+<input
+id="bPaid"
+type="number"
+value="0"
+>
+
+</div>
+
+</div>
+
+`
+
+],
+
+
+room:[
+
+"Add Room",
+
+`
+
+<div class="form">
+
+<div>
+
+<label>
+Room Number
+</label>
+
+<input id="rNo">
+
+</div>
+
+
+<div>
+
+<label>
+Room Type
+</label>
+
+<select id="rType">
+
+<option>
+Standard
+</option>
+
+<option>
+Deluxe
+</option>
+
+<option>
+Suite
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Nightly Rate
+</label>
+
+<input
+id="rRate"
+type="number"
+value="2500"
+>
+
+</div>
+
+</div>
+
+`
+
+]
+
+};
+
+
+  $("modalTitle").textContent =
+    forms[type][0];
+
+
+  $("modalBody").innerHTML =
+    forms[type][1];
+
+}
+
+
+function closeModal() {
+
+  $("modalBg")
+    .classList
+    .remove("open");
+
+}
+
+
+/* =========================================================
+   SAVE MODAL DATA
+========================================================= */
+
+function submit(t) {
+
+
+  /* RESERVATION / CHECK-IN */
+
+  if(
+    t === "reservation" ||
+    t === "checkin"
+  ) {
+
+    if(
+      !$("fGuest")
+        .value
+        .trim()
+    ) {
+
+      return alert(
+        "Enter guest name"
+      );
+
+    }
+
+
+    let r = {
+
+      id:
+        "RES-" +
+        Date.now()
+          .toString()
+          .slice(-6),
+
+      guest:
+        $("fGuest").value,
+
+      phone:
+        $("fPhone").value,
+
+      room:
+        +$("fRoom").value,
+
+      checkin:
+        $("fIn").value,
+
+      checkout:
+        $("fOut").value,
+
+      amount:
+        +$("fAmount").value || 0,
+
+      status:
+        t === "checkin"
+          ? "Checked In"
+          : "Reserved"
+
+    };
+
+
+    data.reservations.push(r);
+
+
+    let room =
+      data.rooms.find(
+        x => x.no === r.room
+      );
+
+
+    if(room) {
+
+      room.status =
+        r.status === "Checked In"
+          ? "Occupied"
+          : "Reserved";
+
+    }
+
+
+    if(
+      !data.guests.some(
+        g =>
+          g.name.toLowerCase()
+          ===
+          r.guest.toLowerCase()
+      )
+    ) {
+
+      data.guests.push({
+
+        name:r.guest,
+
+        phone:r.phone,
+
+        email:"",
+
+        idtype:"",
+
+        idno:"",
+
+        room:r.room,
+
+        visits:
+          r.status === "Checked In"
+            ? 1
+            : 0,
+
+        remark:""
+
+      });
+
+    }
+
+
+    toast(
+      t === "checkin"
+        ? "Walk-in guest checked in"
+        : "Reservation created"
+    );
+
+  }
+
+
+  /* GUEST */
+
+  if(t === "guest") {
+
+    data.guests.push({
+
+      name:
+        gName.value,
+
+      phone:
+        gPhone.value,
+
+      email:
+        gEmail.value,
+
+      idtype:
+        gIdType.value,
+
+      idno:
+        gIdNo.value,
+
+      room:
+        gRoom.value,
+
+      visits:0,
+
+      remark:
+        gRemark.value
+
+    });
+
+
+    toast(
+      "Guest added"
+    );
+
+  }
+
+
+  /* STAFF */
+
+  if(t === "staff") {
+
+    data.staff.push({
+
+      id:
+        "S" +
+        Date.now()
+          .toString()
+          .slice(-5),
+
+      name:
+        sName.value,
+
+      dept:
+        sDept.value,
+
+      role:
+        sRole.value,
+
+      shift:
+        sShift.value,
+
+      attendance:
+        "Present",
+
+      salary:
+        +sSalary.value || 0,
+
+      paid:
+        "No"
+
+    });
+
+
+    toast(
+      "Staff added"
+    );
+
+  }
+
+
+  /* TRANSACTION */
+
+  if(
+    t === "transaction" ||
+    t === "expense"
+  ) {
+
+    let type =
+      t === "expense"
+        ? "Expense"
+        : tType.value;
+
+
+    data.transactions.push({
+
+      type,
+
+      category:
+        tCategory.value,
+
+      amount:
+        +tAmount.value || 0,
+
+      date:
+        tDate.value,
+
+      method:
+        tMethod.value,
+
+      description:
+        tDescription.value
+
+    });
+
+
+    toast(
+      "Transaction saved"
+    );
+
+  }
+
+
+  /* MAINTENANCE */
+
+  if(t === "maintenance") {
+
+    data.maintenance.push({
+
+      id:
+        "M-" +
+        Date.now()
+          .toString()
+          .slice(-5),
+
+      area:
+        mArea.value,
+
+      problem:
+        mProblem.value,
+
+      priority:
+        mPriority.value,
+
+      assigned:
+        mAssigned.value,
+
+      cost:
+        +mCost.value || 0,
+
+      status:
+        "Reported"
+
+    });
+
+
+    toast(
+      "Maintenance issue reported"
+    );
+
+  }
+
+
+  /* BILL */
+
+  if(t === "bill") {
+
+    let id =
+      "INV-" +
+      Date.now()
+        .toString()
+        .slice(-6);
+
+
+    let total =
+      +$("bTotal").value || 0;
+
+
+    let paid =
+      +$("bPaid").value || 0;
+
+
+    data.bills.push({
+
+      id,
+
+      guest:
+        bGuest.value,
+
+      room:
+        +bRoom.value,
+
+      date:
+        dateNow(),
+
+      total,
+
+      paid
+
+    });
+
+
+    if(paid) {
+
+      data.transactions.push({
+
+        type:"Income",
+
+        category:"Billing",
+
+        amount:paid,
+
+        date:dateNow(),
+
+        method:"Cash",
+
+        description:id
+
+      });
+
+    }
+
+
+    toast(
+      "Invoice created"
+    );
+
+  }
+
+
+  /* ROOM */
+
+  if(t === "room") {
+
+    let no =
+      +$("rNo").value;
+
+
+    if(
+      !no ||
+      data.rooms.some(
+        r => r.no === no
+      )
+    ) {
+
+      return alert(
+        "Invalid or duplicate room number"
+      );
+
+    }
+
+
+    data.rooms.push({
+
+      no,
+
+      type:
+        $("rType").value,
+
+      rate:
+        +$("rRate").value || 0,
+
+      status:
+        "Ready"
+
+    });
+
+
+    toast(
+      "Room added"
+    );
+
+  }
+
+
+  persist();
+
+  closeModal();
+
+}
+
+
+/* =========================================================
+   BILL PRINT
+========================================================= */
+
+function printBill(id) {
+
+  let b =
+    data.bills.find(
+      x => x.id === id
+    );
+
+
+  let w =
+    window.open(
+      "",
+      "_blank"
+    );
+
+
+  w.document.write(`
+
+    <html>
+
+    <body
+      style="
+        font-family:Arial;
+        padding:40px
+      "
+    >
+
+      <h1>
+        HotelPro
+      </h1>
+
+      <h2>
+        Invoice ${b.id}
+      </h2>
+
+      <p>
+        Guest: ${b.guest}
+      </p>
+
+      <p>
+        Room: ${b.room}
+      </p>
+
+      <hr>
+
+      <h3>
+        Total: ${money(b.total)}
+      </h3>
+
+      <h3>
+        Paid: ${money(b.paid)}
+      </h3>
+
+      <h3>
+        Balance:
+        ${money(b.total - b.paid)}
+      </h3>
+
+      <script>
+        window.print()
+      <\/script>
+
+    </body>
+
+    </html>
+
+  `);
+
+
+  w.document.close();
+
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function saveSettings() {
+
+  data.settings = {
+
+    name:
+      $("hotelName").value,
+
+    currency:
+      $("currency").value,
+
+    tax:
+      +$("tax").value || 0,
+
+    phone:
+      $("hotelPhone").value,
+
+    address:
+      $("hotelAddress").value
+
+  };
+
+
+  persist();
+
+  toast(
+    "Settings saved"
+  );
+
+}
+
+
+/* =========================================================
+   BACKUP
+========================================================= */
+
+function backup() {
+
+  let a =
+    document.createElement("a");
+
+
+  let b =
+    new Blob(
+      [
+        JSON.stringify(
+          data,
+          null,
+          2
+        )
+      ],
+      {
+        type:"application/json"
+      }
+    );
+
+
+  a.href =
+    URL.createObjectURL(b);
+
+
+  a.download =
+    "hotelpro-backup.json";
+
+
+  a.click();
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetData() {
+
+  if(
+    confirm(
+      "Delete all current data and restore demo data?"
+    )
+  ) {
+
+    localStorage.removeItem(KEY);
+
+    location.reload();
+
+  }
+
+}
+
+
+/* =========================================================
+   SETTINGS INITIALIZATION
+========================================================= */
+
+$("hotelName").value =
+  data.settings.name;
+
+
+$("currency").value =
+  data.settings.currency;
+
+
+$("tax").value =
+  data.settings.tax;
+
+
+$("hotelPhone").value =
+  data.settings.phone;
+
+
+$("hotelAddress").value =
+  data.settings.address;
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+setInterval(
+  () => {
+
+    $("clock").textContent =
+      new Date().toLocaleString();
+
+  },
+  1000
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+render();
+
 </script>
+
 </body>
 </html>

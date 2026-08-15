@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HotelPro - Modern Hotel Management SaaS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --navy-dark: #0A1128;
+      --navy-main: #1C2541;
+      --navy-light: #273459;
+      --gold-primary: #D4AF37;
+      --gold-hover: #C5A028;
+      --gold-light: #F9F6EE;
+      --bg-light: #F4F6F9;
+      --card-bg: #FFFFFF;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      
+      --status-ready: #10B981;
+      --status-occupied: #3B82F6;
+      --status-cleaning: #F59E0B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-light); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    .sidebar { width: 260px; background-color: var(--navy-dark); color: #FFF; display: flex; flex-direction: column; padding: 24px 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; padding-bottom: 32px; border-bottom: 1px solid var(--navy-light); margin-bottom: 24px; }
+    .brand-logo { width: 40px; height: 40px; background: linear-gradient(135deg, var(--gold-primary), #B8860B); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; color: var(--navy-dark); }
+    .brand-title { font-size: 20px; font-weight: 700; }
+    .brand-title span { color: var(--gold-primary); }
+
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #94A3B8; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+    .nav-item.active a, .nav-item a:hover { background-color: var(--navy-light); color: #FFF; }
+    .nav-item.active a { border-left: 4px solid var(--gold-primary); }
+
+    .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .header { background-color: var(--card-bg); padding: 16px 32px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .header-title h1 { font-size: 24px; font-weight: 700; color: var(--navy-dark); }
+    .user-profile { display: flex; align-items: center; gap: 16px; }
+    .hotel-selector { background: var(--bg-light); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 14px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--navy-main); color: var(--gold-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; border: 2px solid var(--gold-primary); }
+
+    .content { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .card { background-color: var(--card-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .stat-card { display: flex; flex-direction: column; gap: 8px; }
+    .stat-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+    .stat-value { font-size: 28px; font-weight: 700; color: var(--navy-dark); }
+    .stat-subtext { font-size: 12px; color: var(--status-ready); font-weight: 500; }
+
+    .dashboard-split { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+    .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .table-title { font-size: 18px; font-weight: 700; color: var(--navy-dark); }
+    .btn-gold { background-color: var(--gold-primary); color: var(--navy-dark); padding: 10px 18px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; }
+
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th { padding: 12px; font-size: 12px; color: var(--text-muted); border-bottom: 2px solid var(--border-color); text-transform: uppercase; }
+    td { padding: 14px 12px; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-ready { background: #ECFDF5; color: var(--status-ready); }
+    .badge-occupied { background: #EFF6FF; color: var(--status-occupied); }
+    .badge-cleaning { background: #FFFBEB; color: var(--status-cleaning); }
+
+    .actions-list { display: flex; flex-direction: column; gap: 12px; }
+    .action-btn { width: 100%; padding: 14px; border: 1px solid var(--border-color); background: var(--bg-light); border-radius: 8px; text-align: left; font-weight: 600; color: var(--navy-dark); cursor: pointer; }
+    .action-btn i { margin-right: 8px; color: var(--gold-primary); }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo"><i class="fa-solid fa-hotel"></i></div>
+      <div class="brand-title">Hotel<span>Pro</span></div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item active"><a href="#"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-calendar-check"></i> Reservations</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-bed"></i> Rooms</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-users"></i> Guests</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-user-tie"></i> Staff</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-wallet"></i> Accounts</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-wrench"></i> Maintenance</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-file-invoice-dollar"></i> Billing</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+      <li class="nav-item"><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="header">
+      <div class="header-title">
+        <h1>Operations Control Panel</h1>
+      </div>
+      <div class="user-profile">
+        <select class="hotel-selector">
+          <option>Grand Royale Resort (Hotel A)</option>
+          <option>Seaside Plaza (Hotel B)</option>
+        </select>
+        <div class="avatar">AD</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="metrics-grid">
+        <div class="card stat-card">
+          <span class="stat-label">Total Rooms</span>
+          <span class="stat-value">120</span>
+          <span class="stat-subtext">Capacity: 240 Guests</span>
+        </div>
+        <div class="card stat-card">
+          <span class="stat-label">Occupied Rooms</span>
+          <span class="stat-value">94</span>
+          <span class="stat-subtext">78.3% Occupancy</span>
+        </div>
+        <div class="card stat-card">
+          <span class="stat-label">Today's Revenue</span>
+          <span class="stat-value">$14,250</span>
+          <span class="stat-subtext">+12% vs yesterday</span>
+        </div>
+        <div class="card stat-card">
+          <span class="stat-label">Pending Cleaning</span>
+          <span class="stat-value">8</span>
+          <span class="stat-subtext" style="color: var(--status-cleaning);">Housekeeping active</span>
+        </div>
+      </div>
+
+      <div class="dashboard-split">
+        <div class="card">
+          <div class="table-header">
+            <h2 class="table-title">Recent Reservations</h2>
+            <button class="btn-gold"><i class="fa-solid fa-plus"></i> New Booking</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Guest</th>
+                <th>Room</th>
+                <th>Check-In</th>
+                <th>Status</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#RES-8041</td>
+                <td>Eleanor Vance</td>
+                <td>105 (Deluxe)</td>
+                <td>Today</td>
+                <td><span class="badge badge-ready">Confirmed</span></td>
+                <td>$450.00</td>
+              </tr>
+              <tr>
+                <td>#RES-8042</td>
+                <td>Marcus Brody</td>
+                <td>202 (Suite)</td>
+                <td>Today</td>
+                <td><span class="badge badge-occupied">Checked In</span></td>
+                <td>$1,200.00</td>
+              </tr>
+              <tr>
+                <td>#RES-8043</td>
+                <td>Sophia Chen</td>
+                <td>108 (Standard)</td>
+                <td>Tomorrow</td>
+                <td><span class="badge badge-cleaning">Cleaning Req.</span></td>
+                <td>$280.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2 class="table-title" style="margin-bottom: 16px;">Quick Actions</h2>
+          <div class="actions-list">
+            <button class="action-btn"><i class="fa-solid fa-key"></i> Check-In Guest</button>
+            <button class="action-btn"><i class="fa-solid fa-receipt"></i> Check-Out & Bill</button>
+            <button class="action-btn"><i class="fa-solid fa-broom"></i> Assign Housekeeping</button>
+            <button class="action-btn"><i class="fa-solid fa-screwdriver-wrench"></i> Report Maintenance</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

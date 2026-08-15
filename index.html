@@ -7,16 +7,26 @@
 
 <style>
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:#f5f7fb;
   color:#172033
 }
-
 button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
+button{
+  cursor:pointer;
+  border:0;
+  border-radius:8px;
+  padding:10px 14px
+}
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #dbe2ec;
+  border-radius:8px;
+  background:#fff
+}
 
 .login{
   min-height:100vh;
@@ -25,7 +35,6 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   justify-content:center;
   background:linear-gradient(135deg,#07152f,#183a68)
 }
-
 .loginbox{
   width:390px;
   background:#fff;
@@ -33,40 +42,37 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   padding:35px;
   box-shadow:0 20px 60px #0005
 }
-
-.logo{font-size:30px;font-weight:800;color:#0b2348;margin-bottom:8px}
+.logo{
+  font-size:30px;
+  font-weight:800;
+  color:#0b2348
+}
 .logo span,.brand span{color:#c99b2e}
 .muted{color:#718096}
-
-.loginbox input{
-  width:100%;
-  padding:12px;
-  margin:7px 0 14px;
-  border:1px solid #dbe2ec;
-  border-radius:8px
-}
-
 .primary{background:#c99b2e;color:#07152f;font-weight:700}
+.secondary{background:#edf2f7;color:#172033}
+.success{background:#dcfce7;color:#166534}
+.warning{background:#fef3c7;color:#92400e}
+.danger{background:#fee2e2;color:#b91c1c}
 .full{width:100%}
-.error{color:#dc2626;font-size:13px;display:none;margin-bottom:10px}
+.error{color:#dc2626;font-size:13px;display:none;margin:10px 0}
 
 .app{display:none}
-
 .sidebar{
   position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
+  left:0;top:0;bottom:0;
   width:235px;
   background:#07152f;
   color:#fff;
   padding:18px 12px;
   z-index:5;
-  overflow-y:auto
+  overflow:auto
 }
-
-.brand{font-size:23px;font-weight:800;padding:10px 12px 20px}
-
+.brand{
+  font-size:23px;
+  font-weight:800;
+  padding:10px 12px 20px
+}
 .nav button{
   display:block;
   width:100%;
@@ -76,14 +82,11 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   margin:3px 0;
   padding:12px
 }
-
 .nav button:hover,.nav button.active{
   background:#1b3153;
   color:#fff
 }
-
 .main{margin-left:235px}
-
 .topbar{
   height:68px;
   background:#fff;
@@ -96,30 +99,23 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   top:0;
   z-index:4
 }
-
 .topbar h1{font-size:20px}
-
 .user{display:flex;gap:12px;align-items:center}
 .avatar{
-  width:36px;
-  height:36px;
-  border-radius:50%;
+  width:36px;height:36px;border-radius:50%;
   background:#c99b2e;
-  display:grid;
-  place-items:center;
+  display:grid;place-items:center;
   font-weight:700
 }
-
 .content{padding:24px}
 .page{display:none}
 .page.active{display:block}
 
 .cards{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:15px
 }
-
 .card{
   background:#fff;
   border:1px solid #e4e9f1;
@@ -127,35 +123,30 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   padding:18px;
   box-shadow:0 2px 8px #17203308
 }
-
-.metric{font-size:27px;font-weight:800;margin-top:8px}
+.metric{
+  font-size:27px;
+  font-weight:800;
+  margin-top:8px
+}
 .label{
   font-size:11px;
   text-transform:uppercase;
   color:#718096;
   font-weight:700
 }
-
 .grid2{
   display:grid;
   grid-template-columns:2fr 1fr;
   gap:16px;
   margin-top:16px
 }
-
 .head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:15px;
-  gap:10px
+  gap:10px;
+  margin-bottom:15px
 }
-
-.secondary{background:#edf2f7;color:#172033}
-.danger{background:#fee2e2;color:#b91c1c}
-.success{background:#dcfce7;color:#166534}
-.warning{background:#fef3c7;color:#92400e}
-.info{background:#dbeafe;color:#1d4ed8}
 
 .filters{
   display:flex;
@@ -163,31 +154,20 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
   flex-wrap:wrap;
   margin-bottom:15px
 }
-
-.filters input,.filters select,
-.form input,.form select,.form textarea{
-  padding:10px;
-  border:1px solid #dbe2ec;
-  border-radius:8px;
-  width:100%;
-  background:#fff
-}
+.filters>*{max-width:300px}
 
 .table{overflow:auto}
-
 table{
   border-collapse:collapse;
   width:100%;
-  min-width:800px
+  min-width:850px
 }
-
 th,td{
   padding:11px;
   border-bottom:1px solid #e9edf3;
   text-align:left;
   font-size:13px
 }
-
 th{
   font-size:10px;
   color:#718096;
@@ -198,154 +178,68 @@ th{
   display:inline-flex;
   align-items:center;
   gap:5px;
-  padding:5px 8px;
+  padding:5px 9px;
   border-radius:15px;
   font-size:10px;
   font-weight:700;
   white-space:nowrap
 }
-
-.dot{
-  width:9px;
-  height:9px;
+.badge:before{
+  content:"";
+  width:7px;
+  height:7px;
   border-radius:50%;
-  display:inline-block
+  background:currentColor
 }
-
 .ready{background:#dcfce7;color:#166534}
-.ready .dot{background:#16a34a}
-
-.occupied{background:#dbeafe;color:#1d4ed8}
-.occupied .dot{background:#2563eb}
-
 .reserved{background:#ede9fe;color:#6d28d9}
-.reserved .dot{background:#7c3aed}
-
+.occupied{background:#dbeafe;color:#1d4ed8}
 .cleaning{background:#fef3c7;color:#92400e}
-.cleaning .dot{background:#d97706}
-
 .maintenance{background:#fee2e2;color:#b91c1c}
-.maintenance .dot{background:#dc2626}
-
 .out{background:#e2e8f0;color:#475569}
-.out .dot{background:#64748b}
+.paid,.present,.completed{background:#dcfce7;color:#166534}
+.unpaid,.absent{background:#fee2e2;color:#b91c1c}
+.leave{background:#ede9fe;color:#6d28d9}
+.half{background:#fef3c7;color:#92400e}
 
-.paid,.present,.completed{
-  background:#dcfce7;
-  color:#166534
-}
-
-.leave{
-  background:#ede9fe;
-  color:#6d28d9
-}
-
-.checked{
-  background:#dbeafe;
-  color:#1d4ed8
-}
-
-.half,.warning-badge{
-  background:#fef3c7;
-  color:#92400e
-}
-
-.absent,.unpaid{
-  background:#fee2e2;
-  color:#b91c1c
-}
-
-/* ROOM SUMMARY */
-
-.room-summary{
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:10px;
-  margin-bottom:18px
-}
-
-.room-stat{
-  background:#fff;
-  border:1px solid #e4e9f1;
-  border-radius:12px;
-  padding:14px;
-  text-align:center
-}
-
-.room-stat .number{
-  font-size:24px;
-  font-weight:800;
-  margin-top:5px
-}
-
-.room-stat .title{
-  font-size:11px;
-  color:#64748b;
-  font-weight:700
-}
-
-.room-grid{
+.roomgrid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:15px
 }
-
-.room-card{
-  position:relative;
-  border:2px solid #e4e9f1;
-  border-radius:14px;
-  background:#fff;
-  padding:18px;
+.room{
+  border-top:5px solid #16a34a;
   transition:.15s
 }
-
-.room-card:hover{
+.room:hover{
   transform:translateY(-2px);
-  box-shadow:0 8px 25px #17203312
+  box-shadow:0 6px 18px #0001
 }
-
-.room-card.ready-card{border-color:#86efac}
-.room-card.occupied-card{border-color:#93c5fd}
-.room-card.reserved-card{border-color:#c4b5fd}
-.room-card.cleaning-card{border-color:#fcd34d}
-.room-card.maintenance-card{border-color:#fca5a5}
-
-.room-number{
-  font-size:22px;
-  font-weight:800
-}
-
-.room-info{
+.room.reserved{border-top-color:#7c3aed}
+.room.occupied{border-top-color:#2563eb}
+.room.cleaning{border-top-color:#d97706}
+.room.maintenance{border-top-color:#dc2626}
+.room.out{border-top-color:#64748b}
+.room h3{margin:0}
+.roominfo{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
-  margin:15px 0
+  margin:14px 0;
+  font-size:13px
 }
-
-.room-info div{
-  background:#f8fafc;
+.roominfo div{
   padding:8px;
-  border-radius:8px;
-  font-size:12px
+  background:#f8fafc;
+  border-radius:7px
 }
 
-.room-actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap
+.form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px
 }
-
-.room-actions button{flex:1}
-
-.big-action{
-  width:100%;
-  padding:14px;
-  font-weight:700;
-  margin-top:8px
-}
-
-/* MODAL */
-
+.span2{grid-column:1/-1}
 .modalbg{
   display:none;
   position:fixed;
@@ -356,51 +250,19 @@ th{
   justify-content:center;
   padding:20px
 }
-
 .modalbg.open{display:flex}
-
 .modal{
-  width:min(900px,100%);
+  width:min(850px,100%);
   max-height:92vh;
   overflow:auto;
   background:#fff;
   border-radius:15px;
   padding:22px
 }
-
-.form{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px
-}
-
-.span2{grid-column:1/-1}
-
-.section-title{
-  grid-column:1/-1;
-  font-size:14px;
-  font-weight:800;
-  color:#0b2348;
-  border-bottom:1px solid #e5e7eb;
-  padding-bottom:8px;
-  margin-top:8px
-}
-
-.form label{
-  display:block;
-  font-size:12px;
-  font-weight:700;
-  margin-bottom:5px
-}
-
 .modalfoot{
   text-align:right;
-  margin-top:18px;
-  border-top:1px solid #eee;
-  padding-top:15px
+  margin-top:18px
 }
-
-.modalfoot button{margin-left:8px}
 
 .toast{
   position:fixed;
@@ -413,7 +275,6 @@ th{
   display:none;
   z-index:50
 }
-
 .toast.show{display:block}
 
 .quick button{
@@ -421,80 +282,61 @@ th{
   text-align:left;
   margin:5px 0
 }
-
-.checklist label{
-  display:block;
-  padding:8px;
-  border-bottom:1px solid #eee
-}
-
 .empty{
   text-align:center;
   color:#718096;
   padding:25px
 }
-
-.info-box{
-  background:#eff6ff;
-  border:1px solid #bfdbfe;
-  color:#1e40af;
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:15px
-}
-
-.amount-box{
+.summarybox{
   background:#f8fafc;
   border-radius:10px;
-  padding:14px;
-  border:1px solid #e2e8f0
+  padding:15px;
+  margin-top:15px
 }
-
-.amount-row{
-  display:flex;
-  justify-content:space-between;
-  padding:5px 0
+.billgrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px
 }
-
-.amount-total{
-  font-size:20px;
+.billitem{
+  background:#f8fafc;
+  padding:12px;
+  border-radius:8px
+}
+.bigdue{
+  font-size:24px;
   font-weight:800;
-  border-top:1px solid #cbd5e1;
-  margin-top:8px;
-  padding-top:10px
+  color:#b91c1c
+}
+.complaint{
+  border-left:4px solid #f59e0b;
+  background:#fffbeb;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:7px
 }
 
 @media(max-width:1100px){
-  .cards{grid-template-columns:1fr 1fr}
-  .room-summary{grid-template-columns:repeat(3,1fr)}
-  .room-grid{grid-template-columns:1fr 1fr}
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .roomgrid{grid-template-columns:repeat(2,1fr)}
 }
-
 @media(max-width:900px){
   .sidebar{width:190px}
   .main{margin-left:190px}
   .grid2{grid-template-columns:1fr}
 }
-
 @media(max-width:650px){
   .sidebar{
     position:relative;
     width:100%;
     height:auto
   }
-
   .main{margin-left:0}
-  .cards,.room-grid,.form{grid-template-columns:1fr}
-  .room-summary{grid-template-columns:1fr 1fr}
+  .cards,.roomgrid,.form,.billgrid{
+    grid-template-columns:1fr
+  }
   .span2{grid-column:auto}
   .topbar{position:relative}
-}
-
-@media print{
-  .sidebar,.topbar,.no-print{display:none!important}
-  .main{margin:0}
-  .page{display:none!important}
-  .page.active{display:block}
 }
 </style>
 </head>
@@ -502,12 +344,9 @@ th{
 <body>
 
 <!-- LOGIN -->
-
 <div id="login" class="login">
   <div class="loginbox">
-
     <div class="logo">Hotel<span>Pro</span></div>
-
     <p class="muted">Hotel Management System</p>
 
     <label>Username</label>
@@ -520,799 +359,637 @@ th{
       Invalid login. Try admin / admin.
     </div>
 
-    <button class="primary full" onclick="login()">
-      Login
-    </button>
+    <button class="primary full" onclick="login()">Login</button>
 
-    <p class="muted" style="font-size:12px;margin-top:16px">
+    <p class="muted" style="font-size:12px">
       Demo login: admin / admin
     </p>
-
   </div>
 </div>
 
 
 <!-- APPLICATION -->
-
 <div id="app" class="app">
 
 <aside class="sidebar">
-
-  <div class="brand">
-    Hotel<span>Pro</span>
-  </div>
+  <div class="brand">Hotel<span>Pro</span></div>
 
   <div class="nav">
-
-    <button class="active" onclick="showPage('dashboard',this)">
-      🏠 Dashboard
-    </button>
-
-    <button onclick="showPage('reservations',this)">
-      📅 Reservations
-    </button>
-
-    <button onclick="showPage('rooms',this)">
-      🛏️ Rooms
-    </button>
-
-    <button onclick="showPage('guests',this)">
-      👥 Guests
-    </button>
-
-    <button onclick="showPage('staff',this)">
-      👨‍💼 Staff & Attendance
-    </button>
-
-    <button onclick="showPage('billing',this)">
-      🧾 Billing
-    </button>
-
-    <button onclick="showPage('finance',this)">
-      💰 Income & Expenses
-    </button>
-
-    <button onclick="showPage('maintenance',this)">
-      🔧 Maintenance
-    </button>
-
-    <button onclick="showPage('housekeeping',this)">
-      🧹 Housekeeping
-    </button>
-
-    <button onclick="showPage('reports',this)">
-      📊 Reports
-    </button>
-
-    <button onclick="showPage('settings',this)">
-      ⚙️ Settings
-    </button>
-
-    <button onclick="logout()">
-      🚪 Logout
-    </button>
-
+    <button class="active" onclick="showPage('dashboard',this)">🏠 Dashboard</button>
+    <button onclick="showPage('reservations',this)">📅 Reservations</button>
+    <button onclick="showPage('rooms',this)">🛏️ Rooms</button>
+    <button onclick="showPage('guests',this)">👥 Guests</button>
+    <button onclick="showPage('staff',this)">👨‍💼 Staff & Attendance</button>
+    <button onclick="showPage('billing',this)">🧾 Billing</button>
+    <button onclick="showPage('finance',this)">💰 Income & Expenses</button>
+    <button onclick="showPage('maintenance',this)">🔧 Maintenance</button>
+    <button onclick="showPage('housekeeping',this)">🧹 Housekeeping</button>
+    <button onclick="showPage('complaints',this)">💬 Complaints</button>
+    <button onclick="showPage('reports',this)">📊 Reports</button>
+    <button onclick="showPage('settings',this)">⚙️ Settings</button>
+    <button onclick="logout()">🚪 Logout</button>
   </div>
-
 </aside>
 
 
 <main class="main">
 
 <header class="topbar">
-
   <h1 id="pageTitle">Dashboard</h1>
 
   <div class="user">
-
     <span id="clock"></span>
-
     <div class="avatar">A</div>
-
     <b>Admin</b>
-
   </div>
-
 </header>
 
 
 <div class="content">
 
-
 <!-- DASHBOARD -->
-
 <section id="dashboard" class="page active">
-
-  <div class="cards">
-
-    <div class="card">
-      <span class="label">Total Rooms</span>
-      <div class="metric" id="mRooms">0</div>
-    </div>
-
-    <div class="card">
-      <span class="label">Occupied</span>
-      <div class="metric" id="mOccupied">0</div>
-    </div>
-
-    <div class="card">
-      <span class="label">Today's Revenue</span>
-      <div class="metric" id="mRevenue">₹0</div>
-    </div>
-
-    <div class="card">
-      <span class="label">Open Maintenance</span>
-      <div class="metric" id="mIssues">0</div>
-    </div>
-
-  </div>
-
-
-  <div class="grid2">
-
-    <div class="card">
-
-      <div class="head">
-        <h2>Today's Operations</h2>
-
-        <button class="primary no-print" onclick="openCheckin()">
-          + Check-in
-        </button>
-      </div>
-
-      <div class="table">
-
-        <table>
-
-          <thead>
-            <tr>
-              <th>Guest</th>
-              <th>Room</th>
-              <th>Check-in</th>
-              <th>Check-out</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody id="dashTable"></tbody>
-
-        </table>
-
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <h2>Quick Actions</h2>
-
-      <div class="quick">
-
-        <button class="secondary" onclick="openReservation()">
-          📅 New Reservation
-        </button>
-
-        <button class="secondary" onclick="openCheckin()">
-          ✅ Guest Check-in
-        </button>
-
-        <button class="secondary" onclick="openModal('bill')">
-          🧾 Create Bill
-        </button>
-
-        <button class="secondary" onclick="openModal('expense')">
-          💸 Add Expense
-        </button>
-
-        <button class="secondary" onclick="openModal('maintenance')">
-          🔧 Report Issue
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- RESERVATIONS -->
-
-<section id="reservations" class="page">
-
-<div class="card">
-
-  <div class="head">
-
-    <h2>Reservations & Check-in / Check-out</h2>
-
-    <button class="primary no-print" onclick="openReservation()">
-      + New Reservation
-    </button>
-
-  </div>
-
-  <div class="filters">
-
-    <input
-      id="resSearch"
-      placeholder="Search guest, phone or room"
-      oninput="render()"
-    >
-
-    <select id="resFilter" onchange="render()">
-
-      <option value="">All statuses</option>
-      <option>Reserved</option>
-      <option>Checked In</option>
-      <option>Checked Out</option>
-      <option>Cancelled</option>
-
-    </select>
-
-  </div>
-
-  <div class="table">
-
-    <table>
-
-      <thead>
-
-        <tr>
-          <th>ID</th>
-          <th>Guest</th>
-          <th>Phone</th>
-          <th>Room</th>
-          <th>Check-in</th>
-          <th>Check-out</th>
-          <th>Nights</th>
-          <th>Status</th>
-          <th>Amount</th>
-          <th>Action</th>
-        </tr>
-
-      </thead>
-
-      <tbody id="resTable"></tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- ROOMS -->
-
-<section id="rooms" class="page">
-
-<div class="card">
-
-  <div class="head">
-
-    <div>
-      <h2 style="margin-bottom:4px">Room Management</h2>
-      <span class="muted">Simple room status & availability</span>
-    </div>
-
-    <button class="primary no-print" onclick="openModal('room')">
-      + Add Room
-    </button>
-
-  </div>
-
-
-  <div class="room-summary">
-
-    <div class="room-stat">
-      <div class="title">TOTAL ROOMS</div>
-      <div class="number" id="roomTotal">0</div>
-    </div>
-
-    <div class="room-stat">
-      <div class="title">🟢 READY</div>
-      <div class="number" id="roomReady">0</div>
-    </div>
-
-    <div class="room-stat">
-      <div class="title">🔵 OCCUPIED</div>
-      <div class="number" id="roomOccupied">0</div>
-    </div>
-
-    <div class="room-stat">
-      <div class="title">🟣 RESERVED</div>
-      <div class="number" id="roomReserved">0</div>
-    </div>
-
-    <div class="room-stat">
-      <div class="title">🟠 NEED CLEANING</div>
-      <div class="number" id="roomCleaning">0</div>
-    </div>
-
-    <div class="room-stat">
-      <div class="title">🔴 MAINTENANCE</div>
-      <div class="number" id="roomMaintenance">0</div>
-    </div>
-
-  </div>
-
-
-  <div class="info-box">
-    <b>Room colours:</b>
-    🟢 Ready &nbsp;
-    🔵 Occupied &nbsp;
-    🟣 Reserved &nbsp;
-    🟠 Need Cleaning &nbsp;
-    🔴 Maintenance
-  </div>
-
-
-  <div class="filters">
-
-    <select id="roomFilter" onchange="render()">
-
-      <option value="">Show All Rooms</option>
-      <option>Ready</option>
-      <option>Reserved</option>
-      <option>Occupied</option>
-      <option>Cleaning</option>
-      <option>Maintenance</option>
-      <option>Out of Service</option>
-
-    </select>
-
-    <input
-      id="roomSearch"
-      placeholder="Search room number..."
-      oninput="render()"
-    >
-
-  </div>
-
-
-  <div id="roomGrid" class="room-grid"></div>
-
-</div>
-
-</section>
-
-
-<!-- GUESTS -->
-
-<section id="guests" class="page">
-
-<div class="card">
-
-  <div class="head">
-
-    <h2>Guest Management</h2>
-
-    <button class="primary no-print" onclick="openModal('guest')">
-      + Add Guest
-    </button>
-
-  </div>
-
-  <div class="table">
-
-    <table>
-
-      <thead>
-
-        <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Age</th>
-          <th>Occupation</th>
-          <th>ID Type</th>
-          <th>ID Number</th>
-          <th>Room</th>
-          <th>Persons</th>
-          <th>Visits</th>
-        </tr>
-
-      </thead>
-
-      <tbody id="guestTable"></tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- STAFF -->
-
-<section id="staff" class="page">
-
-<div class="card">
-
-  <div class="head">
-
-    <h2>Staff & Attendance</h2>
-
-    <button class="primary no-print" onclick="openModal('staff')">
-      + Add Staff
-    </button>
-
-  </div>
-
-  <div class="table">
-
-    <table>
-
-      <thead>
-
-        <tr>
-          <th>Staff</th>
-          <th>Department</th>
-          <th>Role</th>
-          <th>Shift</th>
-          <th>Attendance</th>
-          <th>Salary</th>
-          <th>Paid</th>
-          <th>Action</th>
-        </tr>
-
-      </thead>
-
-      <tbody id="staffTable"></tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- BILLING -->
-
-<section id="billing" class="page">
-
-<div class="card">
-
-  <div class="head">
-
-    <h2>Billing & Invoices</h2>
-
-    <button class="primary no-print" onclick="openModal('bill')">
-      + Create Invoice
-    </button>
-
-  </div>
-
-  <div class="table">
-
-    <table>
-
-      <thead>
-
-        <tr>
-          <th>Invoice</th>
-          <th>Guest</th>
-          <th>Room</th>
-          <th>Date</th>
-          <th>Total</th>
-          <th>Paid</th>
-          <th>Balance</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-
-      </thead>
-
-      <tbody id="billTable"></tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- FINANCE -->
-
-<section id="finance" class="page">
-
-  <div class="cards">
-
-    <div class="card">
-      <span class="label">Income</span>
-      <div class="metric" id="income">₹0</div>
-    </div>
-
-    <div class="card">
-      <span class="label">Expenses</span>
-      <div class="metric" id="expenses">₹0</div>
-    </div>
-
-    <div class="card">
-      <span class="label">Profit / Loss</span>
-      <div class="metric" id="profit">₹0</div>
-    </div>
-
-    <div class="card">
-      <span class="label">Transactions</span>
-      <div class="metric" id="txcount">0</div>
-    </div>
-
-  </div>
-
-
-  <div class="card" style="margin-top:16px">
-
-    <div class="head">
-
-      <h2>Income & Expenses</h2>
-
-      <button class="primary no-print" onclick="openModal('transaction')">
-        + Add Transaction
-      </button>
-
-    </div>
-
-    <div class="table">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Method</th>
-          </tr>
-
-        </thead>
-
-        <tbody id="txTable"></tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- MAINTENANCE -->
-
-<section id="maintenance" class="page">
-
-<div class="card">
-
-  <div class="head">
-
-    <h2>Maintenance & Complaints</h2>
-
-    <button class="primary no-print" onclick="openModal('maintenance')">
-      + Report Issue
-    </button>
-
-  </div>
-
-  <div class="table">
-
-    <table>
-
-      <thead>
-
-        <tr>
-          <th>ID</th>
-          <th>Room/Area</th>
-          <th>Problem</th>
-          <th>Priority</th>
-          <th>Assigned</th>
-          <th>Cost</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-
-      </thead>
-
-      <tbody id="maintTable"></tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- HOUSEKEEPING -->
-
-<section id="housekeeping" class="page">
-
-<div class="grid2">
-
-  <div class="card">
-
-    <div class="head">
-      <h2>Housekeeping Board</h2>
-    </div>
-
-    <div id="cleanList"></div>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>Cleaning Checklist</h2>
-
-    <div class="checklist">
-
-      <label>
-        <input type="checkbox">
-        Bed linen changed
-      </label>
-
-      <label>
-        <input type="checkbox">
-        Bathroom cleaned
-      </label>
-
-      <label>
-        <input type="checkbox">
-        Towels replaced
-      </label>
-
-      <label>
-        <input type="checkbox">
-        Amenities refilled
-      </label>
-
-      <label>
-        <input type="checkbox">
-        Floor cleaned
-      </label>
-
-      <label>
-        <input type="checkbox">
-        Final inspection
-      </label>
-
-    </div>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- REPORTS -->
-
-<section id="reports" class="page">
 
 <div class="cards">
 
   <div class="card">
-    <span class="label">Reservations</span>
-    <div class="metric" id="repRes">0</div>
+    <span class="label">Total Rooms</span>
+    <div class="metric" id="mRooms">0</div>
   </div>
 
   <div class="card">
-    <span class="label">Guests</span>
-    <div class="metric" id="repGuests">0</div>
+    <span class="label">Occupied</span>
+    <div class="metric" id="mOccupied">0</div>
   </div>
 
   <div class="card">
-    <span class="label">Staff</span>
-    <div class="metric" id="repStaff">0</div>
+    <span class="label">Reserved</span>
+    <div class="metric" id="mReserved">0</div>
   </div>
 
   <div class="card">
-    <span class="label">Occupancy</span>
-    <div class="metric" id="repOcc">0%</div>
+    <span class="label">Need Cleaning</span>
+    <div class="metric" id="mCleaning">0</div>
+  </div>
+
+  <div class="card">
+    <span class="label">Maintenance</span>
+    <div class="metric" id="mMaintenance">0</div>
   </div>
 
 </div>
 
+
+<div class="grid2">
+
+<div class="card">
+  <div class="head">
+    <h2>Today's Operations</h2>
+    <button class="primary" onclick="openModal('checkin')">
+      + Check-in
+    </button>
+  </div>
+
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Guest</th>
+          <th>Room</th>
+          <th>Check-in</th>
+          <th>Checkout</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="dashTable"></tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="card">
+  <h2>Quick Actions</h2>
+
+  <div class="quick">
+    <button class="secondary" onclick="openModal('checkin')">
+      ✅ New Check-in
+    </button>
+
+    <button class="secondary" onclick="openModal('reservation')">
+      📅 New Reservation
+    </button>
+
+    <button class="secondary" onclick="openModal('bill')">
+      🧾 Create Bill
+    </button>
+
+    <button class="secondary" onclick="openModal('maintenance')">
+      🔧 Report Maintenance
+    </button>
+
+    <button class="secondary" onclick="openModal('complaint')">
+      💬 Add Complaint
+    </button>
+  </div>
+</div>
+
+</div>
+</section>
+
+
+<!-- RESERVATIONS -->
+<section id="reservations" class="page">
+
+<div class="card">
+
+<div class="head">
+  <h2>Reservations & Check-in / Check-out</h2>
+
+  <button class="primary" onclick="openModal('reservation')">
+    + New Reservation
+  </button>
+</div>
+
+<div class="filters">
+  <input id="resSearch"
+         placeholder="Search guest, phone or room"
+         oninput="render()">
+
+  <select id="resFilter" onchange="render()">
+    <option value="">All statuses</option>
+    <option>Reserved</option>
+    <option>Checked In</option>
+    <option>Checked Out</option>
+    <option>Cancelled</option>
+  </select>
+</div>
+
+<div class="table">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Guest</th>
+<th>Phone</th>
+<th>Room</th>
+<th>Check-in</th>
+<th>Checkout</th>
+<th>Days</th>
+<th>Total</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="resTable"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+
+<!-- ROOMS -->
+<section id="rooms" class="page">
+
+<div class="card">
+
+<div class="head">
+  <div>
+    <h2>Room Management</h2>
+    <p class="muted">
+      Easy room status management
+    </p>
+  </div>
+
+  <button class="primary" onclick="openModal('room')">
+    + Add Room
+  </button>
+</div>
+
+
+<div class="cards" style="margin-bottom:20px">
+
+<div class="card">
+<span class="label">Total Rooms</span>
+<div class="metric" id="roomTotal">0</div>
+</div>
+
+<div class="card">
+<span class="label">Ready to Occupy</span>
+<div class="metric" id="roomReady">0</div>
+</div>
+
+<div class="card">
+<span class="label">Reserved</span>
+<div class="metric" id="roomReserved">0</div>
+</div>
+
+<div class="card">
+<span class="label">Occupied</span>
+<div class="metric" id="roomOccupied">0</div>
+</div>
+
+<div class="card">
+<span class="label">Need Cleaning</span>
+<div class="metric" id="roomCleaning">0</div>
+</div>
+
+</div>
+
+
+<div class="filters">
+
+<select id="roomFilter" onchange="render()">
+<option value="">All Rooms</option>
+<option>Ready</option>
+<option>Reserved</option>
+<option>Occupied</option>
+<option>Cleaning</option>
+<option>Maintenance</option>
+<option>Out of Service</option>
+</select>
+
+</div>
+
+<div id="roomGrid" class="roomgrid"></div>
+
+</div>
+</section>
+
+
+<!-- GUESTS -->
+<section id="guests" class="page">
+
+<div class="card">
+
+<div class="head">
+<h2>Guest Management</h2>
+
+<button class="primary" onclick="openModal('guest')">
++ Add Guest
+</button>
+</div>
+
+<div class="table">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Email</th>
+<th>ID Proof</th>
+<th>ID Number</th>
+<th>Address</th>
+<th>Age</th>
+<th>Persons</th>
+<th>Room</th>
+</tr>
+</thead>
+<tbody id="guestTable"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+
+<!-- STAFF -->
+<section id="staff" class="page">
+
+<div class="card">
+
+<div class="head">
+<h2>Staff & Attendance</h2>
+
+<button class="primary" onclick="openModal('staff')">
++ Add Staff
+</button>
+</div>
+
+<div class="table">
+<table>
+<thead>
+<tr>
+<th>Staff</th>
+<th>Department</th>
+<th>Role</th>
+<th>Shift</th>
+<th>Attendance</th>
+<th>Salary</th>
+<th>Salary Paid</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="staffTable"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+
+<!-- BILLING -->
+<section id="billing" class="page">
+
+<div class="card">
+
+<div class="head">
+<h2>Billing & Invoices</h2>
+
+<button class="primary" onclick="openModal('bill')">
++ Create Invoice
+</button>
+</div>
+
+<div class="table">
+<table>
+<thead>
+<tr>
+<th>Invoice</th>
+<th>Guest</th>
+<th>Room</th>
+<th>Stay</th>
+<th>Room Rent</th>
+<th>Extras</th>
+<th>Total</th>
+<th>Paid</th>
+<th>Due</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="billTable"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+
+<!-- FINANCE -->
+<section id="finance" class="page">
+
+<div class="cards">
+
+<div class="card">
+<span class="label">Income</span>
+<div class="metric" id="income">₹0</div>
+</div>
+
+<div class="card">
+<span class="label">Expenses</span>
+<div class="metric" id="expenses">₹0</div>
+</div>
+
+<div class="card">
+<span class="label">Profit / Loss</span>
+<div class="metric" id="profit">₹0</div>
+</div>
+
+<div class="card">
+<span class="label">Transactions</span>
+<div class="metric" id="txcount">0</div>
+</div>
+
+</div>
 
 <div class="card" style="margin-top:16px">
 
-  <h2>Management Summary</h2>
+<div class="head">
+<h2>Income & Expenses</h2>
+<button class="primary" onclick="openModal('transaction')">
++ Add Transaction
+</button>
+</div>
 
-  <p id="summary"></p>
+<div class="table">
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Type</th>
+<th>Category</th>
+<th>Description</th>
+<th>Amount</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody id="txTable"></tbody>
+</table>
+</div>
 
-  <button class="secondary no-print" onclick="window.print()">
-    🖨️ Print Report
-  </button>
+</div>
+</section>
+
+
+<!-- MAINTENANCE -->
+<section id="maintenance" class="page">
+
+<div class="card">
+
+<div class="head">
+<h2>Maintenance</h2>
+
+<button class="primary" onclick="openModal('maintenance')">
++ Report Issue
+</button>
+</div>
+
+<div class="table">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Room / Area</th>
+<th>Problem</th>
+<th>Priority</th>
+<th>Assigned</th>
+<th>Cost</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="maintTable"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+
+<!-- HOUSEKEEPING -->
+<section id="housekeeping" class="page">
+
+<div class="grid2">
+
+<div class="card">
+<h2>Rooms Need Cleaning</h2>
+<div id="cleanList"></div>
+</div>
+
+<div class="card">
+<h2>Cleaning Checklist</h2>
+
+<div>
+<label><input type="checkbox"> Bed linen changed</label>
+<hr>
+<label><input type="checkbox"> Bathroom cleaned</label>
+<hr>
+<label><input type="checkbox"> Towels replaced</label>
+<hr>
+<label><input type="checkbox"> Amenities refilled</label>
+<hr>
+<label><input type="checkbox"> Floor cleaned</label>
+<hr>
+<label><input type="checkbox"> Final inspection</label>
+</div>
 
 </div>
 
+</div>
+</section>
+
+
+<!-- COMPLAINTS -->
+<section id="complaints" class="page">
+
+<div class="card">
+
+<div class="head">
+<h2>Guest Complaints / Issues</h2>
+
+<button class="primary" onclick="openModal('complaint')">
++ Add Complaint
+</button>
+</div>
+
+<div id="complaintList"></div>
+
+</div>
+</section>
+
+
+<!-- REPORTS -->
+<section id="reports" class="page">
+
+<div class="cards">
+
+<div class="card">
+<span class="label">Reservations</span>
+<div class="metric" id="repRes">0</div>
+</div>
+
+<div class="card">
+<span class="label">Guests</span>
+<div class="metric" id="repGuests">0</div>
+</div>
+
+<div class="card">
+<span class="label">Staff</span>
+<div class="metric" id="repStaff">0</div>
+</div>
+
+<div class="card">
+<span class="label">Occupancy</span>
+<div class="metric" id="repOcc">0%</div>
+</div>
+
+<div class="card">
+<span class="label">Outstanding Due</span>
+<div class="metric" id="repDue">₹0</div>
+</div>
+
+</div>
+
+<div class="card" style="margin-top:16px">
+
+<h2>Management Summary</h2>
+<p id="summary"></p>
+
+<button class="secondary" onclick="window.print()">
+🖨️ Print Report
+</button>
+
+</div>
 </section>
 
 
 <!-- SETTINGS -->
-
 <section id="settings" class="page">
 
 <div class="card">
 
-  <div class="head">
+<div class="head">
+<h2>Hotel Settings</h2>
 
-    <h2>Hotel Settings</h2>
+<button class="primary" onclick="saveSettings()">
+Save
+</button>
+</div>
 
-    <button class="primary no-print" onclick="saveSettings()">
-      Save
-    </button>
+<div class="form">
 
-  </div>
+<div>
+<label>Hotel Name</label>
+<input id="hotelName">
+</div>
 
-  <div class="form">
+<div>
+<label>Currency</label>
+<select id="currency">
+<option>₹</option>
+<option>$</option>
+<option>€</option>
+<option>£</option>
+</select>
+</div>
 
-    <div>
-      <label>Hotel Name</label>
-      <input id="hotelName">
-    </div>
+<div>
+<label>Default Checkout Time</label>
+<input id="checkoutTime" type="time">
+</div>
 
-    <div>
-      <label>Currency</label>
-      <select id="currency">
-        <option>₹</option>
-        <option>$</option>
-        <option>€</option>
-        <option>£</option>
-      </select>
-    </div>
+<div>
+<label>Tax %</label>
+<input id="tax" type="number">
+</div>
 
-    <div>
-      <label>Tax %</label>
-      <input id="tax" type="number">
-    </div>
+<div>
+<label>Phone</label>
+<input id="hotelPhone">
+</div>
 
-    <div>
-      <label>Phone</label>
-      <input id="hotelPhone">
-    </div>
+<div>
+<label>Email</label>
+<input id="hotelEmail">
+</div>
 
-    <div class="span2">
-      <label>Address</label>
-      <textarea id="hotelAddress" rows="3"></textarea>
-    </div>
+<div class="span2">
+<label>Address</label>
+<textarea id="hotelAddress" rows="3"></textarea>
+</div>
 
-  </div>
+</div>
 
 </div>
 
 
 <div class="card" style="margin-top:16px">
 
-  <h2>Backup</h2>
+<h2>Backup</h2>
 
-  <button class="secondary" onclick="backup()">
-    Export Data
-  </button>
+<button class="secondary" onclick="backup()">
+Export Data
+</button>
 
-  <button class="danger" onclick="resetData()">
-    Reset Demo Data
-  </button>
+<button class="danger" onclick="resetData()">
+Reset Demo Data
+</button>
 
 </div>
 
 </section>
-
 
 </div>
 </main>
@@ -1320,29 +997,27 @@ th{
 
 
 <!-- MODAL -->
-
 <div id="modalBg" class="modalbg">
 
 <div class="modal">
 
-  <h2 id="modalTitle"></h2>
+<h2 id="modalTitle"></h2>
 
-  <div id="modalBody"></div>
+<div id="modalBody"></div>
 
-  <div class="modalfoot">
+<div class="modalfoot">
 
-    <button class="secondary" onclick="closeModal()">
-      Cancel
-    </button>
+<button class="secondary" onclick="closeModal()">
+Cancel
+</button>
 
-    <button class="primary" id="saveModal">
-      Save
-    </button>
-
-  </div>
+<button class="primary" id="saveModal">
+Save
+</button>
 
 </div>
 
+</div>
 </div>
 
 
@@ -1351,130 +1026,101 @@ th{
 
 <script>
 
-const KEY="hotelpro_v3";
+const KEY="hotelpro_v4";
 
 const initial={
-  rooms:[
-    {no:101,type:"Standard",ac:true,beds:1,status:"Ready"},
-    {no:102,type:"Standard",ac:false,beds:1,status:"Ready"},
-    {no:103,type:"Deluxe",ac:true,beds:2,status:"Ready"},
-    {no:104,type:"Deluxe",ac:true,beds:2,status:"Ready"},
-    {no:105,type:"Deluxe",ac:false,beds:2,status:"Ready"},
-    {no:106,type:"Deluxe",ac:true,beds:2,status:"Ready"},
-    {no:107,type:"Suite",ac:true,beds:4,status:"Ready"},
-    {no:108,type:"Suite",ac:true,beds:4,status:"Ready"},
-    {no:109,type:"Suite",ac:false,beds:4,status:"Ready"}
-  ],
+rooms:[
+{no:101,type:"Standard",ac:true,beds:1,status:"Ready"},
+{no:102,type:"Standard",ac:false,beds:1,status:"Ready"},
+{no:103,type:"Deluxe",ac:true,beds:2,status:"Ready"},
+{no:104,type:"Deluxe",ac:true,beds:2,status:"Ready"},
+{no:105,type:"Deluxe",ac:false,beds:2,status:"Ready"},
+{no:106,type:"Family",ac:true,beds:4,status:"Ready"},
+{no:107,type:"Family",ac:false,beds:4,status:"Ready"},
+{no:108,type:"Suite",ac:true,beds:2,status:"Ready"},
+{no:109,type:"Suite",ac:true,beds:2,status:"Ready"}
+],
 
-  reservations:[],
-  guests:[],
-
-  staff:[
-    {
-      id:"S001",
-      name:"Rahul Kumar",
-      dept:"Front Office",
-      role:"Receptionist",
-      shift:"Morning",
-      attendance:"Present",
-      salary:25000,
-      paid:"No"
-    },
-    {
-      id:"S002",
-      name:"Priya Sharma",
-      dept:"Housekeeping",
-      role:"Supervisor",
-      shift:"Day",
-      attendance:"Present",
-      salary:22000,
-      paid:"No"
-    }
-  ],
-
-  transactions:[],
-  maintenance:[],
-  bills:[],
-
-  settings:{
-    name:"Grand Royale Hotel",
-    currency:"₹",
-    tax:18,
-    phone:"+91 90000 00000",
-    address:"Hyderabad, Telangana"
-  }
+reservations:[],
+guests:[],
+staff:[
+{
+id:"S001",
+name:"Rahul Kumar",
+dept:"Front Office",
+role:"Receptionist",
+shift:"Morning",
+attendance:"Present",
+salary:25000,
+paid:"No"
+},
+{
+id:"S002",
+name:"Priya Sharma",
+dept:"Housekeeping",
+role:"Supervisor",
+shift:"Day",
+attendance:"Present",
+salary:22000,
+paid:"No"
+}
+],
+transactions:[],
+maintenance:[],
+bills:[],
+complaints:[],
+settings:{
+name:"Grand Royale Hotel",
+currency:"₹",
+checkoutTime:"11:00",
+tax:18,
+phone:"+91 90000 00000",
+email:"",
+address:"Hyderabad, Telangana"
+}
 };
 
 let data=JSON.parse(localStorage.getItem(KEY)||"null")
-  ||JSON.parse(JSON.stringify(initial));
-
+ ||JSON.parse(JSON.stringify(initial));
 
 const $=id=>document.getElementById(id);
 
+function persist(){
+localStorage.setItem(KEY,JSON.stringify(data));
+render();
+}
+
 function money(n){
-  return (data.settings.currency||"₹")+
-    Number(n||0).toLocaleString("en-IN");
+return (data.settings.currency||"₹")+
+Number(n||0).toLocaleString("en-IN");
 }
 
 function dateNow(){
-  return new Date().toISOString().slice(0,10);
+return new Date().toISOString().slice(0,10);
 }
 
-function dateTimeNow(){
-  const d=new Date();
-  const pad=n=>String(n).padStart(2,"0");
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
-function calculateNights(checkin,checkout){
-  if(!checkin||!checkout)return 0;
-
-  const a=new Date(checkin);
-  const b=new Date(checkout);
-
-  const diff=Math.ceil((b-a)/(1000*60*60*24));
-
-  return diff>0?diff:0;
-}
-
-function persist(){
-  localStorage.setItem(KEY,JSON.stringify(data));
-  render();
+function nowDateTime(){
+const d=new Date();
+return {
+date:d.toISOString().slice(0,10),
+time:d.toTimeString().slice(0,5)
+};
 }
 
 function toast(msg){
-  const t=$("toast");
-  t.textContent=msg;
-  t.classList.add("show");
-
-  setTimeout(()=>{
-    t.classList.remove("show");
-  },2200);
+const t=$("toast");
+t.textContent=msg;
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2200);
 }
 
-function badge(status){
+function badge(s){
+let c=String(s).toLowerCase()
+.replaceAll(" ","-");
 
-  let c=String(status)
-    .toLowerCase()
-    .replaceAll(" ","-");
+if(c==="out-of-service")c="out";
 
-  if(c==="out-of-service")c="out";
-
-  let dotStatuses=[
-    "ready",
-    "occupied",
-    "reserved",
-    "cleaning",
-    "maintenance",
-    "out"
-  ];
-
-  return `
-    <span class="badge ${c}">
-      ${dotStatuses.includes(c)?'<span class="dot"></span>':''}
-      ${status}
-    </span>
-  `;
+return `<span class="badge ${c}">${s}</span>`;
 }
 
 
@@ -1482,28 +1128,24 @@ function badge(status){
 
 function login(){
 
-  if(
-    $("loginUser").value==="admin" &&
-    $("loginPass").value==="admin"
-  ){
+if($("loginUser").value==="admin" &&
+   $("loginPass").value==="admin"){
 
-    $("login").style.display="none";
-    $("app").style.display="block";
+$("login").style.display="none";
+$("app").style.display="block";
+render();
 
-    render();
+}else{
 
-  }else{
+$("loginError").style.display="block";
 
-    $("loginError").style.display="block";
+}
 
-  }
 }
 
 function logout(){
-
-  $("app").style.display="none";
-  $("login").style.display="flex";
-
+$("app").style.display="none";
+$("login").style.display="flex";
 }
 
 
@@ -1511,31 +1153,101 @@ function logout(){
 
 function showPage(id,btn){
 
-  document.querySelectorAll(".page")
-    .forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".page")
+.forEach(x=>x.classList.remove("active"));
 
-  $(id).classList.add("active");
+$(id).classList.add("active");
 
-  document.querySelectorAll(".nav button")
-    .forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".nav button")
+.forEach(x=>x.classList.remove("active"));
 
-  if(btn)btn.classList.add("active");
+if(btn)btn.classList.add("active");
 
-  const titles={
-    dashboard:"Dashboard",
-    reservations:"Reservations & Check-in / Check-out",
-    rooms:"Room Management",
-    guests:"Guest Management",
-    staff:"Staff & Attendance",
-    billing:"Billing & Invoices",
-    finance:"Income & Expenses",
-    maintenance:"Maintenance & Complaints",
-    housekeeping:"Housekeeping",
-    reports:"Reports & Analytics",
-    settings:"Settings"
-  };
+const titles={
+dashboard:"Dashboard",
+reservations:"Reservations & Check-in / Check-out",
+rooms:"Room Management",
+guests:"Guest Management",
+staff:"Staff & Attendance",
+billing:"Billing & Invoices",
+finance:"Income & Expenses",
+maintenance:"Maintenance",
+housekeeping:"Housekeeping",
+complaints:"Guest Complaints",
+reports:"Reports & Analytics",
+settings:"Settings"
+};
 
-  $("pageTitle").textContent=titles[id];
+$("pageTitle").textContent=titles[id];
+
+}
+
+
+/* DATE CALCULATION */
+
+function calculateCheckout(){
+
+const checkin=$("fCheckinDate")?.value;
+const days=Number($("fDays")?.value||1);
+
+if(!checkin)return;
+
+const d=new Date(checkin+"T00:00:00");
+
+d.setDate(d.getDate()+days);
+
+const checkoutDate=d.toISOString().slice(0,10);
+
+if($("fCheckoutDate"))
+$("fCheckoutDate").value=checkoutDate;
+
+if($("fCheckoutDisplay"))
+$("fCheckoutDisplay").textContent=
+checkoutDate+" at "+data.settings.checkoutTime;
+
+calculateRent();
+
+}
+
+function calculateRent(){
+
+const roomNo=Number($("fRoom")?.value);
+const room=data.rooms.find(r=>r.no===roomNo);
+
+const days=Math.max(1,Number($("fDays")?.value||1));
+
+const rate=room?.rate||0;
+
+const rent=rate*days;
+
+if($("fDailyRate"))
+$("fDailyRate").textContent=money(rate);
+
+if($("fRoomRent"))
+$("fRoomRent").textContent=money(rent);
+
+if($("fTotal"))
+$("fTotal").textContent=money(rent);
+
+}
+
+
+/* CHECKOUT CALCULATION */
+
+function calculateBill(){
+
+const rent=Number($("cRoomRent")?.value||0);
+const extras=Number($("cExtras")?.value||0);
+const paid=Number($("cPaid")?.value||0);
+
+const total=rent+extras;
+const due=Math.max(0,total-paid);
+
+if($("cTotal"))
+$("cTotal").textContent=money(total);
+
+if($("cDue"))
+$("cDue").textContent=money(due);
 
 }
 
@@ -1544,1541 +1256,1152 @@ function showPage(id,btn){
 
 function render(){
 
-  const occupied=data.rooms.filter(r=>r.status==="Occupied").length;
+const occupied=data.rooms.filter(r=>r.status==="Occupied").length;
+const reserved=data.rooms.filter(r=>r.status==="Reserved").length;
+const cleaning=data.rooms.filter(r=>r.status==="Cleaning").length;
+const maintenance=data.rooms.filter(r=>r.status==="Maintenance").length;
+const ready=data.rooms.filter(r=>r.status==="Ready").length;
 
-  const income=data.transactions
-    .filter(t=>t.type==="Income")
-    .reduce((a,t)=>a+Number(t.amount||0),0);
+const income=data.transactions
+.filter(t=>t.type==="Income")
+.reduce((a,t)=>a+Number(t.amount||0),0);
 
-  const expense=data.transactions
-    .filter(t=>t.type==="Expense")
-    .reduce((a,t)=>a+Number(t.amount||0),0);
+const expense=data.transactions
+.filter(t=>t.type==="Expense")
+.reduce((a,t)=>a+Number(t.amount||0),0);
 
+const due=data.bills
+.reduce((a,b)=>a+Math.max(0,Number(b.total)-Number(b.paid)),0);
 
-  /* DASHBOARD */
 
-  $("mRooms").textContent=data.rooms.length;
-  $("mOccupied").textContent=occupied;
-  $("mRevenue").textContent=money(income);
+/* DASHBOARD */
 
-  $("mIssues").textContent=data.maintenance
-    .filter(m=>m.status!=="Completed").length;
+$("mRooms").textContent=data.rooms.length;
+$("mOccupied").textContent=occupied;
+$("mReserved").textContent=reserved;
+$("mCleaning").textContent=cleaning;
+$("mMaintenance").textContent=maintenance;
 
 
-  /* RESERVATIONS */
+/* ROOMS */
 
-  let q=($("resSearch")?.value||"").toLowerCase();
-  let f=$("resFilter")?.value||"";
+$("roomTotal").textContent=data.rooms.length;
+$("roomReady").textContent=ready;
+$("roomReserved").textContent=reserved;
+$("roomOccupied").textContent=occupied;
+$("roomCleaning").textContent=cleaning;
 
-  let rows=data.reservations.filter(r=>{
+const rf=$("roomFilter")?.value||"";
 
-    const text=`
-      ${r.guest}
-      ${r.phone}
-      ${r.room}
-    `.toLowerCase();
+$("roomGrid").innerHTML=data.rooms
+.filter(r=>!rf||r.status===rf)
+.map(r=>`
+
+<div class="card room ${
+r.status.toLowerCase()
+.replaceAll(" ","-")
+.replace("out-of-service","out")
+}">
+
+<div class="head">
 
-    return (!q||text.includes(q))&&
-      (!f||r.status===f);
+<div>
+<h3>Room ${r.no}</h3>
+<small>${r.type}</small>
+</div>
 
-  });
+${badge(r.status)}
 
+</div>
 
-  $("resTable").innerHTML=rows.map(r=>`
+<div class="roominfo">
 
-    <tr>
+<div>
+<b>AC</b><br>
+${r.ac?"❄️ Yes":"🚫 No"}
+</div>
 
-      <td>${r.id}</td>
+<div>
+<b>Beds</b><br>
+🛏️ ${r.beds}
+</div>
 
-      <td>${r.guest}</td>
+<div>
+<b>Room Status</b><br>
+${r.status}
+</div>
 
-      <td>${r.phone||"-"}</td>
+<div>
+<b>Room No.</b><br>
+${r.no}
+</div>
+
+</div>
+
+<button class="secondary"
+onclick="changeRoom(${r.no})">
+Change Status
+</button>
+
+</div>
+
+`).join("")||`
+<div class="empty">
+No rooms found.
+</div>
+`;
 
-      <td>${r.room}</td>
 
-      <td>${r.checkin||"-"}</td>
+/* RESERVATIONS */
 
-      <td>${r.checkout||"-"}</td>
+let q=($("resSearch")?.value||"").toLowerCase();
+let f=$("resFilter")?.value||"";
 
-      <td>${r.nights||calculateNights(r.checkin,r.checkout)}</td>
+let rows=data.reservations.filter(r=>
+(!q||`${r.guest} ${r.phone} ${r.room}`
+.toLowerCase().includes(q))
+&&(!f||r.status===f)
+);
+
+$("resTable").innerHTML=rows.map(r=>`
+
+<tr>
+
+<td>${r.id}</td>
+<td>${r.guest}</td>
+<td>${r.phone}</td>
+<td>${r.room}</td>
+<td>${r.checkin}</td>
+<td>${r.checkout}</td>
+<td>${r.days}</td>
+<td>${money(r.total)}</td>
+<td>${badge(r.status)}</td>
+
+<td>
+
+${
+r.status==="Reserved"
+?
+`<button class="success"
+onclick="checkIn('${r.id}')">
+Check In
+</button>`
+:
+r.status==="Checked In"
+?
+`<button class="warning"
+onclick="openCheckout('${r.id}')">
+Checkout
+</button>`
+:
+`<button class="secondary"
+onclick="viewReservation('${r.id}')">
+View
+</button>`
+}
+
+</td>
+
+</tr>
+
+`).join("")||empty(10);
+
 
-      <td>${badge(r.status)}</td>
+/* DASHBOARD TABLE */
 
-      <td>${money(r.amount)}</td>
+$("dashTable").innerHTML=data.reservations
+.slice(-8)
+.reverse()
+.map(r=>`
 
-      <td>
+<tr>
 
-        ${
-          r.status==="Reserved"
+<td>${r.guest}</td>
+<td>${r.room}</td>
+<td>${r.checkin}</td>
+<td>${r.checkout} ${r.checkoutTime}</td>
+<td>${badge(r.status)}</td>
 
-          ?
+<td>
 
-          `<button class="success"
-            onclick="checkIn('${r.id}')">
-            Check In
-          </button>`
+${
+r.status==="Reserved"
+?
+`<button class="success"
+onclick="checkIn('${r.id}')">
+Check In
+</button>`
+:
+r.status==="Checked In"
+?
+`<button class="warning"
+onclick="openCheckout('${r.id}')">
+Checkout
+</button>`
+:
+"-"
+}
+
+</td>
 
-          :
+</tr>
 
-          r.status==="Checked In"
+`).join("")||empty(6);
 
-          ?
 
-          `<button class="warning"
-            onclick="checkOut('${r.id}')">
-            Check Out
-          </button>`
+/* GUESTS */
 
-          :
+$("guestTable").innerHTML=data.guests.map(g=>`
 
-          `<button class="secondary"
-            onclick="viewReservation('${r.id}')">
-            View
-          </button>`
-        }
+<tr>
+<td>${g.name}</td>
+<td>${g.phone}</td>
+<td>${g.email||"-"}</td>
+<td>${g.idtype||"-"}</td>
+<td>${g.idno||"-"}</td>
+<td>${g.address||"-"}</td>
+<td>${g.age||"-"}</td>
+<td>${g.persons||"-"}</td>
+<td>${g.room||"-"}</td>
+</tr>
 
-      </td>
+`).join("")||empty(9);
 
-    </tr>
 
-  `).join("")||empty(10);
+/* STAFF */
 
+$("staffTable").innerHTML=data.staff.map(s=>`
 
-  /* DASHBOARD TABLE */
+<tr>
 
-  $("dashTable").innerHTML=data.reservations
-    .slice(-6)
-    .reverse()
-    .map(r=>`
+<td>${s.name}</td>
+<td>${s.dept}</td>
+<td>${s.role}</td>
+<td>${s.shift}</td>
 
-      <tr>
+<td>
+<button class="secondary"
+onclick="toggleAttendance('${s.id}')">
+${badge(s.attendance)}
+</button>
+</td>
 
-        <td>${r.guest}</td>
+<td>${money(s.salary)}</td>
 
-        <td>${r.room}</td>
+<td>
+${badge(s.paid==="Yes"?"Paid":"Unpaid")}
+</td>
 
-        <td>${r.checkin||"-"}</td>
+<td>
+<button class="secondary"
+onclick="toggleSalary('${s.id}')">
+${s.paid==="Yes"?"Mark Unpaid":"Mark Paid"}
+</button>
+</td>
 
-        <td>${r.checkout||"-"}</td>
+</tr>
 
-        <td>${badge(r.status)}</td>
+`).join("")||empty(8);
 
-        <td>
 
-          ${
-            r.status==="Reserved"
+/* BILLING */
 
-            ?
+$("billTable").innerHTML=data.bills.map(b=>{
 
-            `<button class="success"
-              onclick="checkIn('${r.id}')">
-              Check In
-            </button>`
+const balance=Math.max(
+0,
+Number(b.total)-Number(b.paid)
+);
 
-            :
+return`
 
-            r.status==="Checked In"
+<tr>
 
-            ?
+<td>${b.id}</td>
+<td>${b.guest}</td>
+<td>${b.room}</td>
+<td>${b.days} day(s)</td>
+<td>${money(b.roomRent)}</td>
+<td>${money(b.extras)}</td>
+<td>${money(b.total)}</td>
+<td>${money(b.paid)}</td>
+<td>${money(balance)}</td>
 
-            `<button class="warning"
-              onclick="checkOut('${r.id}')">
-              Check Out
-            </button>`
+<td>
+${badge(balance<=0?"Paid":"Due")}
+</td>
 
-            :
+<td>
+<button class="secondary"
+onclick="printBill('${b.id}')">
+Print
+</button>
+</td>
 
-            "-"
-          }
+</tr>
 
-        </td>
+`;
 
-      </tr>
+}).join("")||empty(11);
 
-    `).join("")||empty(6);
 
+/* FINANCE */
 
-  /* ROOM SUMMARY */
+$("txTable").innerHTML=data.transactions
+.slice()
+.reverse()
+.map(t=>`
 
-  const count=s=>data.rooms.filter(r=>r.status===s).length;
+<tr>
+<td>${t.date}</td>
+<td>${t.type}</td>
+<td>${t.category}</td>
+<td>${t.description}</td>
+<td>${money(t.amount)}</td>
+<td>${t.method}</td>
+</tr>
 
-  $("roomTotal").textContent=data.rooms.length;
-  $("roomReady").textContent=count("Ready");
-  $("roomOccupied").textContent=count("Occupied");
-  $("roomReserved").textContent=count("Reserved");
-  $("roomCleaning").textContent=count("Cleaning");
-  $("roomMaintenance").textContent=count("Maintenance");
+`).join("")||empty(6);
 
+$("income").textContent=money(income);
+$("expenses").textContent=money(expense);
+$("profit").textContent=money(income-expense);
+$("txcount").textContent=data.transactions.length;
 
-  /* ROOMS */
 
-  let rf=$("roomFilter")?.value||"";
-  let rs=($("roomSearch")?.value||"").trim();
+/* MAINTENANCE */
 
-  $("roomGrid").innerHTML=data.rooms
-    .filter(r=>!rf||r.status===rf)
-    .filter(r=>!rs||String(r.no).includes(rs))
-    .map(r=>{
+$("maintTable").innerHTML=data.maintenance.map(m=>`
 
-      let cls=r.status
-        .toLowerCase()
-        .replaceAll(" ","-");
+<tr>
 
-      if(cls==="out-of-service")cls="out";
+<td>${m.id}</td>
+<td>${m.area}</td>
+<td>${m.problem}</td>
+<td>${badge(m.priority)}</td>
+<td>${m.assigned}</td>
+<td>${money(m.cost)}</td>
+<td>${badge(m.status)}</td>
 
-      const available=r.status==="Ready";
+<td>
+<button class="secondary"
+onclick="advanceMaintenance('${m.id}')">
+Update
+</button>
+</td>
 
-      return `
+</tr>
 
-        <div class="room-card ${cls}-card">
+`).join("")||empty(8);
 
-          <div class="head">
 
-            <div class="room-number">
-              Room ${r.no}
-            </div>
+/* HOUSEKEEPING */
 
-            ${badge(r.status)}
+$("cleanList").innerHTML=data.rooms
+.filter(r=>r.status==="Cleaning")
+.map(r=>`
 
-          </div>
+<div class="card" style="margin-bottom:10px">
 
+<b>Room ${r.no}</b>
 
-          <div class="room-info">
+<p class="muted">
+${r.type} • ${r.beds} bed(s) •
+${r.ac?"AC":"Non-AC"}
+</p>
 
-            <div>
-              <b>Room Type</b><br>
-              ${r.type}
-            </div>
+<button class="success"
+onclick="setRoom(${r.no},'Ready')">
+Mark Ready
+</button>
 
-            <div>
-              <b>Cooling</b><br>
-              ${r.ac?"❄️ AC":"🌬️ Non-AC"}
-            </div>
+</div>
 
-            <div>
-              <b>Beds</b><br>
-              🛏️ ${r.beds} ${r.beds===1?"Bed":"Beds"}
-            </div>
+`).join("")||`
+<div class="empty">
+No rooms need cleaning.
+</div>
+`;
 
-            <div>
-              <b>Capacity</b><br>
-              👥 ${r.beds*2} Persons
-            </div>
 
-          </div>
+/* COMPLAINTS */
 
+$("complaintList").innerHTML=data.complaints
+.slice()
+.reverse()
+.map(c=>`
 
-          <div class="room-actions">
+<div class="complaint">
 
-            ${
-              available
+<div class="head">
 
-              ?
+<div>
+<b>${c.guest}</b>
+<br>
+Room ${c.room}
+</div>
 
-              `<button class="success"
-                onclick="openCheckinForRoom(${r.no})">
-                ✅ Check-in
-              </button>`
+${badge(c.status)}
 
-              :
+</div>
 
-              ""
-            }
+<p>${c.issue}</p>
 
-            ${
-              r.status==="Cleaning"
+<small class="muted">
+${c.date}
+</small>
 
-              ?
+<br><br>
 
-              `<button class="success"
-                onclick="setRoom(${r.no},'Ready')">
-                ✓ Mark Ready
-              </button>`
+<button class="secondary"
+onclick="updateComplaint('${c.id}')">
+Update Status
+</button>
 
-              :
+</div>
 
-              ""
-            }
+`).join("")||`
+<div class="empty">
+No complaints recorded.
+</div>
+`;
 
-            ${
-              r.status==="Maintenance"
 
-              ?
+/* REPORTS */
 
-              `<button class="success"
-                onclick="setRoom(${r.no},'Ready')">
-                ✓ Maintenance Done
-              </button>`
+$("repRes").textContent=data.reservations.length;
+$("repGuests").textContent=data.guests.length;
+$("repStaff").textContent=data.staff.length;
 
-              :
+$("repOcc").textContent=data.rooms.length
+?Math.round(occupied/data.rooms.length*100)+"%"
+:"0%";
 
-              ""
-            }
+$("repDue").textContent=money(due);
 
-            <button class="secondary"
-              onclick="changeRoom(${r.no})">
-              Change Status
-            </button>
+$("summary").innerHTML=`
 
-          </div>
+<b>${data.settings.name}</b> has
+<b>${data.rooms.length}</b> total rooms.
 
-        </div>
+Currently
+<b>${occupied}</b> are occupied,
+<b>${reserved}</b> are reserved,
+<b>${ready}</b> are ready,
+<b>${cleaning}</b> need cleaning and
+<b>${maintenance}</b> are under maintenance.
 
-      `;
+Recorded income:
+<b>${money(income)}</b>.
 
-    }).join("")||`
-      <div class="empty" style="grid-column:1/-1">
-        No rooms found.
-      </div>
-    `;
+Expenses:
+<b>${money(expense)}</b>.
 
+Outstanding guest balance:
+<b>${money(due)}</b>.
 
-  /* GUESTS */
+`;
 
-  $("guestTable").innerHTML=data.guests.map(g=>`
-
-    <tr>
-
-      <td>${g.name}</td>
-      <td>${g.phone||"-"}</td>
-      <td>${g.email||"-"}</td>
-      <td>${g.age||"-"}</td>
-      <td>${g.occupation||"-"}</td>
-      <td>${g.idtype||"-"}</td>
-      <td>${g.idno||"-"}</td>
-      <td>${g.room||"-"}</td>
-      <td>${g.persons||"-"}</td>
-      <td>${g.visits||0}</td>
-
-    </tr>
-
-  `).join("")||empty(10);
-
-
-  /* STAFF */
-
-  $("staffTable").innerHTML=data.staff.map(s=>`
-
-    <tr>
-
-      <td>${s.name}</td>
-      <td>${s.dept}</td>
-      <td>${s.role}</td>
-      <td>${s.shift}</td>
-
-      <td>
-
-        <button class="secondary"
-          onclick="toggleAttendance('${s.id}')">
-
-          ${badge(s.attendance)}
-
-        </button>
-
-      </td>
-
-      <td>${money(s.salary)}</td>
-
-      <td>
-        ${badge(s.paid==="Yes"?"Paid":"Unpaid")}
-      </td>
-
-      <td>
-
-        <button class="secondary"
-          onclick="toggleSalary('${s.id}')">
-
-          ${s.paid==="Yes"?"Mark Unpaid":"Mark Paid"}
-
-        </button>
-
-      </td>
-
-    </tr>
-
-  `).join("")||empty(8);
-
-
-  /* BILLING */
-
-  $("billTable").innerHTML=data.bills.map(b=>`
-
-    <tr>
-
-      <td>${b.id}</td>
-      <td>${b.guest}</td>
-      <td>${b.room}</td>
-      <td>${b.date}</td>
-      <td>${money(b.total)}</td>
-      <td>${money(b.paid)}</td>
-      <td>${money(b.total-b.paid)}</td>
-
-      <td>
-        ${badge(b.total<=b.paid?"Paid":"Unpaid")}
-      </td>
-
-      <td>
-
-        <button class="secondary"
-          onclick="printBill('${b.id}')">
-          Print
-        </button>
-
-      </td>
-
-    </tr>
-
-  `).join("")||empty(9);
-
-
-  /* FINANCE */
-
-  $("txTable").innerHTML=data.transactions
-    .slice()
-    .reverse()
-    .map(t=>`
-
-      <tr>
-        <td>${t.date}</td>
-        <td>${t.type}</td>
-        <td>${t.category}</td>
-        <td>${t.description||"-"}</td>
-        <td>${money(t.amount)}</td>
-        <td>${t.method}</td>
-      </tr>
-
-    `).join("")||empty(6);
-
-  $("income").textContent=money(income);
-  $("expenses").textContent=money(expense);
-  $("profit").textContent=money(income-expense);
-  $("txcount").textContent=data.transactions.length;
-
-
-  /* MAINTENANCE */
-
-  $("maintTable").innerHTML=data.maintenance.map(m=>`
-
-    <tr>
-
-      <td>${m.id}</td>
-      <td>${m.area}</td>
-      <td>${m.problem}</td>
-      <td>${badge(m.priority)}</td>
-      <td>${m.assigned}</td>
-      <td>${money(m.cost)}</td>
-      <td>${badge(m.status)}</td>
-
-      <td>
-
-        <button class="secondary"
-          onclick="advanceMaintenance('${m.id}')">
-          Update
-        </button>
-
-      </td>
-
-    </tr>
-
-  `).join("")||empty(8);
-
-
-  /* HOUSEKEEPING */
-
-  $("cleanList").innerHTML=data.rooms
-    .filter(r=>r.status==="Cleaning")
-    .map(r=>`
-
-      <div class="card" style="margin-bottom:10px">
-
-        <div class="head">
-
-          <div>
-            <b>Room ${r.no}</b>
-            <div class="muted">
-              ${r.ac?"AC":"Non-AC"} · ${r.beds} bed(s)
-            </div>
-          </div>
-
-          ${badge("Cleaning")}
-
-        </div>
-
-        <button class="success"
-          onclick="setRoom(${r.no},'Ready')">
-          ✓ Cleaning Complete
-        </button>
-
-      </div>
-
-    `).join("")||
-
-    `
-      <div class="empty">
-        🎉 No rooms waiting for cleaning.
-      </div>
-    `;
-
-
-  /* REPORTS */
-
-  $("repRes").textContent=data.reservations.length;
-  $("repGuests").textContent=data.guests.length;
-  $("repStaff").textContent=data.staff.length;
-
-  $("repOcc").textContent=data.rooms.length
-    ?Math.round(occupied/data.rooms.length*100)+"%"
-    :"0%";
-
-
-  $("summary").innerHTML=`
-
-    <b>${data.settings.name}</b>
-    currently has
-    <b>${occupied}</b>
-    occupied rooms out of
-    <b>${data.rooms.length}</b>.
-
-    There are
-    <b>${count("Ready")}</b>
-    ready rooms,
-    <b>${count("Reserved")}</b>
-    reserved rooms,
-    <b>${count("Cleaning")}</b>
-    rooms needing cleaning and
-    <b>${count("Maintenance")}</b>
-    rooms under maintenance.
-
-    Total recorded income is
-    <b>${money(income)}</b>
-    and expenses are
-    <b>${money(expense)}</b>.
-
-  `;
 }
 
 
 function empty(n){
-  return `
-    <tr>
-      <td colspan="${n}" class="empty">
-        No records found.
-      </td>
-    </tr>
-  `;
+return`
+<tr>
+<td colspan="${n}" class="empty">
+No records found.
+</td>
+</tr>
+`;
 }
 
 
-/* ROOM MANAGEMENT */
+/* ROOM STATUS */
 
 function setRoom(no,status){
 
-  const r=data.rooms.find(x=>x.no==no);
+const room=data.rooms.find(r=>r.no===no);
 
-  if(!r)return;
+if(!room)return;
 
-  r.status=status;
+room.status=status;
 
-  persist();
+persist();
 
-  toast(`Room ${no} marked ${status}`);
+toast(`Room ${no} marked ${status}`);
+
 }
-
 
 function changeRoom(no){
 
-  const r=data.rooms.find(x=>x.no==no);
+const room=data.rooms.find(r=>r.no===no);
 
-  if(!r)return;
+if(!room)return;
 
-  const statuses=[
-    "Ready",
-    "Reserved",
-    "Occupied",
-    "Cleaning",
-    "Maintenance",
-    "Out of Service"
-  ];
+const statuses=[
+"Ready",
+"Reserved",
+"Occupied",
+"Cleaning",
+"Maintenance",
+"Out of Service"
+];
 
-  const value=prompt(
-    `Room ${no} status:\n\n${statuses.join("\n")}`,
-    r.status
-  );
+const value=prompt(
+`Room ${no}\n\nEnter status:\n\n`+
+statuses.join("\n"),
+room.status
+);
 
-  if(value&&statuses.includes(value)){
+if(value&&statuses.includes(value)){
+setRoom(no,value);
+}
 
-    setRoom(no,value);
-
-  }else if(value){
-
-    alert("Please enter/select one of the listed statuses.");
-
-  }
 }
 
 
 /* CHECK-IN */
 
-function openCheckin(){
-  openModal("checkin");
-}
+function openModal(type){
+
+$("modalBg").classList.add("open");
+
+$("saveModal").onclick=()=>submit(type);
+
+let roomOptions=data.rooms
+.filter(r=>r.status==="Ready"||r.status==="Reserved")
+.map(r=>
+`<option value="${r.no}">
+Room ${r.no} - ${r.type} - ${r.beds} bed - ${r.ac?"AC":"Non-AC"}
+</option>`
+).join("");
+
+let allRoomOptions=data.rooms
+.map(r=>
+`<option value="${r.no}">
+Room ${r.no}
+</option>`
+).join("");
+
+let staffOptions=data.staff
+.map(s=>`<option>${s.name}</option>`).join("");
 
 
-function openCheckinForRoom(roomNo){
-  openModal("checkin",roomNo);
+if(type==="checkin"){
+
+const n=nowDateTime();
+
+$("modalTitle").textContent="Guest Check-in";
+
+$("modalBody").innerHTML=`
+
+<div class="form">
+
+<div class="span2">
+<h3>Guest Details</h3>
+</div>
+
+<div>
+<label>Customer Name *</label>
+<input id="fGuest" placeholder="Full name">
+</div>
+
+<div>
+<label>Phone Number *</label>
+<input id="fPhone" placeholder="Mobile number">
+</div>
+
+<div>
+<label>Email</label>
+<input id="fEmail" type="email">
+</div>
+
+<div>
+<label>Age</label>
+<input id="fAge" type="number" min="1">
+</div>
+
+<div>
+<label>ID Proof</label>
+<select id="fIdType">
+<option>Aadhaar</option>
+<option>Passport</option>
+<option>Driving Licence</option>
+<option>Voter ID</option>
+<option>Other</option>
+</select>
+</div>
+
+<div>
+<label>ID Number</label>
+<input id="fIdNo">
+</div>
+
+<div class="span2">
+<label>Address</label>
+<textarea id="fAddress" rows="2"></textarea>
+</div>
+
+<div>
+<label>Occupation</label>
+<input id="fOccupation">
+</div>
+
+<div>
+<label>Number of Persons</label>
+<input id="fPersons" type="number" min="1" value="1">
+</div>
+
+
+<div class="span2">
+<h3>Stay Details</h3>
+</div>
+
+<div>
+<label>Room *</label>
+<select id="fRoom" onchange="calculateRent()">
+${roomOptions}
+</select>
+</div>
+
+<div>
+<label>Number of Days *</label>
+<input id="fDays"
+type="number"
+min="1"
+value="1"
+oninput="calculateCheckout()">
+</div>
+
+<div>
+<label>Check-in Date</label>
+<input id="fCheckinDate"
+type="date"
+value="${n.date}"
+onchange="calculateCheckout()">
+</div>
+
+<div>
+<label>Check-in Time</label>
+<input id="fCheckinTime"
+type="time"
+value="${n.time}">
+</div>
+
+<div>
+<label>Checkout Date</label>
+<input id="fCheckoutDate"
+type="date"
+readonly>
+</div>
+
+<div>
+<label>Checkout Time</label>
+<input value="${data.settings.checkoutTime}"
+readonly>
+</div>
+
+<div class="span2">
+<div class="summarybox">
+
+<b>Automatic Checkout</b>
+
+<p id="fCheckoutDisplay">
+Calculating...
+</p>
+
+<p class="muted">
+Guest must checkout by this time.
+</p>
+
+</div>
+</div>
+
+
+<div>
+<label>Daily Room Rate</label>
+<div id="fDailyRate"
+class="metric">
+₹0
+</div>
+</div>
+
+<div>
+<label>Total Room Rent</label>
+<div id="fRoomRent"
+class="metric">
+₹0
+</div>
+</div>
+
+
+<div>
+<label>Payment Made</label>
+<input id="fPaid"
+type="number"
+value="0"
+min="0">
+</div>
+
+<div>
+<label>Payment Method</label>
+<select id="fMethod">
+<option>Cash</option>
+<option>UPI</option>
+<option>Card</option>
+<option>Bank Transfer</option>
+</select>
+</div>
+
+<div class="span2">
+<label>Special Notes</label>
+<textarea id="fNotes" rows="2"></textarea>
+</div>
+
+</div>
+`;
+
+calculateCheckout();
+
+return;
 }
 
 
 /* RESERVATION */
 
-function openReservation(){
-  openModal("reservation");
+if(type==="reservation"){
+
+$("modalTitle").textContent="New Reservation";
+
+$("modalBody").innerHTML=`
+
+<div class="form">
+
+<div>
+<label>Guest Name</label>
+<input id="fGuest">
+</div>
+
+<div>
+<label>Phone</label>
+<input id="fPhone">
+</div>
+
+<div>
+<label>Room</label>
+<select id="fRoom">
+${roomOptions}
+</select>
+</div>
+
+<div>
+<label>Number of Days</label>
+<input id="fDays" type="number" value="1" min="1">
+</div>
+
+<div>
+<label>Check-in Date</label>
+<input id="fIn" type="date" value="${dateNow()}">
+</div>
+
+<div>
+<label>Checkout Date</label>
+<input id="fOut" type="date">
+</div>
+
+<div>
+<label>Amount</label>
+<input id="fAmount" type="number" value="0">
+</div>
+
+<div>
+<label>Payment</label>
+<select id="fPay">
+<option>Unpaid</option>
+<option>Paid</option>
+</select>
+</div>
+
+</div>
+`;
+
+return;
 }
 
 
-/* CHECK IN */
+/* GUEST */
 
-function checkIn(id){
+if(type==="guest"){
 
-  const r=data.reservations.find(x=>x.id===id);
+$("modalTitle").textContent="Add Guest";
 
-  if(!r)return;
+$("modalBody").innerHTML=`
 
-  const room=data.rooms.find(x=>x.no==r.room);
+<div class="form">
 
-  if(room&&room.status!=="Reserved"){
+<div>
+<label>Name *</label>
+<input id="gName">
+</div>
 
-    alert(
-      `Room ${r.room} is currently ${room.status}.`
-    );
+<div>
+<label>Phone</label>
+<input id="gPhone">
+</div>
 
-    return;
-  }
+<div>
+<label>Email</label>
+<input id="gEmail">
+</div>
 
-  r.status="Checked In";
+<div>
+<label>Age</label>
+<input id="gAge" type="number">
+</div>
 
-  if(room)room.status="Occupied";
+<div>
+<label>ID Type</label>
+<select id="gIdType">
+<option>Aadhaar</option>
+<option>Passport</option>
+<option>Driving Licence</option>
+<option>Voter ID</option>
+<option>Other</option>
+</select>
+</div>
 
-  const guest=data.guests.find(
-    g=>g.name.toLowerCase()===r.guest.toLowerCase()
-  );
+<div>
+<label>ID Number</label>
+<input id="gIdNo">
+</div>
 
-  if(guest){
+<div class="span2">
+<label>Address</label>
+<textarea id="gAddress"></textarea>
+</div>
 
-    guest.visits=Number(guest.visits||0)+1;
-    guest.room=r.room;
+<div>
+<label>Occupation</label>
+<input id="gOccupation">
+</div>
 
-  }
+<div>
+<label>Persons</label>
+<input id="gPersons" type="number" value="1">
+</div>
 
-  persist();
+<div>
+<label>Room</label>
+<select id="gRoom">
+<option value="">Not assigned</option>
+${allRoomOptions}
+</select>
+</div>
 
-  toast("Guest checked in successfully.");
+<div class="span2">
+<label>Remarks</label>
+<textarea id="gRemark"></textarea>
+</div>
 
-}
+</div>
+`;
 
-
-/* CHECK OUT */
-
-function checkOut(id){
-
-  const r=data.reservations.find(x=>x.id===id);
-
-  if(!r)return;
-
-  r.status="Checked Out";
-
-  const room=data.rooms.find(x=>x.no==r.room);
-
-  if(room)room.status="Cleaning";
-
-  persist();
-
-  toast(
-    "Check-out completed. Room sent for cleaning."
-  );
-
+return;
 }
 
 
 /* STAFF */
 
-function toggleAttendance(id){
+if(type==="staff"){
 
-  const s=data.staff.find(x=>x.id===id);
+$("modalTitle").textContent="Add Staff";
 
-  if(!s)return;
+$("modalBody").innerHTML=`
 
-  const values=[
-    "Present",
-    "Absent",
-    "Half Day",
-    "Leave"
-  ];
+<div class="form">
 
-  s.attendance=values[
-    (values.indexOf(s.attendance)+1)%values.length
-  ];
+<div>
+<label>Name</label>
+<input id="sName">
+</div>
 
-  persist();
+<div>
+<label>Department</label>
+<input id="sDept">
+</div>
 
-  toast("Attendance updated.");
+<div>
+<label>Role</label>
+<input id="sRole">
+</div>
 
+<div>
+<label>Shift</label>
+<select id="sShift">
+<option>Morning</option>
+<option>Day</option>
+<option>Evening</option>
+<option>Night</option>
+</select>
+</div>
+
+<div>
+<label>Salary</label>
+<input id="sSalary" type="number">
+</div>
+
+</div>
+`;
+
+return;
 }
 
 
-function toggleSalary(id){
+/* TRANSACTION */
 
-  const s=data.staff.find(x=>x.id===id);
+if(type==="transaction"){
 
-  if(!s)return;
+$("modalTitle").textContent="Add Transaction";
 
-  s.paid=s.paid==="Yes"?"No":"Yes";
+$("modalBody").innerHTML=`
 
-  persist();
+<div class="form">
 
-  toast("Salary status updated.");
+<div>
+<label>Type</label>
+<select id="tType">
+<option>Income</option>
+<option>Expense</option>
+</select>
+</div>
 
+<div>
+<label>Category</label>
+<input id="tCategory">
+</div>
+
+<div>
+<label>Amount</label>
+<input id="tAmount" type="number">
+</div>
+
+<div>
+<label>Date</label>
+<input id="tDate" type="date" value="${dateNow()}">
+</div>
+
+<div>
+<label>Payment Method</label>
+<select id="tMethod">
+<option>Cash</option>
+<option>UPI</option>
+<option>Card</option>
+<option>Bank Transfer</option>
+</select>
+</div>
+
+<div>
+<label>Description</label>
+<input id="tDescription">
+</div>
+
+</div>
+`;
+
+return;
 }
 
 
 /* MAINTENANCE */
 
-function advanceMaintenance(id){
+if(type==="maintenance"){
 
-  const m=data.maintenance.find(x=>x.id===id);
+$("modalTitle").textContent="Report Maintenance";
 
-  if(!m)return;
+$("modalBody").innerHTML=`
 
-  const statuses=[
-    "Reported",
-    "Assigned",
-    "In Progress",
-    "Completed"
-  ];
+<div class="form">
 
-  const index=statuses.indexOf(m.status);
+<div>
+<label>Room / Area</label>
+<input id="mArea">
+</div>
 
-  m.status=statuses[
-    Math.min(index+1,statuses.length-1)
-  ];
+<div>
+<label>Priority</label>
+<select id="mPriority">
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+</select>
+</div>
 
-  if(
-    m.status==="Completed" &&
-    String(m.area).toLowerCase().includes("room")
-  ){
+<div class="span2">
+<label>Problem</label>
+<textarea id="mProblem" rows="3"></textarea>
+</div>
 
-    const number=String(m.area).match(/\d+/);
+<div>
+<label>Assigned To</label>
+<select id="mAssigned">
+<option>Unassigned</option>
+${staffOptions}
+</select>
+</div>
 
-    if(number){
+<div>
+<label>Estimated Cost</label>
+<input id="mCost" type="number" value="0">
+</div>
 
-      const room=data.rooms.find(
-        r=>r.no==number[0]
-      );
+</div>
+`;
 
-      if(room)room.status="Ready";
-
-    }
-
-  }
-
-  persist();
-
-  toast("Maintenance status updated.");
-
+return;
 }
 
 
-/* RESERVATION VIEW */
+/* BILL */
 
-function viewReservation(id){
+if(type==="bill"){
 
-  const r=data.reservations.find(x=>x.id===id);
+$("modalTitle").textContent="Create Invoice";
 
-  if(!r)return;
+$("modalBody").innerHTML=`
 
-  alert(
+<div class="form">
 
-`Reservation ${r.id}
+<div>
+<label>Guest</label>
+<input id="bGuest">
+</div>
 
-Guest: ${r.guest}
+<div>
+<label>Room</label>
+<select id="bRoom">
+${allRoomOptions}
+</select>
+</div>
 
-Phone: ${r.phone||"-"}
+<div>
+<label>Room Rent</label>
+<input id="bRoomRent" type="number">
+</div>
 
-Room: ${r.room}
+<div>
+<label>Extra Charges</label>
+<input id="bExtras" type="number" value="0">
+</div>
 
-Check-in: ${r.checkin||"-"}
+<div>
+<label>Paid</label>
+<input id="bPaid" type="number" value="0">
+</div>
 
-Check-out: ${r.checkout||"-"}
+<div>
+<label>Payment Method</label>
+<select id="bMethod">
+<option>Cash</option>
+<option>UPI</option>
+<option>Card</option>
+<option>Bank Transfer</option>
+</select>
+</div>
 
-Nights: ${r.nights||calculateNights(r.checkin,r.checkout)}
+</div>
+`;
 
-Status: ${r.status}
-
-Amount: ${money(r.amount)}
-
-Amount Paid: ${money(r.paid||0)}
-
-Balance: ${money((r.amount||0)-(r.paid||0))}`
-
-  );
-
+return;
 }
 
 
-/* MODAL */
-
-function openModal(type,selectedRoom=null){
-
-  $("modalBg").classList.add("open");
-
-  $("saveModal").onclick=()=>submit(type);
-
-  let availableRooms=data.rooms
-    .filter(r=>
-      r.status==="Ready"||
-      (selectedRoom&&r.no==selectedRoom)
-    );
-
-  let roomOptions=availableRooms
-    .map(r=>
-      `<option value="${r.no}"
-        ${selectedRoom&&r.no==selectedRoom?"selected":""}>
-        Room ${r.no} — ${r.type} — ${r.ac?"AC":"Non-AC"} — ${r.beds} Bed(s)
-      </option>`
-    )
-    .join("");
-
-  let allRooms=data.rooms
-    .map(r=>
-      `<option value="${r.no}">
-        Room ${r.no}
-      </option>`
-    )
-    .join("");
-
-  let staff=data.staff
-    .map(s=>
-      `<option>${s.name}</option>`
-    )
-    .join("");
-
-
-  /* CHECK-IN */
-
-  if(type==="checkin"){
-
-    $("modalTitle").textContent="Guest Check-in";
-
-    $("modalBody").innerHTML=`
-
-      <div class="info-box">
-        <b>Complete guest details before check-in.</b><br>
-        The room will automatically become
-        <b>Occupied</b> after saving.
-      </div>
-
-      <div class="form">
-
-        <div class="section-title">
-          👤 Guest Information
-        </div>
-
-        <div>
-          <label>Customer / Guest Name *</label>
-          <input id="fGuest" placeholder="Full name">
-        </div>
-
-        <div>
-          <label>Age *</label>
-          <input id="fAge" type="number" min="1" max="120" placeholder="Age">
-        </div>
-
-        <div>
-          <label>Phone Number *</label>
-          <input id="fPhone" type="tel" placeholder="Phone number">
-        </div>
-
-        <div>
-          <label>Email</label>
-          <input id="fEmail" type="email" placeholder="Email address">
-        </div>
-
-        <div>
-          <label>ID Proof Type *</label>
-          <select id="fIdType">
-            <option value="">Select ID proof</option>
-            <option>Aadhaar</option>
-            <option>Passport</option>
-            <option>Driving Licence</option>
-            <option>Voter ID</option>
-            <option>PAN Card</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div>
-          <label>ID Proof Number *</label>
-          <input id="fIdNo" placeholder="ID number">
-        </div>
-
-        <div>
-          <label>Occupation</label>
-          <input id="fOccupation" placeholder="Occupation">
-        </div>
-
-        <div>
-          <label>Number of Persons *</label>
-          <input id="fPersons" type="number" min="1" value="1">
-        </div>
-
-        <div>
-          <label>Adults</label>
-          <input id="fAdults" type="number" min="1" value="1">
-        </div>
-
-        <div>
-          <label>Children</label>
-          <input id="fChildren" type="number" min="0" value="0">
-        </div>
-
-        <div class="span2">
-          <label>Address</label>
-          <textarea id="fAddress" rows="2"
-            placeholder="Full residential address"></textarea>
-        </div>
-
-
-        <div class="section-title">
-          🛏️ Stay & Room Details
-        </div>
-
-        <div>
-          <label>Room *</label>
-          <select id="fRoom">
-            ${roomOptions||'<option value="">No ready rooms available</option>'}
-          </select>
-        </div>
-
-        <div>
-          <label>Check-in Date & Time *</label>
-          <input id="fIn" type="datetime-local" value="${dateTimeNow()}">
-        </div>
-
-        <div>
-          <label>Check-out Date & Time *</label>
-          <input id="fOut" type="datetime-local">
-        </div>
-
-        <div>
-          <label>Number of Nights</label>
-          <input id="fNights" type="number" readonly
-            style="background:#f1f5f9">
-        </div>
-
-        <div class="span2">
-          <label>Special Requests / Notes</label>
-          <textarea id="fNotes" rows="2"
-            placeholder="Extra bed, late checkout, food preference, etc."></textarea>
-        </div>
-
-
-        <div class="section-title">
-          💰 Payment Details
-        </div>
-
-        <div>
-          <label>Room Amount *</label>
-          <input id="fAmount" type="number" min="0" value="0">
-        </div>
-
-        <div>
-          <label>Extra Charges</label>
-          <input id="fExtra" type="number" min="0" value="0">
-        </div>
-
-        <div>
-          <label>Discount</label>
-          <input id="fDiscount" type="number" min="0" value="0">
-        </div>
-
-        <div>
-          <label>Tax %</label>
-          <input id="fTax" type="number" min="0"
-            value="${data.settings.tax}">
-        </div>
-
-        <div>
-          <label>Amount Paid</label>
-          <input id="fPaid" type="number" min="0" value="0">
-        </div>
-
-        <div>
-          <label>Payment Method</label>
-          <select id="fPay">
-            <option>Cash</option>
-            <option>UPI</option>
-            <option>Card</option>
-            <option>Bank Transfer</option>
-            <option>Pending</option>
-          </select>
-        </div>
-
-        <div class="span2 amount-box">
-
-          <div class="amount-row">
-            <span>Room Amount</span>
-            <b id="calcRoom">₹0</b>
-          </div>
-
-          <div class="amount-row">
-            <span>Extra Charges</span>
-            <b id="calcExtra">₹0</b>
-          </div>
-
-          <div class="amount-row">
-            <span>Discount</span>
-            <b id="calcDiscount">₹0</b>
-          </div>
-
-          <div class="amount-row">
-            <span>Tax</span>
-            <b id="calcTax">₹0</b>
-          </div>
-
-          <div class="amount-row amount-total">
-            <span>Total</span>
-            <b id="calcTotal">₹0</b>
-          </div>
-
-          <div class="amount-row">
-            <span>Balance</span>
-            <b id="calcBalance">₹0</b>
-          </div>
-
-        </div>
-
-      </div>
-    `;
-
-    setupCheckinCalculations();
-
-    return;
-  }
-
-
-  /* RESERVATION */
-
-  if(type==="reservation"){
-
-    $("modalTitle").textContent="New Reservation";
-
-    $("modalBody").innerHTML=`
-
-      <div class="info-box">
-        This creates a reservation. Guest details can be completed during check-in.
-      </div>
-
-      <div class="form">
-
-        <div>
-          <label>Guest Name *</label>
-          <input id="fGuest">
-        </div>
-
-        <div>
-          <label>Phone</label>
-          <input id="fPhone">
-        </div>
-
-        <div>
-          <label>Room</label>
-          <select id="fRoom">
-            ${roomOptions}
-          </select>
-        </div>
-
-        <div>
-          <label>Amount</label>
-          <input id="fAmount" type="number" value="0">
-        </div>
-
-        <div>
-          <label>Check-in</label>
-          <input id="fIn" type="date" value="${dateNow()}">
-        </div>
-
-        <div>
-          <label>Check-out</label>
-          <input id="fOut" type="date">
-        </div>
-
-        <div>
-          <label>Payment</label>
-          <select id="fPay">
-            <option>Unpaid</option>
-            <option>Paid</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Notes</label>
-          <input id="fNotes">
-        </div>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  /* GUEST */
-
-  if(type==="guest"){
-
-    $("modalTitle").textContent="Add Guest";
-
-    $("modalBody").innerHTML=`
-
-      <div class="form">
-
-        <div class="section-title">
-          👤 Guest Information
-        </div>
-
-        <div>
-          <label>Name *</label>
-          <input id="gName">
-        </div>
-
-        <div>
-          <label>Age</label>
-          <input id="gAge" type="number">
-        </div>
-
-        <div>
-          <label>Phone</label>
-          <input id="gPhone">
-        </div>
-
-        <div>
-          <label>Email</label>
-          <input id="gEmail">
-        </div>
-
-        <div>
-          <label>ID Type</label>
-          <select id="gIdType">
-            <option>Aadhaar</option>
-            <option>Passport</option>
-            <option>Driving Licence</option>
-            <option>Voter ID</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div>
-          <label>ID Number</label>
-          <input id="gIdNo">
-        </div>
-
-        <div>
-          <label>Occupation</label>
-          <input id="gOccupation">
-        </div>
-
-        <div>
-          <label>Persons</label>
-          <input id="gPersons" type="number" value="1">
-        </div>
-
-        <div class="span2">
-          <label>Address</label>
-          <textarea id="gAddress" rows="2"></textarea>
-        </div>
-
-        <div>
-          <label>Room</label>
-          <select id="gRoom">
-            <option value="">Not assigned</option>
-            ${allRooms}
-          </select>
-        </div>
-
-        <div>
-          <label>Remarks</label>
-          <input id="gRemark">
-        </div>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  /* STAFF */
-
-  if(type==="staff"){
-
-    $("modalTitle").textContent="Add Staff";
-
-    $("modalBody").innerHTML=`
-
-      <div class="form">
-
-        <div>
-          <label>Name *</label>
-          <input id="sName">
-        </div>
-
-        <div>
-          <label>Department</label>
-          <input id="sDept">
-        </div>
-
-        <div>
-          <label>Role</label>
-          <input id="sRole">
-        </div>
-
-        <div>
-          <label>Shift</label>
-          <select id="sShift">
-            <option>Morning</option>
-            <option>Day</option>
-            <option>Evening</option>
-            <option>Night</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Salary</label>
-          <input id="sSalary" type="number">
-        </div>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  /* TRANSACTION */
-
-  if(type==="transaction"||type==="expense"){
-
-    $("modalTitle").textContent=
-      type==="expense"
-      ?"Add Expense"
-      :"Add Transaction";
-
-    $("modalBody").innerHTML=`
-
-      <div class="form">
-
-        ${
-          type==="transaction"
-
-          ?
-
-          `<div>
-            <label>Type</label>
-            <select id="tType">
-              <option>Income</option>
-              <option>Expense</option>
-            </select>
-          </div>`
-
-          :
-
-          ""
-        }
-
-        <div>
-          <label>Category</label>
-          <input id="tCategory"
-            placeholder="Room / Food / Salary / Utility">
-        </div>
-
-        <div>
-          <label>Amount</label>
-          <input id="tAmount" type="number">
-        </div>
-
-        <div>
-          <label>Date</label>
-          <input id="tDate" type="date" value="${dateNow()}">
-        </div>
-
-        <div>
-          <label>Payment Method</label>
-          <select id="tMethod">
-            <option>Cash</option>
-            <option>UPI</option>
-            <option>Card</option>
-            <option>Bank Transfer</option>
-          </select>
-        </div>
-
-        <div class="span2">
-          <label>Description</label>
-          <input id="tDescription">
-        </div>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  /* MAINTENANCE */
-
-  if(type==="maintenance"){
-
-    $("modalTitle").textContent="Report Maintenance";
-
-    $("modalBody").innerHTML=`
-
-      <div class="form">
-
-        <div>
-          <label>Room / Area</label>
-          <input id="mArea" placeholder="Example: Room 103">
-        </div>
-
-        <div>
-          <label>Priority</label>
-          <select id="mPriority">
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-          </select>
-        </div>
-
-        <div class="span2">
-          <label>Problem</label>
-          <textarea id="mProblem" rows="3"></textarea>
-        </div>
-
-        <div>
-          <label>Assigned To</label>
-          <select id="mAssigned">
-            <option>Unassigned</option>
-            ${staff}
-          </select>
-        </div>
-
-        <div>
-          <label>Estimated Cost</label>
-          <input id="mCost" type="number" value="0">
-        </div>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  /* BILL */
-
-  if(type==="bill"){
-
-    $("modalTitle").textContent="Create Invoice";
-
-    $("modalBody").innerHTML=`
-
-      <div class="form">
-
-        <div>
-          <label>Guest</label>
-          <input id="bGuest">
-        </div>
-
-        <div>
-          <label>Room</label>
-          <select id="bRoom">
-            ${allRooms}
-          </select>
-        </div>
-
-        <div>
-          <label>Total</label>
-          <input id="bTotal" type="number">
-        </div>
-
-        <div>
-          <label>Paid</label>
-          <input id="bPaid" type="number" value="0">
-        </div>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  /* ROOM */
-
-  if(type==="room"){
-
-    $("modalTitle").textContent="Add Room";
-
-    $("modalBody").innerHTML=`
-
-      <div class="info-box">
-        Add the room's basic details. Room prices are not stored here.
-      </div>
-
-      <div class="form">
-
-        <div>
-          <label>Room Number *</label>
-          <input id="rNo" type="number">
-        </div>
-
-        <div>
-          <label>Room Type</label>
-          <select id="rType">
-            <option>Standard</option>
-            <option>Deluxe</option>
-            <option>Suite</option>
-            <option>Family Room</option>
-          </select>
-        </div>
-
-        <div>
-          <label>AC / Non-AC</label>
-          <select id="rAc">
-            <option value="yes">❄️ AC</option>
-            <option value="no">🌬️ Non-AC</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Number of Beds</label>
-          <select id="rBeds">
-            <option value="1">🛏️ 1 Bed</option>
-            <option value="2">🛏️ 2 Beds</option>
-            <option value="4">🛏️ 4 Beds</option>
-          </select>
-        </div>
-
-      </div>
-    `;
-
-  }
-
+/* ROOM */
+
+if(type==="room"){
+
+$("modalTitle").textContent="Add Room";
+
+$("modalBody").innerHTML=`
+
+<div class="form">
+
+<div>
+<label>Room Number</label>
+<input id="rNo">
+</div>
+
+<div>
+<label>Room Type</label>
+<select id="rType">
+<option>Standard</option>
+<option>Deluxe</option>
+<option>Family</option>
+<option>Suite</option>
+</select>
+</div>
+
+<div>
+<label>AC</label>
+<select id="rAc">
+<option value="yes">AC</option>
+<option value="no">Non-AC</option>
+</select>
+</div>
+
+<div>
+<label>Number of Beds</label>
+<select id="rBeds">
+<option value="1">1 Bed</option>
+<option value="2">2 Beds</option>
+<option value="4">4 Beds</option>
+</select>
+</div>
+
+<div>
+<label>Daily Room Rate</label>
+<input id="rRate" type="number" value="2500">
+</div>
+
+</div>
+`;
+
+return;
 }
 
 
-function setupCheckinCalculations(){
+/* COMPLAINT */
 
-  const fields=[
-    "fIn",
-    "fOut",
-    "fAmount",
-    "fExtra",
-    "fDiscount",
-    "fTax",
-    "fPaid"
-  ];
+if(type==="complaint"){
 
-  fields.forEach(id=>{
-    const el=$(id);
+$("modalTitle").textContent="Guest Complaint / Issue";
 
-    if(el){
+$("modalBody").innerHTML=`
 
-      el.addEventListener("input",()=>{
-        calculateCheckinTotal();
-      });
+<div class="form">
 
-      el.addEventListener("change",()=>{
-        calculateCheckinTotal();
-      });
+<div>
+<label>Guest Name</label>
+<input id="cpGuest">
+</div>
 
-    }
-  });
+<div>
+<label>Room Number</label>
+<select id="cpRoom">
+${allRoomOptions}
+</select>
+</div>
 
-  const roomSelect=$("fRoom");
+<div class="span2">
+<label>Complaint / Issue</label>
+<textarea id="cpIssue" rows="4"
+placeholder="Describe the problem..."></textarea>
+</div>
 
-  if(roomSelect){
+</div>
+`;
 
-    roomSelect.addEventListener("change",()=>{
-
-      const room=data.rooms.find(
-        r=>r.no==roomSelect.value
-      );
-
-      if(room){
-
-        const capacity=room.beds*2;
-
-        $("fPersons").max=capacity;
-
-        if(Number($("fPersons").value)>capacity){
-          $("fPersons").value=capacity;
-        }
-
-        $("fNotes").placeholder=
-          `${room.ac?"AC":"Non-AC"} room · ${room.beds} bed(s) · Max ${capacity} persons`;
-
-      }
-
-    });
-
-  }
-
-  calculateCheckinTotal();
+return;
 }
-
-
-function calculateCheckinTotal(){
-
-  if(!$("fIn"))return;
-
-  const nights=calculateNights(
-    $("fIn").value,
-    $("fOut").value
-  );
-
-  $("fNights").value=nights;
-
-  const roomAmount=Number($("fAmount").value||0);
-  const extra=Number($("fExtra").value||0);
-  const discount=Number($("fDiscount").value||0);
-  const taxRate=Number($("fTax").value||0);
-  const paid=Number($("fPaid").value||0);
-
-  const taxable=Math.max(
-    0,
-    roomAmount+extra-discount
-  );
-
-  const tax=taxable*taxRate/100;
-
-  const total=taxable+tax;
-
-  const balance=Math.max(
-    0,
-    total-paid
-  );
-
-  $("calcRoom").textContent=money(roomAmount);
-  $("calcExtra").textContent=money(extra);
-  $("calcDiscount").textContent=money(discount);
-  $("calcTax").textContent=money(tax);
-  $("calcTotal").textContent=money(total);
-  $("calcBalance").textContent=money(balance);
-}
-
-
-function closeModal(){
-
-  $("modalBg").classList.remove("open");
 
 }
 
@@ -3087,717 +2410,872 @@ function closeModal(){
 
 function submit(t){
 
-  /* CHECK-IN */
-
-  if(t==="checkin"){
-
-    const guest=$("fGuest").value.trim();
-    const age=Number($("fAge").value);
-    const phone=$("fPhone").value.trim();
-    const idType=$("fIdType").value;
-    const idNo=$("fIdNo").value.trim();
-    const roomNo=Number($("fRoom").value);
-
-    if(!guest){
-      alert("Please enter the guest name.");
-      return;
-    }
-
-    if(!age){
-      alert("Please enter the guest age.");
-      return;
-    }
-
-    if(!phone){
-      alert("Please enter the phone number.");
-      return;
-    }
-
-    if(!idType){
-      alert("Please select the ID proof type.");
-      return;
-    }
-
-    if(!idNo){
-      alert("Please enter the ID proof number.");
-      return;
-    }
-
-    if(!roomNo){
-      alert("Please select a room.");
-      return;
-    }
-
-    const room=data.rooms.find(r=>r.no===roomNo);
-
-    if(!room||room.status!=="Ready"){
-
-      alert(
-        "This room is not currently ready for check-in."
-      );
-
-      return;
-    }
-
-    const persons=Number($("fPersons").value||1);
-    const capacity=room.beds*2;
-
-    if(persons>capacity){
-
-      alert(
-        `This room can accommodate up to ${capacity} persons.`
-      );
-
-      return;
-    }
-
-    const nights=calculateNights(
-      $("fIn").value,
-      $("fOut").value
-    );
-
-    if(!nights){
-
-      alert(
-        "Please select a valid check-out date/time after check-in."
-      );
-
-      return;
-    }
-
-
-    const roomAmount=Number($("fAmount").value||0);
-    const extra=Number($("fExtra").value||0);
-    const discount=Number($("fDiscount").value||0);
-    const taxRate=Number($("fTax").value||0);
-    const paid=Number($("fPaid").value||0);
-
-    const taxable=Math.max(
-      0,
-      roomAmount+extra-discount
-    );
-
-    const tax=taxable*taxRate/100;
-
-    const total=taxable+tax;
-
-    if(paid>total){
-
-      alert(
-        "Amount paid cannot be greater than the total amount."
-      );
-
-      return;
-    }
-
-
-    const id=
-      "RES-"+Date.now().toString().slice(-6);
-
-
-    const reservation={
-
-      id:id,
-
-      guest:guest,
-
-      age:age,
-
-      phone:phone,
-
-      email:$("fEmail").value.trim(),
-
-      idtype:idType,
-
-      idno:idNo,
-
-      occupation:$("fOccupation").value.trim(),
-
-      address:$("fAddress").value.trim(),
-
-      persons:persons,
-
-      adults:Number($("fAdults").value||0),
-
-      children:Number($("fChildren").value||0),
-
-      room:roomNo,
-
-      roomType:room.type,
-
-      ac:room.ac,
-
-      beds:room.beds,
-
-      checkin:$("fIn").value,
-
-      checkout:$("fOut").value,
-
-      nights:nights,
-
-      notes:$("fNotes").value.trim(),
-
-      amount:total,
-
-      roomAmount:roomAmount,
-
-      extra:extra,
-
-      discount:discount,
-
-      tax:tax,
-
-      paid:paid,
-
-      balance:total-paid,
-
-      payment:$("fPay").value,
-
-      status:"Checked In"
-
-    };
-
-
-    data.reservations.push(reservation);
-
-
-    const existing=data.guests.find(
-      g=>
-        g.phone===phone||
-        (
-          g.name.toLowerCase()===
-          guest.toLowerCase()
-        )
-    );
-
-
-    if(existing){
-
-      existing.name=guest;
-      existing.age=age;
-      existing.phone=phone;
-      existing.email=reservation.email;
-      existing.idtype=idType;
-      existing.idno=idNo;
-      existing.occupation=reservation.occupation;
-      existing.address=reservation.address;
-      existing.room=roomNo;
-      existing.persons=persons;
-      existing.visits=Number(existing.visits||0)+1;
-      existing.remark=reservation.notes;
-
-    }else{
-
-      data.guests.push({
-
-        name:guest,
-        age:age,
-        phone:phone,
-        email:reservation.email,
-        idtype:idType,
-        idno:idNo,
-        occupation:reservation.occupation,
-        address:reservation.address,
-        room:roomNo,
-        persons:persons,
-        visits:1,
-        remark:reservation.notes
-
-      });
-
-    }
-
-
-    room.status="Occupied";
-
-
-    if(paid>0){
-
-      data.transactions.push({
-
-        type:"Income",
-        category:"Room Booking",
-        amount:paid,
-        date:dateNow(),
-        method:$("fPay").value,
-        description:id
-
-      });
-
-    }
-
-
-    if(!data.bills.some(b=>b.id===id)){
-
-      data.bills.push({
-
-        id:id,
-        guest:guest,
-        room:roomNo,
-        date:dateNow(),
-        total:total,
-        paid:paid
-
-      });
-
-    }
-
-
-    persist();
-
-    closeModal();
-
-    toast(
-      `Room ${roomNo} checked in successfully.`
-    );
-
-    return;
-  }
-
-
-  /* RESERVATION */
-
-  if(t==="reservation"){
-
-    const guest=$("fGuest").value.trim();
-
-    if(!guest){
-
-      alert("Enter guest name.");
-      return;
-
-    }
-
-    const roomNo=Number($("fRoom").value);
-
-    const room=data.rooms.find(r=>r.no===roomNo);
-
-    if(!room||room.status!=="Ready"){
-
-      alert("Please select a ready room.");
-      return;
-
-    }
-
-    const nights=calculateNights(
-      $("fIn").value,
-      $("fOut").value
-    );
-
-    if(!nights){
-
-      alert("Please enter a valid check-out date.");
-      return;
-
-    }
-
-    const id=
-      "RES-"+Date.now().toString().slice(-6);
-
-    data.reservations.push({
-
-      id:id,
-      guest:guest,
-      phone:$("fPhone").value,
-      room:roomNo,
-      checkin:$("fIn").value,
-      checkout:$("fOut").value,
-      nights:nights,
-      amount:Number($("fAmount").value||0),
-      paid:$("fPay").value==="Paid"
-        ?Number($("fAmount").value||0)
-        :0,
-      status:"Reserved",
-      notes:$("fNotes").value
-
-    });
-
-    room.status="Reserved";
-
-    persist();
-
-    closeModal();
-
-    toast("Reservation created.");
-
-    return;
-  }
-
-
-  /* GUEST */
-
-  if(t==="guest"){
-
-    const name=$("gName").value.trim();
-
-    if(!name){
-
-      alert("Enter guest name.");
-      return;
-
-    }
-
-    data.guests.push({
-
-      name:name,
-      age:Number($("gAge").value||0),
-      phone:$("gPhone").value,
-      email:$("gEmail").value,
-      idtype:$("gIdType").value,
-      idno:$("gIdNo").value,
-      occupation:$("gOccupation").value,
-      persons:Number($("gPersons").value||1),
-      address:$("gAddress").value,
-      room:$("gRoom").value,
-      visits:0,
-      remark:$("gRemark").value
-
-    });
-
-    persist();
-
-    closeModal();
-
-    toast("Guest added.");
-
-    return;
-  }
-
-
-  /* STAFF */
-
-  if(t==="staff"){
-
-    const name=$("sName").value.trim();
-
-    if(!name){
-
-      alert("Enter staff name.");
-      return;
-
-    }
-
-    data.staff.push({
-
-      id:"S"+Date.now().toString().slice(-5),
-
-      name:name,
-
-      dept:$("sDept").value,
-
-      role:$("sRole").value,
-
-      shift:$("sShift").value,
-
-      attendance:"Present",
-
-      salary:Number($("sSalary").value||0),
-
-      paid:"No"
-
-    });
-
-    persist();
-
-    closeModal();
-
-    toast("Staff added.");
-
-    return;
-  }
-
-
-  /* TRANSACTION */
-
-  if(t==="transaction"||t==="expense"){
-
-    const type=
-      t==="expense"
-      ?"Expense"
-      :$("tType").value;
-
-    data.transactions.push({
-
-      type:type,
-
-      category:$("tCategory").value,
-
-      amount:Number($("tAmount").value||0),
-
-      date:$("tDate").value,
-
-      method:$("tMethod").value,
-
-      description:$("tDescription").value
-
-    });
-
-    persist();
-
-    closeModal();
-
-    toast("Transaction saved.");
-
-    return;
-  }
-
-
-  /* MAINTENANCE */
-
-  if(t==="maintenance"){
-
-    const area=$("mArea").value.trim();
-
-    if(!area){
-
-      alert("Enter room or area.");
-      return;
-
-    }
-
-    data.maintenance.push({
-
-      id:"M-"+Date.now().toString().slice(-5),
-
-      area:area,
-
-      problem:$("mProblem").value,
-
-      priority:$("mPriority").value,
-
-      assigned:$("mAssigned").value,
-
-      cost:Number($("mCost").value||0),
-
-      status:"Reported"
-
-    });
-
-
-    const number=area.match(/\d+/);
-
-    if(number){
-
-      const room=data.rooms.find(
-        r=>r.no==number[0]
-      );
-
-      if(room){
-
-        room.status="Maintenance";
-
-      }
-
-    }
-
-
-    persist();
-
-    closeModal();
-
-    toast("Maintenance issue reported.");
-
-    return;
-  }
-
-
-  /* BILL */
-
-  if(t==="bill"){
-
-    const total=Number($("bTotal").value||0);
-    const paid=Number($("bPaid").value||0);
-
-    if(paid>total){
-
-      alert("Paid amount cannot exceed total.");
-      return;
-
-    }
-
-    const id=
-      "INV-"+Date.now().toString().slice(-6);
-
-    data.bills.push({
-
-      id:id,
-
-      guest:$("bGuest").value,
-
-      room:Number($("bRoom").value),
-
-      date:dateNow(),
-
-      total:total,
-
-      paid:paid
-
-    });
-
-
-    if(paid){
-
-      data.transactions.push({
-
-        type:"Income",
-
-        category:"Billing",
-
-        amount:paid,
-
-        date:dateNow(),
-
-        method:"Cash",
-
-        description:id
-
-      });
-
-    }
-
-
-    persist();
-
-    closeModal();
-
-    toast("Invoice created.");
-
-    return;
-  }
-
-
-  /* ROOM */
-
-  if(t==="room"){
-
-    const no=Number($("rNo").value);
-
-    if(!no){
-
-      alert("Enter room number.");
-      return;
-
-    }
-
-    if(data.rooms.some(r=>r.no===no)){
-
-      alert("This room number already exists.");
-      return;
-
-    }
-
-    data.rooms.push({
-
-      no:no,
-
-      type:$("rType").value,
-
-      ac:$("rAc").value==="yes",
-
-      beds:Number($("rBeds").value),
-
-      status:"Ready"
-
-    });
-
-    persist();
-
-    closeModal();
-
-    toast(`Room ${no} added.`);
-
-  }
+/* CHECK-IN */
+
+if(t==="checkin"){
+
+const guest=$("fGuest").value.trim();
+
+if(!guest){
+alert("Please enter customer name.");
+return;
+}
+
+const roomNo=Number($("fRoom").value);
+const room=data.rooms.find(r=>r.no===roomNo);
+
+if(!room){
+alert("Please select a room.");
+return;
+}
+
+if(room.status!=="Ready"&&room.status!=="Reserved"){
+alert("This room is not available.");
+return;
+}
+
+const days=Math.max(1,Number($("fDays").value||1));
+const checkinDate=$("fCheckinDate").value;
+const checkinTime=$("fCheckinTime").value;
+const d=new Date(checkinDate+"T00:00:00");
+
+d.setDate(d.getDate()+days);
+
+const checkout=d.toISOString().slice(0,10);
+const rate=Number(room.rate||0);
+const roomRent=rate*days;
+const paid=Number($("fPaid").value||0);
+
+const reservation={
+id:"RES-"+Date.now().toString().slice(-6),
+guest,
+phone:$("fPhone").value,
+email:$("fEmail").value,
+age:Number($("fAge").value||0),
+idtype:$("fIdType").value,
+idno:$("fIdNo").value,
+address:$("fAddress").value,
+occupation:$("fOccupation").value,
+persons:Number($("fPersons").value||1),
+room:roomNo,
+checkin:checkinDate,
+checkinTime,
+checkout,
+checkoutTime:data.settings.checkoutTime,
+days,
+dailyRate:rate,
+roomRent,
+extras:0,
+total:roomRent,
+paid,
+status:"Checked In",
+notes:$("fNotes").value
+};
+
+data.reservations.push(reservation);
+
+room.status="Occupied";
+
+
+/* GUEST RECORD */
+
+const existing=data.guests.find(g=>
+g.name.toLowerCase()===guest.toLowerCase()
+);
+
+if(existing){
+
+existing.phone=reservation.phone;
+existing.email=reservation.email;
+existing.idtype=reservation.idtype;
+existing.idno=reservation.idno;
+existing.address=reservation.address;
+existing.age=reservation.age;
+existing.occupation=reservation.occupation;
+existing.persons=reservation.persons;
+existing.room=roomNo;
+
+}else{
+
+data.guests.push({
+name:guest,
+phone:reservation.phone,
+email:reservation.email,
+idtype:reservation.idtype,
+idno:reservation.idno,
+address:reservation.address,
+age:reservation.age,
+occupation:reservation.occupation,
+persons:reservation.persons,
+room:roomNo,
+visits:1,
+remark:""
+});
 
 }
 
 
-/* BILL PRINT */
+/* BILL */
+
+const bill={
+id:"INV-"+Date.now().toString().slice(-6),
+reservationId:reservation.id,
+guest,
+room:roomNo,
+days,
+roomRent,
+extras:0,
+total:roomRent,
+paid,
+date:dateNow()
+};
+
+data.bills.push(bill);
+
+if(paid>0){
+
+data.transactions.push({
+type:"Income",
+category:"Room Booking",
+amount:paid,
+date:dateNow(),
+method:$("fMethod").value,
+description:bill.id
+});
+
+}
+
+persist();
+closeModal();
+
+toast("Guest checked in successfully");
+
+return;
+}
+
+
+/* RESERVATION */
+
+if(t==="reservation"){
+
+const guest=$("fGuest").value.trim();
+
+if(!guest){
+alert("Enter guest name");
+return;
+}
+
+const roomNo=Number($("fRoom").value);
+const days=Math.max(1,Number($("fDays").value||1));
+
+const inDate=$("fIn").value;
+const d=new Date(inDate+"T00:00:00");
+
+d.setDate(d.getDate()+days);
+
+const outDate=d.toISOString().slice(0,10);
+
+const room=data.rooms.find(r=>r.no===roomNo);
+const total=Number($("fAmount").value||0);
+
+data.reservations.push({
+id:"RES-"+Date.now().toString().slice(-6),
+guest,
+phone:$("fPhone").value,
+room:roomNo,
+checkin:inDate,
+checkinTime:"",
+checkout:outDate,
+checkoutTime:data.settings.checkoutTime,
+days,
+dailyRate:room?.rate||0,
+roomRent:total,
+extras:0,
+total,
+paid:$("fPay").value==="Paid"?total:0,
+status:"Reserved"
+});
+
+if(room)room.status="Reserved";
+
+persist();
+closeModal();
+
+toast("Reservation created");
+
+return;
+}
+
+
+/* GUEST */
+
+if(t==="guest"){
+
+const name=$("gName").value.trim();
+
+if(!name){
+alert("Enter guest name");
+return;
+}
+
+data.guests.push({
+name,
+phone:$("gPhone").value,
+email:$("gEmail").value,
+age:Number($("gAge").value||0),
+idtype:$("gIdType").value,
+idno:$("gIdNo").value,
+address:$("gAddress").value,
+occupation:$("gOccupation").value,
+persons:Number($("gPersons").value||1),
+room:$("gRoom").value,
+visits:0,
+remark:$("gRemark").value
+});
+
+persist();
+closeModal();
+toast("Guest added");
+
+return;
+}
+
+
+/* STAFF */
+
+if(t==="staff"){
+
+data.staff.push({
+id:"S"+Date.now().toString().slice(-5),
+name:$("sName").value,
+dept:$("sDept").value,
+role:$("sRole").value,
+shift:$("sShift").value,
+attendance:"Present",
+salary:Number($("sSalary").value||0),
+paid:"No"
+});
+
+persist();
+closeModal();
+toast("Staff added");
+
+return;
+}
+
+
+/* TRANSACTION */
+
+if(t==="transaction"){
+
+data.transactions.push({
+type:$("tType").value,
+category:$("tCategory").value,
+amount:Number($("tAmount").value||0),
+date:$("tDate").value,
+method:$("tMethod").value,
+description:$("tDescription").value
+});
+
+persist();
+closeModal();
+toast("Transaction saved");
+
+return;
+}
+
+
+/* MAINTENANCE */
+
+if(t==="maintenance"){
+
+const id="M-"+Date.now().toString().slice(-5);
+
+data.maintenance.push({
+id,
+area:$("mArea").value,
+problem:$("mProblem").value,
+priority:$("mPriority").value,
+assigned:$("mAssigned").value,
+cost:Number($("mCost").value||0),
+status:"Reported"
+});
+
+persist();
+closeModal();
+toast("Maintenance issue reported");
+
+return;
+}
+
+
+/* BILL */
+
+if(t==="bill"){
+
+const roomRent=Number($("bRoomRent").value||0);
+const extras=Number($("bExtras").value||0);
+const paid=Number($("bPaid").value||0);
+
+const total=roomRent+extras;
+
+const id="INV-"+Date.now().toString().slice(-6);
+
+data.bills.push({
+id,
+guest:$("bGuest").value,
+room:Number($("bRoom").value),
+days:1,
+roomRent,
+extras,
+total,
+paid,
+date:dateNow()
+});
+
+if(paid){
+
+data.transactions.push({
+type:"Income",
+category:"Billing",
+amount:paid,
+date:dateNow(),
+method:$("bMethod").value,
+description:id
+});
+
+}
+
+persist();
+closeModal();
+toast("Invoice created");
+
+return;
+}
+
+
+/* ROOM */
+
+if(t==="room"){
+
+const no=Number($("rNo").value);
+
+if(!no){
+alert("Enter room number");
+return;
+}
+
+if(data.rooms.some(r=>r.no===no)){
+alert("Room already exists");
+return;
+}
+
+data.rooms.push({
+no,
+type:$("rType").value,
+ac:$("rAc").value==="yes",
+beds:Number($("rBeds").value),
+rate:Number($("rRate").value||0),
+status:"Ready"
+});
+
+persist();
+closeModal();
+toast("Room added");
+
+return;
+}
+
+
+/* COMPLAINT */
+
+if(t==="complaint"){
+
+if(!$("cpIssue").value.trim()){
+alert("Please enter complaint.");
+return;
+}
+
+data.complaints.push({
+id:"C-"+Date.now().toString().slice(-5),
+guest:$("cpGuest").value,
+room:Number($("cpRoom").value),
+issue:$("cpIssue").value,
+status:"Open",
+date:new Date().toLocaleString()
+});
+
+persist();
+closeModal();
+toast("Complaint recorded");
+
+return;
+}
+
+}
+
+
+/* CHECK-IN FROM RESERVATION */
+
+function checkIn(id){
+
+const r=data.reservations.find(x=>x.id===id);
+
+if(!r)return;
+
+r.status="Checked In";
+
+const room=data.rooms.find(x=>x.no===r.room);
+
+if(room)room.status="Occupied";
+
+const existing=data.guests.find(g=>
+g.name.toLowerCase()===r.guest.toLowerCase()
+);
+
+if(existing){
+existing.room=r.room;
+existing.visits=Number(existing.visits||0)+1;
+}
+
+persist();
+
+toast("Guest checked in");
+
+}
+
+
+/* CHECKOUT */
+
+function openCheckout(id){
+
+const r=data.reservations.find(x=>x.id===id);
+
+if(!r)return;
+
+$("modalBg").classList.add("open");
+
+$("saveModal").onclick=()=>completeCheckout(id);
+
+$("modalTitle").textContent=
+"Guest Checkout - Room "+r.room;
+
+$("modalBody").innerHTML=`
+
+<div class="summarybox">
+
+<h3>${r.guest}</h3>
+
+<p>
+Room: <b>${r.room}</b>
+</p>
+
+<p>
+Check-in:
+<b>${r.checkin} ${r.checkinTime}</b>
+</p>
+
+<p>
+Scheduled Checkout:
+<b>${r.checkout} ${r.checkoutTime}</b>
+</p>
+
+<p>
+Stay:
+<b>${r.days} day(s)</b>
+</p>
+
+</div>
+
+<div class="form">
+
+<div>
+<label>Room Rent</label>
+<input id="cRoomRent"
+value="${r.roomRent}"
+readonly>
+</div>
+
+<div>
+<label>Extra Charges</label>
+<input id="cExtras"
+type="number"
+value="${r.extras||0}"
+oninput="calculateBill()">
+</div>
+
+<div>
+<label>Amount Already Paid</label>
+<input id="cAlreadyPaid"
+value="${r.paid||0}"
+readonly>
+</div>
+
+<div>
+<label>Additional Payment</label>
+<input id="cPaid"
+type="number"
+value="0"
+oninput="calculateBill()">
+</div>
+
+<div>
+<label>Payment Method</label>
+<select id="cMethod">
+<option>Cash</option>
+<option>UPI</option>
+<option>Card</option>
+<option>Bank Transfer</option>
+</select>
+</div>
+
+<div>
+<label>Total Bill</label>
+<div class="metric" id="cTotal">
+${money(r.roomRent)}
+</div>
+</div>
+
+<div>
+<label>Balance Due</label>
+<div class="bigdue" id="cDue">
+${money(Math.max(0,r.roomRent-r.paid))}
+</div>
+</div>
+
+<div class="span2">
+
+<label>Checkout Notes</label>
+
+<textarea id="cNotes"
+rows="3"
+placeholder="Any notes about the checkout..."></textarea>
+
+</div>
+
+</div>
+`;
+
+calculateBill();
+
+}
+
+
+/* COMPLETE CHECKOUT */
+
+function completeCheckout(id){
+
+const r=data.reservations.find(x=>x.id===id);
+
+if(!r)return;
+
+const extras=Number($("cExtras").value||0);
+const additionalPaid=Number($("cPaid").value||0);
+
+const previousPaid=Number(r.paid||0);
+
+const total=Number(r.roomRent||0)+extras;
+const totalPaid=previousPaid+additionalPaid;
+const due=Math.max(0,total-totalPaid);
+
+r.extras=extras;
+r.total=total;
+r.paid=totalPaid;
+r.checkoutActual=new Date().toLocaleString();
+r.status="Checked Out";
+r.checkoutNotes=$("cNotes").value;
+
+const room=data.rooms.find(x=>x.no===r.room);
+
+if(room)room.status="Cleaning";
+
+if(additionalPaid>0){
+
+data.transactions.push({
+type:"Income",
+category:"Checkout Payment",
+amount:additionalPaid,
+date:dateNow(),
+method:$("cMethod").value,
+description:r.id
+});
+
+}
+
+let bill=data.bills.find(b=>b.reservationId===r.id);
+
+if(bill){
+
+bill.extras=extras;
+bill.total=total;
+bill.paid=totalPaid;
+
+}else{
+
+data.bills.push({
+id:"INV-"+Date.now().toString().slice(-6),
+reservationId:r.id,
+guest:r.guest,
+room:r.room,
+days:r.days,
+roomRent:r.roomRent,
+extras,
+total,
+paid:totalPaid,
+date:dateNow()
+});
+
+}
+
+persist();
+
+closeModal();
+
+toast(
+due>0
+?`Checkout completed. Due: ${money(due)}`
+:"Checkout completed. Fully paid."
+);
+
+}
+
+
+/* RESERVATION VIEW */
+
+function viewReservation(id){
+
+const r=data.reservations.find(x=>x.id===id);
+
+if(!r)return;
+
+alert(
+`Reservation ${r.id}
+
+Guest: ${r.guest}
+
+Room: ${r.room}
+
+Check-in: ${r.checkin} ${r.checkinTime||""}
+
+Checkout: ${r.checkout} ${r.checkoutTime}
+
+Stay: ${r.days} day(s)
+
+Room Rent: ${money(r.roomRent)}
+
+Total: ${money(r.total)}
+
+Paid: ${money(r.paid)}
+
+Due: ${money(Math.max(0,r.total-r.paid))}
+
+Status: ${r.status}`
+);
+
+}
+
+
+/* STAFF */
+
+function toggleAttendance(id){
+
+const s=data.staff.find(x=>x.id===id);
+
+if(!s)return;
+
+const values=[
+"Present",
+"Absent",
+"Half Day",
+"Leave"
+];
+
+let i=values.indexOf(s.attendance);
+
+s.attendance=values[(i+1)%values.length];
+
+persist();
+
+toast("Attendance updated");
+
+}
+
+function toggleSalary(id){
+
+const s=data.staff.find(x=>x.id===id);
+
+if(!s)return;
+
+s.paid=s.paid==="Yes"?"No":"Yes";
+
+persist();
+
+toast("Salary status updated");
+
+}
+
+
+/* MAINTENANCE */
+
+function advanceMaintenance(id){
+
+const m=data.maintenance.find(x=>x.id===id);
+
+if(!m)return;
+
+const statuses=[
+"Reported",
+"Assigned",
+"In Progress",
+"Completed"
+];
+
+let i=statuses.indexOf(m.status);
+
+m.status=statuses[Math.min(i+1,statuses.length-1)];
+
+persist();
+
+toast("Maintenance updated");
+
+}
+
+
+/* COMPLAINT */
+
+function updateComplaint(id){
+
+const c=data.complaints.find(x=>x.id===id);
+
+if(!c)return;
+
+const statuses=[
+"Open",
+"In Progress",
+"Resolved"
+];
+
+let i=statuses.indexOf(c.status);
+
+c.status=statuses[Math.min(i+1,statuses.length-1)];
+
+persist();
+
+toast("Complaint status updated");
+
+}
+
+
+/* PRINT BILL */
 
 function printBill(id){
 
-  const b=data.bills.find(x=>x.id===id);
+const b=data.bills.find(x=>x.id===id);
 
-  if(!b)return;
+if(!b)return;
 
-  const guest=data.guests.find(
-    g=>g.name===b.guest
-  );
+const due=Math.max(0,b.total-b.paid);
 
-  const w=window.open("","_blank");
+const w=window.open("","_blank");
 
-  if(!w){
+w.document.write(`
 
-    alert(
-      "Please allow pop-ups to print the invoice."
-    );
+<html>
+<head>
+<title>${b.id}</title>
 
-    return;
+<style>
+body{
+font-family:Arial;
+padding:40px;
+max-width:800px;
+margin:auto
+}
+table{
+width:100%;
+border-collapse:collapse
+}
+td,th{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:left
+}
+.total{
+font-size:20px;
+font-weight:bold
+}
+</style>
+</head>
 
-  }
+<body>
 
-  w.document.write(`
+<h1>${data.settings.name}</h1>
 
-    <html>
+<p>${data.settings.address}</p>
+<p>${data.settings.phone}</p>
 
-    <head>
+<hr>
 
-      <title>${b.id}</title>
+<h2>Invoice ${b.id}</h2>
 
-    </head>
+<p>
+Guest: <b>${b.guest}</b>
+</p>
 
-    <body style="font-family:Arial;padding:40px">
+<p>
+Room: <b>${b.room}</b>
+</p>
 
-      <h1>${data.settings.name}</h1>
+<table>
 
-      <p>${data.settings.address}</p>
+<tr>
+<th>Description</th>
+<th>Amount</th>
+</tr>
 
-      <p>${data.settings.phone}</p>
+<tr>
+<td>Room Rent (${b.days} day/s)</td>
+<td>${money(b.roomRent)}</td>
+</tr>
 
-      <hr>
+<tr>
+<td>Extra Charges</td>
+<td>${money(b.extras)}</td>
+</tr>
 
-      <h2>Invoice ${b.id}</h2>
+<tr>
+<td class="total">Total</td>
+<td class="total">${money(b.total)}</td>
+</tr>
 
-      <p><b>Guest:</b> ${b.guest}</p>
+<tr>
+<td>Paid</td>
+<td>${money(b.paid)}</td>
+</tr>
 
-      <p><b>Room:</b> ${b.room}</p>
+<tr>
+<td>Balance Due</td>
+<td>${money(due)}</td>
+</tr>
 
-      <p><b>Date:</b> ${b.date}</p>
+</table>
 
-      ${
-        guest
-        ?
-        `
-        <p><b>Phone:</b> ${guest.phone||"-"}</p>
-        <p><b>ID:</b> ${guest.idtype||"-"} - ${guest.idno||"-"}</p>
-        `
-        :""
-      }
+<br>
 
-      <hr>
+<p>Thank you for staying with us.</p>
 
-      <h3>Total: ${money(b.total)}</h3>
+<script>
+window.onload=function(){
+window.print();
+}
+<\/script>
 
-      <h3>Paid: ${money(b.paid)}</h3>
+</body>
+</html>
 
-      <h3>Balance: ${money(b.total-b.paid)}</h3>
+`);
 
-      <br>
-
-      <p>Thank you for staying with us.</p>
-
-      <script>
-        window.onload=function(){
-          window.print();
-        }
-      <\/script>
-
-    </body>
-
-    </html>
-
-  `);
-
-  w.document.close();
+w.document.close();
 
 }
 
@@ -3806,23 +3284,19 @@ function printBill(id){
 
 function saveSettings(){
 
-  data.settings={
+data.settings={
+name:$("hotelName").value,
+currency:$("currency").value,
+checkoutTime:$("checkoutTime").value,
+tax:Number($("tax").value||0),
+phone:$("hotelPhone").value,
+email:$("hotelEmail").value,
+address:$("hotelAddress").value
+};
 
-    name:$("hotelName").value,
+persist();
 
-    currency:$("currency").value,
-
-    tax:Number($("tax").value||0),
-
-    phone:$("hotelPhone").value,
-
-    address:$("hotelAddress").value
-
-  };
-
-  persist();
-
-  toast("Settings saved.");
+toast("Settings saved");
 
 }
 
@@ -3831,20 +3305,20 @@ function saveSettings(){
 
 function backup(){
 
-  const a=document.createElement("a");
+const blob=new Blob(
+[JSON.stringify(data,null,2)],
+{type:"application/json"}
+);
 
-  const blob=new Blob(
-    [JSON.stringify(data,null,2)],
-    {type:"application/json"}
-  );
+const a=document.createElement("a");
 
-  a.href=URL.createObjectURL(blob);
+a.href=URL.createObjectURL(blob);
 
-  a.download="hotelpro-backup.json";
+a.download="hotelpro-backup.json";
 
-  a.click();
+a.click();
 
-  URL.revokeObjectURL(a.href);
+URL.revokeObjectURL(a.href);
 
 }
 
@@ -3853,14 +3327,23 @@ function backup(){
 
 function resetData(){
 
-  if(confirm(
-    "Delete all current data and restore demo data?"
-  )){
+if(confirm(
+"Delete all current data and restore demo data?"
+)){
 
-    localStorage.removeItem(KEY);
-    location.reload();
+localStorage.removeItem(KEY);
+location.reload();
 
-  }
+}
+
+}
+
+
+/* MODAL */
+
+function closeModal(){
+
+$("modalBg").classList.remove("open");
 
 }
 
@@ -3869,19 +3352,24 @@ function resetData(){
 
 $("hotelName").value=data.settings.name;
 $("currency").value=data.settings.currency;
+$("checkoutTime").value=data.settings.checkoutTime;
 $("tax").value=data.settings.tax;
 $("hotelPhone").value=data.settings.phone;
+$("hotelEmail").value=data.settings.email;
 $("hotelAddress").value=data.settings.address;
 
 
 /* CLOCK */
 
-setInterval(()=>{
+function updateClock(){
 
-  $("clock").textContent=
-    new Date().toLocaleString();
+$("clock").textContent=
+new Date().toLocaleString();
 
-},1000);
+}
+
+setInterval(updateClock,1000);
+updateClock();
 
 
 /* START */

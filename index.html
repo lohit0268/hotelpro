@@ -3,179 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HotelPro - Complete Management System</title>
+    <title>HotelPro v9 - Advanced Management Dashboard</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #34495e;
-            --accent: #27ae60;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --border: #bdc3c7;
+            --primary: #1e293b;
+            --primary-light: #334155;
+            --accent: #059669;
+            --accent-hover: #047857;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --info: #2563eb;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f7f6; color: #333; display: flex; height: 100vh; overflow: hidden; }
-        
-        /* Sidebar */
-        #sidebar { width: 240px; background-color: var(--primary); color: white; display: flex; flex-direction: column; }
-        #sidebar .brand { padding: 20px; font-size: 1.4rem; font-weight: bold; background-color: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        #sidebar nav { flex: 1; margin-top: 10px; }
-        #sidebar nav button { width: 100%; padding: 15px 20px; border: none; background: none; color: #ecf0f1; text-align: left; font-size: 1rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: space-between; }
-        #sidebar nav button:hover, #sidebar nav button.active { background-color: var(--secondary); border-left: 4px solid var(--accent); }
-        
-        /* Main Content */
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-dark); display: flex; height: 100vh; overflow: hidden; }
+
+        /* Sidebar Navigation */
+        #sidebar { width: 260px; background-color: var(--primary); color: white; display: flex; flex-direction: column; flex-shrink: 0; }
+        #sidebar .brand { padding: 24px 20px; font-size: 1.5rem; font-weight: 700; background-color: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
+        #sidebar nav { flex: 1; padding: 15px 0; }
+        #sidebar nav button { width: 100%; padding: 14px 24px; border: none; background: none; color: #94a3b8; text-align: left; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; }
+        #sidebar nav button:hover { color: white; background-color: rgba(255,255,255,0.05); }
+        #sidebar nav button.active { color: white; background-color: var(--primary-light); border-left: 4px solid var(--accent); }
+
+        /* Main Workspace */
         #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        header { background: white; padding: 15px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .content { flex: 1; padding: 25px; overflow-y: auto; }
+        header { background: var(--bg-card); padding: 18px 32px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+        header h2 { font-size: 1.3rem; font-weight: 600; color: var(--text-dark); }
+        .header-meta { font-size: 0.9rem; color: var(--text-muted); }
+
+        .content { flex: 1; padding: 28px 32px; overflow-y: auto; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Grid Layouts & Cards */
-        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .card .title { font-size: 0.85rem; color: #7f8c8d; text-transform: uppercase; font-weight: bold; }
-        .card .value { font-size: 1.8rem; font-weight: bold; margin-top: 10px; color: var(--dark); }
+        /* Cards & Metric Grids */
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 28px; }
+        .card { background: var(--bg-card); padding: 22px; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .card .title { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; }
+        .card .value { font-size: 2rem; font-weight: 700; margin-top: 8px; color: var(--text-dark); }
+        .card .subtext { font-size: 0.8rem; color: var(--accent); margin-top: 6px; font-weight: 500; }
 
         /* Tables */
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-top: 15px; }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #edf2f7; font-size: 0.95rem; }
-        th { background-color: #f8fafc; color: #475569; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
-        tr:hover { background-color: #f1f5f9; }
+        .table-container { background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f8fafc; }
 
         /* Forms */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 5px; font-size: 0.95rem; }
-        .form-row { display: flex; gap: 15px; }
-        .form-row .form-group { flex: 1; }
+        .form-card { max-width: 900px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 18px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { margin-bottom: 6px; font-weight: 600; font-size: 0.85rem; color: var(--text-dark); }
+        .form-group input, .form-group select, .form-group textarea { padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; outline: none; transition: 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); }
 
-        /* Room Grid Visualizer */
-        .room-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
-        .room-box { padding: 15px; border-radius: 8px; text-align: center; border: 2px solid transparent; cursor: pointer; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .room-box.available { border-color: var(--accent); color: var(--accent); }
-        .room-box.occupied { border-color: var(--danger); background: #fdf2f2; color: var(--danger); }
-        .room-box.maintenance { border-color: var(--warning); background: #fef8ec; color: var(--warning); }
-        .room-box .num { font-size: 1.4rem; font-weight: bold; }
-        .room-box .type { font-size: 0.8rem; margin-top: 4px; text-transform: uppercase; }
+        /* Room Matrix */
+        .room-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 18px; margin-top: 20px; }
+        .room-box { padding: 18px; border-radius: 8px; text-align: center; border: 2px solid; background: white; transition: transform 0.15s, box-shadow 0.15s; }
+        .room-box:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.06); }
+        .room-box.available { border-color: var(--accent); color: var(--accent); background-color: #ecfdf5; }
+        .room-box.occupied { border-color: var(--danger); color: var(--danger); background-color: #fef2f2; }
+        .room-box.maintenance { border-color: var(--warning); color: var(--warning); background-color: #fffbeb; }
+        .room-box .num { font-size: 1.5rem; font-weight: 700; }
+        .room-box .type { font-size: 0.8rem; margin-top: 4px; font-weight: 600; text-transform: uppercase; }
+        .room-box .price { font-size: 0.85rem; margin-top: 6px; color: var(--text-muted); }
 
-        /* Buttons & Badges */
-        .btn { padding: 8px 16px; border: none; border-radius: 4px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-block; }
+        /* UI Elements */
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
         .btn-primary { background-color: var(--accent); color: white; }
-        .btn-primary:hover { background-color: #219150; }
+        .btn-primary:hover { background-color: var(--accent-hover); }
         .btn-danger { background-color: var(--danger); color: white; }
-        .btn-secondary { background-color: #95a5a6; color: white; }
-        
-        .badge { padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
-        .badge-success { background-color: #e8f8f0; color: var(--accent); }
-        .badge-danger { background-color: #fde8e8; color: var(--danger); }
+        .btn-secondary { background-color: #e2e8f0; color: var(--text-dark); }
+        .btn-secondary:hover { background-color: #cbd5e1; }
+
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; display: inline-block; }
+        .badge-success { background-color: #d1fae5; color: var(--accent); }
+        .badge-danger { background-color: #fee2e2; color: var(--danger); }
+        .badge-warning { background-color: #fef3c7; color: var(--warning); }
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <div class="brand">HotelPro v9</div>
+        <div class="brand">🏢 HotelPro v9</div>
         <nav>
             <button class="active" onclick="switchTab('dashboard')">Dashboard</button>
-            <button onclick="switchTab('checkin')">Check-In Guest</button>
+            <button onclick="switchTab('checkin')">Guest Check-In</button>
             <button onclick="switchTab('guests')">Guest Directory</button>
             <button onclick="switchTab('rooms')">Room Status</button>
             <button onclick="switchTab('finance')">Financials</button>
-            <button onclick="switchTab('settings')">Settings & Backup</button>
+            <button onclick="switchTab('settings')">Settings & Data</button>
         </nav>
     </div>
 
     <div id="main">
         <header>
             <h2 id="page-title">Dashboard Overview</h2>
-            <div><strong>System Date:</strong> <span id="current-date"></span></div>
+            <div class="header-meta">Date: <strong id="current-date">--</strong></div>
         </header>
 
         <div class="content">
             <!-- DASHBOARD TAB -->
             <div id="dashboard" class="tab-content active">
-                <div class="grid-4">
-                    <div class="card"><div class="title">Total Revenue</div><div class="value" id="dash-rev">$0</div></div>
-                    <div class="card"><div class="title">Occupancy Rate</div><div class="value" id="dash-occ">0%</div></div>
-                    <div class="card"><div class="title">Occupied Rooms</div><div class="value" id="dash-occupied">0</div></div>
-                    <div class="card"><div class="title">Available Rooms</div><div class="value" id="dash-available">0</div></div>
+                <div class="grid-stats">
+                    <div class="card">
+                        <div class="title">Total Revenue</div>
+                        <div class="value" id="dash-rev">$0</div>
+                        <div class="subtext">All-time Earnings</div>
+                    </div>
+                    <div class="card">
+                        <div class="title">Occupancy Rate</div>
+                        <div class="value" id="dash-occ">0%</div>
+                        <div class="subtext" id="dash-occ-sub">0 of 0 Rooms</div>
+                    </div>
+                    <div class="card">
+                        <div class="title">Occupied Rooms</div>
+                        <div class="value" id="dash-occupied">0</div>
+                        <div class="subtext" style="color: var(--danger);">Currently Active</div>
+                    </div>
+                    <div class="card">
+                        <div class="title">Available Rooms</div>
+                        <div class="value" id="dash-available">0</div>
+                        <div class="subtext">Ready for Check-In</div>
+                    </div>
                 </div>
-                <h3>Active Guests</h3>
-                <table id="dash-table">
-                    <thead>
-                        <tr><th>Room</th><th>Guest Name</th><th>Category</th><th>Check-In</th><th>Actions</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+
+                <h3>Currently Checked-In Guests</h3>
+                <div class="table-container">
+                    <table id="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Room</th>
+                                <th>Guest Name</th>
+                                <th>Contact / Email</th>
+                                <th>Category</th>
+                                <th>Check-In Date</th>
+                                <th>Nights</th>
+                                <th>Total Bill</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- CHECK-IN TAB -->
             <div id="checkin" class="tab-content">
-                <div class="card">
-                    <h3>New Guest Check-In</h3>
-                    <form id="checkin-form" onsubmit="handleCheckIn(event)" style="margin-top: 15px;">
+                <div class="card form-card">
+                    <h3 style="margin-bottom: 20px;">New Guest Registration</h3>
+                    <form id="checkin-form" onsubmit="handleCheckIn(event)">
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Guest Full Name</label>
-                                <input type="text" id="guest-name" required>
+                                <input type="text" id="guest-name" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="guest-email" placeholder="john@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="guest-phone" placeholder="+1 555-0199" required>
                             </div>
                             <div class="form-group">
                                 <label>Age Category</label>
                                 <select id="guest-age-cat" required>
                                     <option value="Adult">Adult (18+)</option>
                                     <option value="Senior">Senior (60+)</option>
-                                    <option value="Child">Child (Under 18)</option>
+                                    <option value="Child">Child / Minor</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Select Room</label>
+                                <label>Assign Available Room</label>
                                 <select id="guest-room" required></select>
                             </div>
                             <div class="form-group">
-                                <label>Nights Staying</label>
+                                <label>Duration of Stay (Nights)</label>
                                 <input type="number" id="stay-nights" min="1" value="1" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Complete Check-In</button>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>Special Notes / Requests</label>
+                            <textarea id="guest-notes" rows="3" placeholder="e.g. Late check-out requested, extra pillows"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Complete Check-In & Bill</button>
                     </form>
                 </div>
             </div>
 
             <!-- GUESTS TAB -->
             <div id="guests" class="tab-content">
-                <h3>All Guest Records</h3>
-                <table>
-                    <thead>
-                        <tr><th>ID</th><th>Name</th><th>Category</th><th>Room</th><th>Status</th><th>Total Bill</th></tr>
-                    </thead>
-                    <tbody id="guest-history-table"></tbody>
-                </table>
+                <h3>Full Guest Master Records</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Guest ID</th>
+                                <th>Name</th>
+                                <th>Contact Info</th>
+                                <th>Category</th>
+                                <th>Room</th>
+                                <th>Status</th>
+                                <th>Total Amount</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guest-history-table"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- ROOMS TAB -->
             <div id="rooms" class="tab-content">
-                <h3>Room Visualizer</h3>
+                <h3>Room Visual Matrix</h3>
                 <div class="room-grid" id="room-grid-container"></div>
             </div>
 
             <!-- FINANCE TAB -->
             <div id="finance" class="tab-content">
-                <div class="grid-4">
-                    <div class="card"><div class="title">Gross Revenue</div><div class="value" id="fin-gross">$0</div></div>
-                    <div class="card"><div class="title">Completed Transactions</div><div class="value" id="fin-count">0</div></div>
+                <div class="grid-stats">
+                    <div class="card">
+                        <div class="title">Gross Revenue</div>
+                        <div class="value" id="fin-gross">$0</div>
+                    </div>
+                    <div class="card">
+                        <div class="title">Total Transactions</div>
+                        <div class="value" id="fin-count">0</div>
+                    </div>
+                </div>
+                <h3>Transaction History</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Guest Name</th>
+                                <th>Date</th>
+                                <th>Amount Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fin-table-body"></tbody>
+                    </table>
                 </div>
             </div>
 
             <!-- SETTINGS TAB -->
             <div id="settings" class="tab-content">
-                <div class="card">
-                    <h3>Data Management</h3>
-                    <p style="margin: 10px 0; color: #666;">Export your system state as a JSON backup or reset to defaults.</p>
-                    <button class="btn btn-primary" onclick="exportBackup()">Export Backup File</button>
-                    <button class="btn btn-danger" onclick="resetSystem()" style="margin-left: 10px;">Reset All Data</button>
+                <div class="card form-card">
+                    <h3>Data Operations & Backup</h3>
+                    <p style="margin: 12px 0 20px 0; color: var(--text-muted); line-height: 1.5;">
+                        Export all system state details to a JSON file on your machine or clear stored memory.
+                    </p>
+                    <div style="display: flex; gap: 15px;">
+                        <button class="btn btn-primary" onclick="exportBackup()">Export Backup File (.json)</button>
+                        <button class="btn btn-danger" onclick="resetSystem()">Reset Entire System</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,9 +282,11 @@
             rooms: [
                 { id: 101, type: "Standard", rate: 100, status: "available" },
                 { id: 102, type: "Standard", rate: 100, status: "available" },
+                { id: 103, type: "Standard", rate: 100, status: "available" },
                 { id: 201, type: "Deluxe", rate: 180, status: "available" },
                 { id: 202, type: "Deluxe", rate: 180, status: "available" },
-                { id: 301, type: "Suite", rate: 300, status: "available" }
+                { id: 301, type: "Suite", rate: 320, status: "available" },
+                { id: 302, type: "Suite", rate: 320, status: "available" }
             ],
             guests: [],
             transactions: []
@@ -206,16 +302,17 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('#sidebar nav button').forEach(el => el.classList.remove('active'));
+            
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
             
             const titles = {
                 dashboard: "Dashboard Overview",
-                checkin: "Guest Check-In",
+                checkin: "Guest Registration & Check-In",
                 guests: "Guest Directory",
-                rooms: "Room Management",
-                finance: "Financial Summary",
-                settings: "System Settings"
+                rooms: "Room Matrix & Management",
+                finance: "Financials & Revenue Tracking",
+                settings: "Settings & System Backup"
             };
             document.getElementById('page-title').innerText = titles[tabId];
         }
@@ -223,27 +320,40 @@
         function handleCheckIn(e) {
             e.preventDefault();
             const name = document.getElementById('guest-name').value;
+            const email = document.getElementById('guest-email').value;
+            const phone = document.getElementById('guest-phone').value;
             const category = document.getElementById('guest-age-cat').value;
             const roomId = parseInt(document.getElementById('guest-room').value);
             const nights = parseInt(document.getElementById('stay-nights').value);
-            
+            const notes = document.getElementById('guest-notes').value;
+
             const room = state.rooms.find(r => r.id === roomId);
+            if (!room) return;
+
             const totalBill = room.rate * nights;
 
             const newGuest = {
-                id: "G-" + Math.floor(1000 + Math.random() * 9000),
+                id: "G-" + Math.floor(10000 + Math.random() * 90000),
                 name,
+                email,
+                phone,
                 category,
                 roomId,
                 nights,
                 totalBill,
+                notes: notes || "None",
                 status: "Checked-In",
                 checkInDate: new Date().toLocaleDateString()
             };
 
             room.status = "occupied";
             state.guests.push(newGuest);
-            state.transactions.push({ id: "T-" + Date.now(), guest: name, amount: totalBill, date: new Date().toLocaleDateString() });
+            state.transactions.push({
+                id: "TXN-" + Date.now().toString().slice(-6),
+                guest: name,
+                amount: totalBill,
+                date: new Date().toLocaleDateString()
+            });
 
             document.getElementById('checkin-form').reset();
             saveState();
@@ -271,7 +381,7 @@
         }
 
         function resetSystem() {
-            if (confirm("Are you sure? This will wipe all data back to default settings.")) {
+            if (confirm("Are you sure you want to reset all data back to original defaults?")) {
                 localStorage.removeItem(KEY);
                 state = JSON.parse(JSON.stringify(defaultState));
                 saveState();
@@ -281,11 +391,11 @@
         function render() {
             document.getElementById('current-date').innerText = new Date().toLocaleDateString();
 
-            // Room Options in Check-In
+            // Populate Room Dropdown for Check-In
             const roomSelect = document.getElementById('guest-room');
             roomSelect.innerHTML = "";
             const availRooms = state.rooms.filter(r => r.status === "available");
-            
+
             if (availRooms.length === 0) {
                 roomSelect.innerHTML = `<option value="">No Available Rooms</option>`;
             } else {
@@ -294,50 +404,67 @@
                 });
             }
 
-            // Dashboard Metrics
-            const occupiedCount = state.rooms.filter(r => r.status === "occupied").length;
-            const totalRev = state.transactions.reduce((sum, t) => sum + t.amount, 0);
-            
-            document.getElementById('dash-rev').innerText = "$" + totalRev;
-            document.getElementById('dash-occ').innerText = Math.round((occupiedCount / state.rooms.length) * 100) + "%";
-            document.getElementById('dash-occupied').innerText = occupiedCount;
-            document.getElementById('dash-available').innerText = state.rooms.length - occupiedCount;
+            // Dashboard Metrics Calculation
+            const totalRooms = state.rooms.length;
+            const occupiedRooms = state.rooms.filter(r => r.status === "occupied").length;
+            const availableRooms = totalRooms - occupiedRooms;
+            const totalRevenue = state.transactions.reduce((acc, curr) => acc + curr.amount, 0);
+            const occPercentage = totalRooms > 0 ? Math.round((occupiedRooms / totalRooms) * 100) : 0;
+
+            document.getElementById('dash-rev').innerText = "$" + totalRevenue.toLocaleString();
+            document.getElementById('dash-occ').innerText = occPercentage + "%";
+            document.getElementById('dash-occ-sub').innerText = `${occupiedRooms} of ${totalRooms} Rooms`;
+            document.getElementById('dash-occupied').innerText = occupiedRooms;
+            document.getElementById('dash-available').innerText = availableRooms;
 
             // Dashboard Active Guests Table
             const dashTable = document.querySelector('#dash-table tbody');
             dashTable.innerHTML = "";
             const activeGuests = state.guests.filter(g => g.status === "Checked-In");
-            
-            activeGuests.forEach(g => {
-                dashTable.innerHTML += `
-                    <tr>
-                        <td><strong>${g.roomId}</strong></td>
-                        <td>${g.name}</td>
-                        <td>${g.category}</td>
-                        <td>${g.checkInDate}</td>
-                        <td><button class="btn btn-danger" onclick="checkOut('${g.id}')">Check Out</button></td>
-                    </tr>
-                `;
-            });
 
-            // Guests Directory
+            if (activeGuests.length === 0) {
+                dashTable.innerHTML = `<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">No active guests currently checked in.</td></tr>`;
+            } else {
+                activeGuests.forEach(g => {
+                    dashTable.innerHTML += `
+                        <tr>
+                            <td><strong>${g.roomId}</strong></td>
+                            <td><strong>${g.name}</strong></td>
+                            <td>${g.phone}<br><small style="color:var(--text-muted);">${g.email}</small></td>
+                            <td>${g.category}</td>
+                            <td>${g.checkInDate}</td>
+                            <td>${g.nights} night(s)</td>
+                            <td><strong>$${g.totalBill}</strong></td>
+                            <td><button class="btn btn-danger" onclick="checkOut('${g.id}')">Check Out</button></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // Guest Master History Table
             const historyTable = document.getElementById('guest-history-table');
             historyTable.innerHTML = "";
-            state.guests.forEach(g => {
-                const badgeClass = g.status === "Checked-In" ? "badge-success" : "badge-danger";
-                historyTable.innerHTML += `
-                    <tr>
-                        <td>${g.id}</td>
-                        <td>${g.name}</td>
-                        <td>${g.category}</td>
-                        <td>${g.roomId}</td>
-                        <td><span class="badge ${badgeClass}">${g.status}</span></td>
-                        <td>$${g.totalBill}</td>
-                    </tr>
-                `;
-            });
+            if (state.guests.length === 0) {
+                historyTable.innerHTML = `<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">No guest records found.</td></tr>`;
+            } else {
+                state.guests.forEach(g => {
+                    const badgeClass = g.status === "Checked-In" ? "badge-success" : "badge-danger";
+                    historyTable.innerHTML += `
+                        <tr>
+                            <td><code>${g.id}</code></td>
+                            <td><strong>${g.name}</strong></td>
+                            <td>${g.phone}<br><small style="color:var(--text-muted);">${g.email}</small></td>
+                            <td>${g.category}</td>
+                            <td>Room ${g.roomId}</td>
+                            <td><span class="badge ${badgeClass}">${g.status}</span></td>
+                            <td>$${g.totalBill}</td>
+                            <td><small>${g.notes}</small></td>
+                        </tr>
+                    `;
+                });
+            }
 
-            // Rooms Visualizer Grid
+            // Room Visual Grid
             const roomGrid = document.getElementById('room-grid-container');
             roomGrid.innerHTML = "";
             state.rooms.forEach(r => {
@@ -345,17 +472,34 @@
                     <div class="room-box ${r.status}">
                         <div class="num">${r.id}</div>
                         <div class="type">${r.type}</div>
-                        <div style="font-size:0.8rem; margin-top: 5px;">$${r.rate}/night</div>
+                        <div class="price">$${r.rate} / night</div>
                     </div>
                 `;
             });
 
-            // Financials
-            document.getElementById('fin-gross').innerText = "$" + totalRev;
+            // Financial Metrics & History Table
+            document.getElementById('fin-gross').innerText = "$" + totalRevenue.toLocaleString();
             document.getElementById('fin-count').innerText = state.transactions.length;
+
+            const finTable = document.getElementById('fin-table-body');
+            finTable.innerHTML = "";
+            if (state.transactions.length === 0) {
+                finTable.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">No financial transactions recorded.</td></tr>`;
+            } else {
+                state.transactions.forEach(t => {
+                    finTable.innerHTML += `
+                        <tr>
+                            <td><code>${t.id}</code></td>
+                            <td>${t.guest}</td>
+                            <td>${t.date}</td>
+                            <td><strong>$${t.amount}</strong></td>
+                        </tr>
+                    `;
+                });
+            }
         }
 
-        // Initialize application
+        // Initialize App
         render();
     </script>
 </body>

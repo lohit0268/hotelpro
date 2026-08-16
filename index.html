@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HotelPro v9 - Master Management System</title>
+    <title>HotelPro v9 - Complete Management Dashboard</title>
     <style>
         :root {
             --primary: #0f172a;
@@ -31,7 +31,7 @@
         #sidebar nav button:hover { color: white; background-color: rgba(255,255,255,0.05); }
         #sidebar nav button.active { color: white; background-color: var(--primary-light); border-left: 4px solid var(--accent); }
 
-        /* Main Area Layout */
+        /* Main Workspace Layout */
         #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         header { background: var(--bg-card); padding: 18px 32px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
         header h2 { font-size: 1.3rem; font-weight: 700; color: var(--text-dark); }
@@ -56,7 +56,7 @@
         tr:last-child td { border-bottom: none; }
         tr:hover { background-color: #f8fafc; }
 
-        /* Form Styles */
+        /* Form Controls */
         .form-card { max-width: 920px; }
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 18px; }
         .form-group { display: flex; flex-direction: column; }
@@ -64,7 +64,7 @@
         .form-group input, .form-group select, .form-group textarea { padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; outline: none; transition: 0.2s; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
 
-        /* Room Matrix Display */
+        /* Room Visual Grid */
         .room-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; margin-top: 20px; }
         .room-box { padding: 20px; border-radius: 10px; text-align: center; border: 2px solid; background: white; transition: transform 0.15s, box-shadow 0.15s; }
         .room-box:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.06); }
@@ -144,6 +144,7 @@
                                 <th>Room</th>
                                 <th>Guest Name</th>
                                 <th>Contact & Email</th>
+                                <th>Booking Source</th>
                                 <th>Age Group</th>
                                 <th>Check-In Date</th>
                                 <th>Duration</th>
@@ -183,6 +184,22 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
+                                <label>Booking Channel / Source</label>
+                                <select id="booking-source" onchange="toggleOtaField()" required>
+                                    <option value="Direct Walk-In">Direct Walk-In</option>
+                                    <option value="Booking.com">Booking.com</option>
+                                    <option value="Agoda">Agoda</option>
+                                    <option value="Expedia">Expedia</option>
+                                    <option value="MakeMyTrip">MakeMyTrip</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="ota-id-group" style="display: none;">
+                                <label>OTA Booking Reference ID</label>
+                                <input type="text" id="ota-booking-id" placeholder="e.g. BK-99214">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
                                 <label>Age Category</label>
                                 <select id="guest-age-cat" required>
                                     <option value="Adult">Adult (18+)</option>
@@ -195,7 +212,7 @@
                                 <select id="guest-room" required></select>
                             </div>
                             <div class="form-group">
-                                <label>Nights Staying</label>
+                                <label>Nights Staying (24h Cycles)</label>
                                 <input type="number" id="stay-nights" min="1" value="1" required>
                             </div>
                         </div>
@@ -219,11 +236,11 @@
                                 <th>Name</th>
                                 <th>Contact Info</th>
                                 <th>ID Proof</th>
+                                <th>Source / Ref</th>
                                 <th>Category</th>
                                 <th>Room</th>
                                 <th>Status</th>
                                 <th>Bill</th>
-                                <th>Notes</th>
                             </tr>
                         </thead>
                         <tbody id="guest-history-table"></tbody>
@@ -249,7 +266,7 @@
                         <div class="value" id="fin-count">0</div>
                     </div>
                 </div>
-                <h3>Transaction History Ledger</h3>
+                <h3>Transaction Ledger</h3>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -270,7 +287,7 @@
                 <div class="card form-card">
                     <h3>Data Operations & Backup System</h3>
                     <p style="margin: 12px 0 20px 0; color: var(--text-muted); line-height: 1.5;">
-                        Save a hard copy backup file to your computer or restore from an existing JSON backup.
+                        Export all active database state to a local file or restore factory settings.
                     </p>
                     <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                         <button class="btn btn-primary" onclick="exportBackup()">Export Backup File (.json)</button>
@@ -282,7 +299,7 @@
     </div>
 
     <script>
-        const KEY = "hotelpro_v9_master";
+        const KEY = "hotelpro_master_db";
         
         const defaultState = {
             rooms: [
@@ -303,6 +320,16 @@
         function saveState() {
             localStorage.setItem(KEY, JSON.stringify(state));
             render();
+        }
+
+        function toggleOtaField() {
+            const source = document.getElementById('booking-source').value;
+            const otaGroup = document.getElementById('ota-id-group');
+            if (source !== "Direct Walk-In") {
+                otaGroup.style.display = "flex";
+            } else {
+                otaGroup.style.display = "none";
+            }
         }
 
         function switchTab(tabId) {
@@ -329,10 +356,18 @@
             const email = document.getElementById('guest-email').value;
             const phone = document.getElementById('guest-phone').value;
             const idNo = document.getElementById('guest-idno').value;
+            const source = document.getElementById('booking-source').value;
+            const otaId = document.getElementById('ota-booking-id').value;
             const category = document.getElementById('guest-age-cat').value;
             const roomId = parseInt(document.getElementById('guest-room').value);
             const nights = parseInt(document.getElementById('stay-nights').value);
             const notes = document.getElementById('guest-notes').value;
+
+            // Enforcement Rule: Age check block
+            if (category === "Child") {
+                alert("Check-in Error: Minors cannot be checked in without an accompanying adult.");
+                return;
+            }
 
             const room = state.rooms.find(r => r.id === roomId);
             if (!room) return;
@@ -345,6 +380,7 @@
                 email,
                 phone,
                 idNo,
+                source: source + (otaId ? ` (${otaId})` : ""),
                 category,
                 roomId,
                 nights,
@@ -364,6 +400,7 @@
             });
 
             document.getElementById('checkin-form').reset();
+            toggleOtaField();
             saveState();
             switchTab('dashboard');
         }
@@ -372,11 +409,12 @@
             const guest = state.guests.find(g => g.id === guestId);
             if (!guest) return;
 
-            guest.status = "Checked-Out";
-            const room = state.rooms.find(r => r.id === guest.roomId);
-            if (room) room.status = "available";
-
-            saveState();
+            if (confirm(`Confirm Check-Out for ${guest.name}? Total Bill: $${guest.totalBill}`)) {
+                guest.status = "Checked-Out";
+                const room = state.rooms.find(r => r.id === guest.roomId);
+                if (room) room.status = "available";
+                saveState();
+            }
         }
 
         function exportBackup() {
@@ -384,12 +422,12 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `hotelpro_master_backup_${new Date().toISOString().slice(0,10)}.json`;
+            a.download = `hotelpro_backup_${new Date().toISOString().slice(0,10)}.json`;
             a.click();
         }
 
         function resetSystem() {
-            if (confirm("Are you sure you want to reset all data back to original defaults?")) {
+            if (confirm("Are you sure you want to clear all data and restore factory defaults?")) {
                 localStorage.removeItem(KEY);
                 state = JSON.parse(JSON.stringify(defaultState));
                 saveState();
@@ -399,20 +437,18 @@
         function render() {
             document.getElementById('current-date').innerText = new Date().toLocaleDateString();
 
-            // Populate Room Options for Registration
             const roomSelect = document.getElementById('guest-room');
             roomSelect.innerHTML = "";
             const availRooms = state.rooms.filter(r => r.status === "available");
 
             if (availRooms.length === 0) {
-                roomSelect.innerHTML = `<option value="">No Available Rooms</option>`;
+                roomSelect.innerHTML = `<option value="">No Rooms Available</option>`;
             } else {
                 availRooms.forEach(r => {
                     roomSelect.innerHTML += `<option value="${r.id}">Room ${r.id} (${r.type} - $${r.rate}/night)</option>`;
                 });
             }
 
-            // Calculations
             const totalRooms = state.rooms.length;
             const occupiedRooms = state.rooms.filter(r => r.status === "occupied").length;
             const availableRooms = totalRooms - occupiedRooms;
@@ -425,13 +461,12 @@
             document.getElementById('dash-occupied').innerText = occupiedRooms;
             document.getElementById('dash-available').innerText = availableRooms;
 
-            // Dashboard Table
             const dashTable = document.querySelector('#dash-table tbody');
             dashTable.innerHTML = "";
             const activeGuests = state.guests.filter(g => g.status === "Checked-In");
 
             if (activeGuests.length === 0) {
-                dashTable.innerHTML = `<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">No active guests currently checked in.</td></tr>`;
+                dashTable.innerHTML = `<tr><td colspan="9" style="text-align:center; color: var(--text-muted);">No active guests currently checked in.</td></tr>`;
             } else {
                 activeGuests.forEach(g => {
                     dashTable.innerHTML += `
@@ -439,6 +474,7 @@
                             <td><strong>${g.roomId}</strong></td>
                             <td><strong>${g.name}</strong></td>
                             <td>${g.phone}<br><small style="color:var(--text-muted);">${g.email}</small></td>
+                            <td><small>${g.source}</small></td>
                             <td>${g.category}</td>
                             <td>${g.checkInDate}</td>
                             <td>${g.nights} night(s)</td>
@@ -449,7 +485,6 @@
                 });
             }
 
-            // Master Guest Table
             const historyTable = document.getElementById('guest-history-table');
             historyTable.innerHTML = "";
             if (state.guests.length === 0) {
@@ -463,17 +498,16 @@
                             <td><strong>${g.name}</strong></td>
                             <td>${g.phone}<br><small style="color:var(--text-muted);">${g.email}</small></td>
                             <td>${g.idNo}</td>
+                            <td><small>${g.source}</small></td>
                             <td>${g.category}</td>
                             <td>Room ${g.roomId}</td>
                             <td><span class="badge ${badgeClass}">${g.status}</span></td>
                             <td>$${g.totalBill}</td>
-                            <td><small>${g.notes}</small></td>
                         </tr>
                     `;
                 });
             }
 
-            // Room Visual Matrix
             const roomGrid = document.getElementById('room-grid-container');
             roomGrid.innerHTML = "";
             state.rooms.forEach(r => {
@@ -486,7 +520,6 @@
                 `;
             });
 
-            // Financial Summary
             document.getElementById('fin-gross').innerText = "$" + totalRevenue.toLocaleString();
             document.getElementById('fin-count').innerText = state.transactions.length;
 
@@ -508,7 +541,6 @@
             }
         }
 
-        // Run Application
         render();
     </script>
 </body>

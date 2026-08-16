@@ -16,7 +16,23 @@ body{
 }
 
 button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
+button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px;font-weight:600;transition:.15s}
+
+/* BUTTON ACTION STYLES & COLORS */
+.btn-checkin{background:#16a34a!important;color:#fff!important}
+.btn-checkin:hover{background:#15803d!important}
+
+.btn-checkout{background:#d97706!important;color:#fff!important}
+.btn-checkout:hover{background:#b45309!important}
+
+.btn-maint{background:#dc2626!important;color:#fff!important}
+.btn-maint:hover{background:#b91c1c!important}
+
+.btn-invoice{background:#2563eb!important;color:#fff!important}
+.btn-invoice:hover{background:#1d4ed8!important}
+
+.btn-clean{background:#059669!important;color:#fff!important}
+.btn-clean:hover{background:#047857!important}
 
 .login{
   min-height:100vh;
@@ -47,6 +63,7 @@ button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px}
 }
 
 .primary{background:#c99b2e;color:#07152f;font-weight:700}
+.primary:hover{background:#b38824}
 .full{width:100%}
 .error{color:#dc2626;font-size:13px;display:none;margin-bottom:10px}
 
@@ -398,15 +415,6 @@ th{
   padding:25px
 }
 
-.info-box{
-  background:#eff6ff;
-  border:1px solid #bfdbfe;
-  color:#1e40af;
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:15px
-}
-
 .invoice-box{
   background:#f8fafc;
   border:1px solid #cbd5e1;
@@ -540,14 +548,14 @@ th{
     <div class="card">
       <div class="head">
         <h2>Live Operations</h2>
-        <button class="primary no-print" onclick="openCheckin()">+ Guest Check-in</button>
+        <button class="btn-checkin no-print" onclick="openCheckin()">+ Guest Check-in</button>
       </div>
       <div class="table">
         <table>
           <thead>
             <tr>
               <th>Guest</th>
-              <th>Source / Platform</th>
+              <th>Source / Booking ID</th>
               <th>Room</th>
               <th>Check-in</th>
               <th>Check-out</th>
@@ -563,10 +571,10 @@ th{
     <div class="card">
       <h2>Quick Actions</h2>
       <div class="quick">
-        <button class="secondary" onclick="openCheckin()">✅ Guest Check-in</button>
-        <button class="secondary" onclick="openModal('bill')">🧾 Create Custom Bill</button>
+        <button class="btn-checkin" onclick="openCheckin()">✅ Guest Check-in</button>
+        <button class="btn-invoice" onclick="openModal('bill')">🧾 Create Custom Bill</button>
         <button class="secondary" onclick="openModal('transaction')">💸 Log Expense</button>
-        <button class="secondary" onclick="openModal('maintenance')">🔧 Report Maintenance</button>
+        <button class="btn-maint" onclick="openModal('maintenance')">🔧 Report Maintenance</button>
       </div>
     </div>
   </div>
@@ -577,7 +585,7 @@ th{
 <div class="card">
   <div class="head">
     <h2>Reservations & Stay Logs</h2>
-    <button class="primary no-print" onclick="openCheckin()">+ New Check-in</button>
+    <button class="btn-checkin no-print" onclick="openCheckin()">+ New Check-in</button>
   </div>
   <div class="filters">
     <input id="resSearch" placeholder="Search guest, phone, or room" oninput="render()">
@@ -594,7 +602,7 @@ th{
         <tr>
           <th>ID</th>
           <th>Guest</th>
-          <th>Source</th>
+          <th>Source / Booking ID</th>
           <th>Room</th>
           <th>Check-in</th>
           <th>Expected Check-out</th>
@@ -657,10 +665,11 @@ th{
           <th>Name</th>
           <th>Phone</th>
           <th>Email</th>
-          <th>Source / Platform</th>
+          <th>Source / Booking ID</th>
           <th>ID Type</th>
           <th>ID Number</th>
           <th>Last Room</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody id="guestTable"></tbody>
@@ -701,7 +710,7 @@ th{
 <div class="card">
   <div class="head">
     <h2>Invoices & Billings</h2>
-    <button class="primary no-print" onclick="openModal('bill')">+ Manual Invoice</button>
+    <button class="btn-invoice no-print" onclick="openModal('bill')">+ Manual Invoice</button>
   </div>
   <div class="table">
     <table>
@@ -761,7 +770,7 @@ th{
 <div class="card">
   <div class="head">
     <h2>Maintenance Tickets</h2>
-    <button class="primary no-print" onclick="openModal('maintenance')">+ New Issue</button>
+    <button class="btn-maint no-print" onclick="openModal('maintenance')">+ New Issue</button>
   </div>
   <div class="table">
     <table>
@@ -861,7 +870,7 @@ th{
 <div id="toast" class="toast"></div>
 
 <script>
-const KEY="hotelpro_v4";
+const KEY="hotelpro_v6";
 
 const initial={
   rooms:[
@@ -972,7 +981,7 @@ function render(){
   let q=($("resSearch")?.value||"").toLowerCase();
   let f=$("resFilter")?.value||"";
   let rows=data.reservations.filter(r=>{
-    const text=`${r.guest} ${r.phone} ${r.room}`.toLowerCase();
+    const text=`${r.guest} ${r.phone} ${r.room} ${r.bookingId||''}`.toLowerCase();
     return (!q||text.includes(q))&&(!f||r.status===f);
   });
 
@@ -980,7 +989,7 @@ function render(){
     <tr>
       <td>${r.id}</td>
       <td><b>${r.guest}</b><br><small class="muted">${r.phone||"-"}</small></td>
-      <td>${r.source==="Platform"?`💻 ${r.platform}`:"🚶 Direct Walk-in"}</td>
+      <td>${r.source==="Platform"?`💻 ${r.platform}<br><small><b>ID:</b> ${r.bookingId||'-'}</small>`:"🚶 Direct Walk-in"}</td>
       <td>Room ${r.room}</td>
       <td>${formatDisplayDate(r.checkin)}</td>
       <td>${formatDisplayDate(r.checkout)}</td>
@@ -988,8 +997,8 @@ function render(){
       <td>${money(r.totalAmount)}</td>
       <td>${badge(r.status)}</td>
       <td>
-        ${r.status==="Checked In"?`<button class="warning" onclick="processCheckout('${r.id}')">Check Out</button>`:
-          r.status==="Checked Out"?`<button class="secondary" onclick="viewInvoiceByResId('${r.id}')">View Invoice</button>`:'-'}
+        ${r.status==="Checked In"?`<button class="btn-checkout" onclick="processCheckout('${r.id}')">Check Out</button>`:
+          r.status==="Checked Out"?`<button class="btn-invoice" onclick="viewInvoiceByResId('${r.id}')">View Invoice</button>`:'-'}
       </td>
     </tr>
   `).join("")||empty(10);
@@ -998,14 +1007,14 @@ function render(){
   $("dashTable").innerHTML=data.reservations.slice(-6).reverse().map(r=>`
     <tr>
       <td><b>${r.guest}</b></td>
-      <td>${r.source==="Platform"?`💻 ${r.platform}`:"🚶 Direct"}</td>
+      <td>${r.source==="Platform"?`💻 ${r.platform}<br><small><b>ID:</b> ${r.bookingId||'-'}</small>`:"🚶 Direct"}</td>
       <td>Room ${r.room}</td>
       <td>${formatDisplayDate(r.checkin)}</td>
       <td>${formatDisplayDate(r.checkout)}</td>
       <td>${badge(r.status)}</td>
       <td>
-        ${r.status==="Checked In"?`<button class="warning" onclick="processCheckout('${r.id}')">Check Out</button>`:
-          r.status==="Checked Out"?`<button class="secondary" onclick="viewInvoiceByResId('${r.id}')">Invoice</button>`:'-'}
+        ${r.status==="Checked In"?`<button class="btn-checkout" onclick="processCheckout('${r.id}')">Check Out</button>`:
+          r.status==="Checked Out"?`<button class="btn-invoice" onclick="viewInvoiceByResId('${r.id}')">Invoice</button>`:'-'}
       </td>
     </tr>
   `).join("")||empty(7);
@@ -1040,27 +1049,28 @@ function render(){
             <div style="grid-column:1/-1"><b>Current Status:</b><br>${activeRes?`Guest: ${activeRes.guest}`:"Vacant"}</div>
           </div>
           <div class="room-actions">
-            ${r.status==="Ready"?`<button class="success" onclick="openCheckinForRoom(${r.no})">✅ Check-in</button>`:""}
-            ${r.status==="Occupied" && activeRes?`<button class="warning" onclick="processCheckout('${activeRes.id}')">🚪 Check Out</button>`:""}
-            ${r.status==="Cleaning"?`<button class="success" onclick="markRoomCleaned(${r.no})">🧹 Mark Cleaned</button>`:""}
-            ${r.status==="Maintenance"?`<button class="success" onclick="setRoomStatus(${r.no},'Ready')">✓ Resolved</button>`:""}
+            ${r.status==="Ready"?`<button class="btn-checkin" onclick="openCheckinForRoom(${r.no})">✅ Check-in</button>`:""}
+            ${r.status==="Occupied" && activeRes?`<button class="btn-checkout" onclick="processCheckout('${activeRes.id}')">🚪 Check Out</button>`:""}
+            ${r.status==="Cleaning"?`<button class="btn-clean" onclick="markRoomCleaned(${r.no})">🧹 Mark Cleaned</button>`:""}
+            ${r.status==="Maintenance"?`<button class="btn-clean" onclick="setRoomStatus(${r.no},'Ready')">✓ Resolved</button>`:""}
           </div>
         </div>
       `;
     }).join("")||`<div class="empty" style="grid-column:1/-1">No rooms found.</div>`;
 
   /* GUESTS TABLE */
-  $("guestTable").innerHTML=data.guests.map(g=>`
+  $("guestTable").innerHTML=data.guests.map((g,idx)=>`
     <tr>
       <td><b>${g.name}</b></td>
       <td>${g.phone||"-"}</td>
       <td>${g.email||"-"}</td>
-      <td>${g.source==="Platform"?`💻 ${g.platform}`:"🚶 Direct Walk-in"}</td>
+      <td>${g.source==="Platform"?`💻 ${g.platform}<br><small><b>ID:</b> ${g.bookingId||'-'}</small>`:"🚶 Direct Walk-in"}</td>
       <td>${g.idtype||"-"}</td>
       <td>${g.idno||"-"}</td>
       <td>Room ${g.room||"-"}</td>
+      <td><button class="secondary" onclick="viewGuestDetails(${idx})">Details</button></td>
     </tr>
-  `).join("")||empty(7);
+  `).join("")||empty(8);
 
   /* STAFF TABLE */
   $("staffTable").innerHTML=data.staff.map(s=>`
@@ -1087,7 +1097,7 @@ function render(){
       <td>${money(b.paid)}</td>
       <td class="${b.due>0?'invoice-due':''}">${money(b.due)}</td>
       <td>${badge(b.due<=0?'Paid':'Unpaid')}</td>
-      <td><button class="secondary" onclick="renderInvoiceModal('${b.id}')">Print Invoice</button></td>
+      <td><button class="btn-invoice" onclick="renderInvoiceModal('${b.id}')">Print Invoice</button></td>
     </tr>
   `).join("")||empty(9);
 
@@ -1116,7 +1126,7 @@ function render(){
       <td>${m.problem}</td>
       <td>${badge(m.priority)}</td>
       <td>${badge(m.status)}</td>
-      <td>${m.status!=="Completed"?`<button class="success" onclick="completeMaintenance('${m.id}')">Resolve</button>`:'-'}</td>
+      <td>${m.status!=="Completed"?`<button class="btn-clean" onclick="completeMaintenance('${m.id}')">Resolve</button>`:'-'}</td>
     </tr>
   `).join("")||empty(6);
 
@@ -1125,7 +1135,7 @@ function render(){
     <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #eee">
       <div><b>Room ${r.no}</b> - ${r.type}</div>
       <div>
-        ${r.status==="Cleaning"?`<button class="success" onclick="markRoomCleaned(${r.no})">Mark Cleaned</button>`:badge('Ready')}
+        ${r.status==="Cleaning"?`<button class="btn-clean" onclick="markRoomCleaned(${r.no})">Mark Cleaned</button>`:badge('Ready')}
       </div>
     </div>
   `).join("")||`<div class="empty">No rooms requiring housekeeping attention.</div>`;
@@ -1148,11 +1158,9 @@ function updateCheckinCalculations(){
   let roomObj=data.rooms.find(r=>r.no===roomNo);
   let pricePerDay=roomObj?roomObj.price:1000;
 
-  // Auto-calculate Total Price
   let total=days*pricePerDay;
   $("mTotalAmt").value=total;
 
-  // Auto-calculate 24-Hour Cycle Checkout Date
   if(checkinVal){
     let dt=new Date(checkinVal);
     dt.setHours(dt.getHours() + (days * 24));
@@ -1177,16 +1185,36 @@ function openCheckin(){
     <div class="form">
       <div><label>Guest Name *</label><input id="mRName" placeholder="Full Name"></div>
       <div><label>Phone Number *</label><input id="mRPhone" placeholder="Mobile Number"></div>
+      <div><label>Email Address</label><input id="mREmail" placeholder="email@domain.com"></div>
       <div>
-        <label>Booking Source</label>
+        <label>ID Document Type</label>
+        <select id="mRIDType">
+          <option>Aadhaar Card</option>
+          <option>Passport</option>
+          <option>Driving License</option>
+          <option>Voter ID</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div><label>ID Document Number</label><input id="mRIDNo" placeholder="ID Number"></div>
+      <div>
+        <label>Booking Source *</label>
         <select id="mSource" onchange="toggleSourceFields()">
           <option value="Direct">Direct Walk-in</option>
           <option value="Platform">Online Booking Platform</option>
         </select>
       </div>
-      <div id="platformBox" style="display:none">
-        <label>Platform Name</label>
-        <input id="mPlatform" placeholder="e.g. Booking.com, Agoda, MakeMyTrip">
+      <div id="platformBox" class="span2" style="display:none;background:#f8fafc;padding:12px;border:1px solid #cbd5e1;border-radius:10px">
+        <div class="form">
+          <div>
+            <label>Platform Name *</label>
+            <input id="mPlatform" placeholder="e.g. Booking.com, Agoda, MakeMyTrip">
+          </div>
+          <div>
+            <label>Online Booking ID *</label>
+            <input id="mBookingId" placeholder="Mandatory Booking Ref / ID">
+          </div>
+        </div>
       </div>
       <div>
         <label>Select Room</label>
@@ -1214,6 +1242,7 @@ function openCheckin(){
         <label>Advance Payment Received</label>
         <input id="mAdvanceAmt" type="number" value="0" placeholder="0">
       </div>
+      <div class="span2"><label>Full Address</label><input id="mRAddress" placeholder="Street Address, City, State"></div>
     </div>
   `;
 
@@ -1222,13 +1251,28 @@ function openCheckin(){
   $("saveModal").onclick=()=>{
     let name=$("mRName").value;
     let roomNo=Number($("mSelRoom").value);
-    if(!name) return alert("Guest name required");
+    if(!name) return alert("Guest name is required.");
 
     let days=Number($("mDays").value)||1;
     let totalAmt=Number($("mTotalAmt").value);
     let advance=Number($("mAdvanceAmt").value)||0;
     let src=$("mSource").value;
-    let platformName=src==="Platform"?($("mPlatform").value||"Online Platform"):"Direct Walk-in";
+    let platformName = "";
+    let bookingId = "";
+
+    if(src === "Platform"){
+      platformName = $("mPlatform").value.trim();
+      bookingId = $("mBookingId").value.trim();
+      if(!platformName){
+        return alert("Please specify the Online Platform Name.");
+      }
+      if(!bookingId){
+        return alert("Online Booking ID is mandatory for platform bookings.");
+      }
+    } else {
+      platformName = "Direct Walk-in";
+      bookingId = "-";
+    }
 
     let resId="RES-"+Math.floor(1000+Math.random()*9000);
 
@@ -1236,8 +1280,13 @@ function openCheckin(){
       id:resId,
       guest:name,
       phone:$("mRPhone").value,
+      email:$("mREmail").value,
+      idtype:$("mRIDType").value,
+      idno:$("mRIDNo").value,
+      address:$("mRAddress").value,
       source:src,
       platform:platformName,
+      bookingId:bookingId,
       room:roomNo,
       checkin:$("mRIn").value,
       checkout:$("mROut").value,
@@ -1247,18 +1296,32 @@ function openCheckin(){
       status:"Checked In"
     });
 
-    // Save Guest Record
-    if(!data.guests.find(g=>g.name===name)){
+    let existingGuest = data.guests.find(g=>g.name===name || (g.phone && g.phone===$("mRPhone").value));
+    if(!existingGuest){
       data.guests.push({
         name:name,
         phone:$("mRPhone").value,
+        email:$("mREmail").value,
+        idtype:$("mRIDType").value,
+        idno:$("mRIDNo").value,
+        address:$("mRAddress").value,
         source:src,
         platform:platformName,
+        bookingId:bookingId,
         room:roomNo
       });
+    } else {
+      existingGuest.phone = $("mRPhone").value || existingGuest.phone;
+      existingGuest.email = $("mREmail").value || existingGuest.email;
+      existingGuest.idtype = $("mRIDType").value || existingGuest.idtype;
+      existingGuest.idno = $("mRIDNo").value || existingGuest.idno;
+      existingGuest.address = $("mRAddress").value || existingGuest.address;
+      existingGuest.source = src;
+      existingGuest.platform = platformName;
+      existingGuest.bookingId = bookingId;
+      existingGuest.room = roomNo;
     }
 
-    // Set Room Status to Occupied
     let rmObj=data.rooms.find(x=>x.no===roomNo);
     if(rmObj) rmObj.status="Occupied";
 
@@ -1278,6 +1341,31 @@ function openCheckinForRoom(no){
   },50);
 }
 
+function viewGuestDetails(idx){
+  let g = data.guests[idx];
+  if(!g) return;
+
+  $("modalBg").classList.add("open");
+  $("modalFoot").style.display="none";
+  $("modalTitle").textContent="Guest Profile Information";
+
+  $("modalBody").innerHTML=`
+    <div class="invoice-box">
+      <div class="invoice-row"><span>Full Name:</span><b>${g.name}</b></div>
+      <div class="invoice-row"><span>Phone:</span><span>${g.phone||"-"}</span></div>
+      <div class="invoice-row"><span>Email:</span><span>${g.email||"-"}</span></div>
+      <div class="invoice-row"><span>Booking Source:</span><span>${g.source==="Platform"?`💻 ${g.platform}`:"🚶 Direct Walk-in"}</span></div>
+      <div class="invoice-row"><span>Online Booking ID:</span><span><b>${g.bookingId||"-"}</b></span></div>
+      <div class="invoice-row"><span>Identity Proof:</span><span>${g.idtype||"-"} (${g.idno||"-"})</span></div>
+      <div class="invoice-row"><span>Full Address:</span><span>${g.address||"-"}</span></div>
+      <div class="invoice-row"><span>Last Room Assigned:</span><span>Room ${g.room||"-"}</span></div>
+    </div>
+    <div style="margin-top:18px;text-align:right" class="no-print">
+      <button class="secondary" onclick="closeModal()">Close</button>
+    </div>
+  `;
+}
+
 /* CHECKOUT & AUTOMATED INVOICE GENERATION */
 
 function processCheckout(resId){
@@ -1289,7 +1377,7 @@ function processCheckout(resId){
 
   if(due > 0){
     let payStr = prompt(`Check-out for ${r.guest}.\nTotal Amount: ${money(r.totalAmount)}\nAdvance Paid: ${money(r.advancePaid)}\nRemaining Due: ${money(due)}\n\nEnter payment collected now:`, due);
-    if(payStr === null) return; // cancelled checkout
+    if(payStr === null) return;
     additionalPayment = Number(payStr)||0;
   }
 
@@ -1298,13 +1386,11 @@ function processCheckout(resId){
 
   r.status = "Checked Out";
   
-  // Transition Room directly to Cleaning status upon checkout
   let rm = data.rooms.find(x=>x.no == r.room);
   if(rm) rm.status = "Cleaning";
 
   let billId = "INV-" + Math.floor(1000 + Math.random()*9000);
 
-  // Generate Invoice Entry
   data.bills.push({
     id: billId,
     resId: r.id,
@@ -1316,7 +1402,6 @@ function processCheckout(resId){
     due: finalDue
   });
 
-  // Log Income Transaction
   if(finalPaid > 0){
     data.transactions.push({
       date: dateNow(),
@@ -1364,7 +1449,7 @@ function renderInvoiceModal(billId){
 
   $("modalBody").innerHTML=`
     <div class="invoice-box">
-      <div style="display:flex;justify-space-between;border-bottom:2px solid #e2e8f0;padding-bottom:12px;margin-bottom:15px">
+      <div style="display:flex;justify-content:space-between;border-bottom:2px solid #e2e8f0;padding-bottom:12px;margin-bottom:15px">
         <div>
           <h2 style="margin:0;color:#0b2348">${data.settings.name}</h2>
           <div style="font-size:12px" class="muted">${data.settings.address} | ${data.settings.phone}</div>
@@ -1388,7 +1473,7 @@ function renderInvoiceModal(billId){
     </div>
     <div style="margin-top:18px;text-align:right" class="no-print">
       <button class="secondary" onclick="closeModal()">Close</button>
-      <button class="primary" onclick="window.print()">🖨️ Print Invoice</button>
+      <button class="btn-invoice" onclick="window.print()">🖨️ Print Invoice</button>
     </div>
   `;
 }

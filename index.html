@@ -252,8 +252,18 @@ th{
 .maintenance{background:#fee2e2;color:#991b1b}
 .maintenance .dot{background:#dc2626}
 
-.paid,.present{background:#dcfce7;color:#166534}
-.unpaid{background:#fee2e2;color:#991b1b}
+.paid,.present,.income{background:#dcfce7;color:#166534}
+.paid .dot,.present .dot,.income .dot{background:#16a34a}
+
+.unpaid,.expense{background:#fee2e2;color:#991b1b}
+.unpaid .dot,.expense .dot{background:#dc2626}
+
+.high{background:#fee2e2;color:#991b1b}
+.high .dot{background:#dc2626}
+.medium{background:#fed7aa;color:#9a3412}
+.medium .dot{background:#ea580c}
+.low{background:#e0f2fe;color:#075985}
+.low .dot{background:#0284c7}
 
 .room-summary{
   display:grid;
@@ -458,20 +468,6 @@ th{
   margin-top:8px
 }
 
-.guest-card-block{
-  background:#f8fafc;
-  border:1px solid #e2e8f0;
-  border-radius:12px;
-  padding:14px;
-  margin-bottom:12px
-}
-
-.guest-card-block h4{
-  margin:0 0 10px 0;
-  font-size:14px;
-  color:#4f46e5
-}
-
 @media(max-width:1100px){
   .cards{grid-template-columns:1fr 1fr}
   .room-summary{grid-template-columns:repeat(3,1fr)}
@@ -662,16 +658,11 @@ th{
 
   <div class="filters">
     <select id="roomFilter" onchange="render()">
-      <option value="">Show All Statuses</option>
+      <option value="">Show All Rooms</option>
       <option>Ready</option>
       <option>Occupied</option>
       <option>Cleaning</option>
       <option>Maintenance</option>
-    </select>
-    <select id="roomAcFilter" onchange="render()">
-      <option value="">All AC Types</option>
-      <option value="AC">AC Rooms</option>
-      <option value="Non-AC">Non-AC Rooms</option>
     </select>
     <input id="roomSearch" placeholder="Search room number..." oninput="render()">
   </div>
@@ -903,9 +894,9 @@ const KEY="hotelpro_v9";
 const initial={
   rooms:[
     {no:101,type:"Standard",ac:true,beds:1,price:1500,status:"Ready"},
-    {no:102,type:"Standard",ac:false,beds:1,price:1000,status:"Ready"},
+    {no:102,type:"Standard",ac:false,beds:1,price:1200,status:"Ready"},
     {no:103,type:"Deluxe",ac:true,beds:2,price:2500,status:"Ready"},
-    {no:104,type:"Deluxe",ac:false,beds:2,price:1800,status:"Ready"},
+    {no:104,type:"Deluxe",ac:true,beds:2,price:2500,status:"Ready"},
     {no:105,type:"Suite",ac:true,beds:3,price:4000,status:"Ready"}
   ],
   reservations:[],
@@ -969,6 +960,12 @@ function empty(cols){
   return `<tr><td colspan="${cols}" class="empty">No records found</td></tr>`;
 }
 
+function updateClock(){
+  const now = new Date();
+  if($("clock")) $("clock").textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+}
+setInterval(updateClock, 1000);
+
 /* AUTHENTICATION */
 function login(){
   if($("loginUser").value==="admin" && $("loginPass").value==="admin"){
@@ -1009,7 +1006,7 @@ function render(){
   let q=($("resSearch")?.value||"").toLowerCase();
   let f=$("resFilter")?.value||"";
   let rows=data.reservations.filter(r=>{
-    const text=`${r.guest} ${r.phone} ${r.room} ${r.bookingId||''}`.toLowerCase();
+    const text=`${r.guest} ${r.phone} ${r.room} ${r.id||''}`.toLowerCase();
     return (!q||text.includes(q))&&(!f||r.status===f);
   });
 
@@ -1017,7 +1014,7 @@ function render(){
     <tr>
       <td><b>${r.id}</b></td>
       <td><b>${r.guest}</b><br><small class="muted">${r.phone||"-"}</small></td>
-      <td>${r.age||"-"} yrs / ${r.gender||"-"}</td>
+      <td>${r.age} yrs / ${r.gender}</td>
       <td>👤 ${r.adults} Adult(s)<br>👶 ${r.children} Child(ren)</td>
       <td><b>Room ${r.room}</b></td>
       <td>${formatDisplayDate(r.checkin)}</td>
@@ -1036,7 +1033,7 @@ function render(){
   $("dashTable").innerHTML=data.reservations.slice(-6).reverse().map(r=>`
     <tr>
       <td><b>${r.guest}</b><br><small class="muted">${r.phone||"-"}</small></td>
-      <td>${r.age||"-"} yrs / ${r.gender||"-"}</td>
+      <td>${r.age} yrs / ${r.gender}</td>
       <td>👤 ${r.adults} A / 👶 ${r.children} C</td>
       <td><b>Room ${r.room}</b></td>
       <td>${formatDisplayDate(r.checkin)}</td>
@@ -1058,12 +1055,10 @@ function render(){
   $("roomMaintenance").textContent=count("Maintenance");
 
   let rf=$("roomFilter")?.value||"";
-  let acFilter=$("roomAcFilter")?.value||"";
   let rs=($("roomSearch")?.value||"").trim();
 
   $("roomGrid").innerHTML=data.rooms
     .filter(r=>!rf||r.status===rf)
-    .filter(r=>!acFilter||(acFilter==="AC"?r.ac:!r.ac))
     .filter(r=>!rs||String(r.no).includes(rs))
     .map(r=>{
       let cls=r.status.toLowerCase().replaceAll(" ","-");
@@ -1075,7 +1070,7 @@ function render(){
             ${badge(r.status)}
           </div>
           <div class="room-info">
-            <div><b>Type / AC</b><br>${r.type} (${r.ac ? 'AC' : 'Non-AC'})</div>
+            <div><b>Type</b><br>${r.type}</div>
             <div><b>Rent/Day</b><br>${r.price ? money(r.price) : 'Not Fixed'}</div>
             <div style="grid-column:1/-1"><b>Status / Guest:</b><br>${activeRes?`<b>${activeRes.guest}</b> (${activeRes.phone})`:"Vacant Room"}</div>
           </div>
@@ -1163,7 +1158,7 @@ function render(){
   /* HOUSEKEEPING LIST */
   $("cleanList").innerHTML=data.rooms.filter(r=>r.status==="Cleaning"||r.status==="Ready").map(r=>`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid #e2e8f0">
-      <div><b>Room ${r.no}</b> - ${r.type} (${r.ac ? 'AC' : 'Non-AC'})</div>
+      <div><b>Room ${r.no}</b> - ${r.type}</div>
       <div>
         ${r.status==="Cleaning"?`<button class="btn-clean" onclick="markRoomCleaned(${r.no})">🧹 Mark Cleaned</button>`:badge('Ready')}
       </div>
@@ -1187,542 +1182,50 @@ function evaluateGuestAge(){
     categoryBox.value = "";
     return;
   }
-  
   if(ageVal < 18){
-    categoryBox.value = "Minor (Child)";
+    categoryBox.value = "Minor (Child / Dependent)";
   } else {
-    categoryBox.value = "Adult";
+    categoryBox.value = "Adult (Primary Account Holder)";
   }
 }
 
-/* DYNAMIC ADULT & CHILD GUEST FORM GENERATION */
-function updateGuestFormFields(){
-  const numAdults = parseInt($("mAdults")?.value || 1);
-  const numChildren = parseInt($("mChildren")?.value || 0);
+/* CALCULATION LOGIC FOR CHECK-IN */
+function calculateCheckinTotals(){
+  const roomNo = $("mRoom").value;
+  const inStr = $("mCheckin").value;
+  const outStr = $("mCheckout").value;
+  const advance = Number($("mAdvance").value || 0);
 
-  let adultHtml = '';
-  for(let i = 1; i <= numAdults; i++){
-    adultHtml += `
-      <div class="guest-card-block">
-        <h4>Adult ${i} Details ${i === 1 ? '(Primary Guest)' : ''}</h4>
-        <div class="form">
-          <div>
-            <label>Name <span class="req">*</span></label>
-            <input id="adult_name_${i}" placeholder="Full Name" required>
-          </div>
-          <div>
-            <label>Age <span class="req">*</span></label>
-            <input id="adult_age_${i}" type="number" min="18" placeholder="Age (18+)" required>
-          </div>
-          <div>
-            <label>Gender</label>
-            <select id="adult_gender_${i}">
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div>
-            <label>ID Proof (Type & No.)</label>
-            <input id="adult_id_${i}" placeholder="Aadhaar / Passport / Driving Lic">
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  if($("adultsContainer")) $("adultsContainer").innerHTML = adultHtml;
-
-  let childHtml = '';
-  for(let j = 1; j <= numChildren; j++){
-    childHtml += `
-      <div class="guest-card-block">
-        <h4>Child ${j} Details</h4>
-        <div class="form">
-          <div>
-            <label>Name</label>
-            <input id="child_name_${j}" placeholder="Child Full Name">
-          </div>
-          <div>
-            <label>Age</label>
-            <input id="child_age_${j}" type="number" max="17" placeholder="Age (0-17)">
-          </div>
-          <div>
-            <label>Gender</label>
-            <select id="child_gender_${j}">
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  if($("childrenContainer")) $("childrenContainer").innerHTML = childHtml;
-}
-
-/* RECALCULATE CHECKIN TOTAL COST */
-function calculateCheckinTotal(){
-  const roomId = $("mRoomSelect")?.value;
-  const room = data.rooms.find(r=>r.no == roomId);
-  const inDate = new Date($("mCheckin")?.value);
-  const outDate = new Date($("mCheckout")?.value);
-
-  if(room && inDate && outDate && outDate > inDate){
-    const diffTime = Math.abs(outDate - inDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
-    const rate = room.price || 0;
-    const total = diffDays * rate;
-    if($("mTotalAmount")) $("mTotalAmount").value = total;
-    if($("mCalcInfo")) $("mCalcInfo").textContent = `${diffDays} night(s) @ ${money(rate)}/night (${room.ac ? 'AC' : 'Non-AC'})`;
-  }
-}
-
-/* OPEN CHECKIN MODAL */
-function openCheckin(preselectedRoom = null){
-  const readyRooms = data.rooms.filter(r => r.status === "Ready" || r.no == preselectedRoom);
-  if(readyRooms.length === 0){
-    toast("No rooms are currently Ready for check-in!");
-    return;
-  }
-
-  $("modalTitle").textContent = "New Guest Check-in";
-  $("modalBody").innerHTML = `
-    <div class="form">
-      <div>
-        <label>Select Room <span class="req">*</span></label>
-        <select id="mRoomSelect" onchange="calculateCheckinTotal()">
-          ${readyRooms.map(r=>`<option value="${r.no}" ${r.no == preselectedRoom ? 'selected':''}>Room ${r.no} - ${r.type} (${r.ac?'AC':'Non-AC'}) - ${money(r.price)}/night</option>`).join('')}
-        </select>
-      </div>
-      <div>
-        <label>Phone Number <span class="req">*</span></label>
-        <input id="mPhone" placeholder="Mobile / Phone" required>
-      </div>
-      <div>
-        <label>Check-in Date & Time <span class="req">*</span></label>
-        <input id="mCheckin" type="datetime-local" value="${dateTimeNowLocal()}" onchange="calculateCheckinTotal()">
-      </div>
-      <div>
-        <label>Expected Check-out <span class="req">*</span></label>
-        <input id="mCheckout" type="datetime-local" value="${dateTimeNowLocal()}" onchange="calculateCheckinTotal()">
-      </div>
-      <div>
-        <label>Number of Adults (18+)</label>
-        <select id="mAdults" onchange="updateGuestFormFields()">
-          <option value="1">1 Adult</option>
-          <option value="2">2 Adults</option>
-          <option value="3">3 Adults</option>
-          <option value="4">4 Adults</option>
-        </select>
-      </div>
-      <div>
-        <label>Number of Children (&lt;18)</label>
-        <select id="mChildren" onchange="updateGuestFormFields()">
-          <option value="0">0 Children</option>
-          <option value="1">1 Child</option>
-          <option value="2">2 Children</option>
-          <option value="3">3 Children</option>
-        </select>
-      </div>
-
-      <div class="span2" id="adultsContainer"></div>
-      <div class="span2" id="childrenContainer"></div>
-
-      <div>
-        <label>Occupation</label>
-        <input id="mOccupation" placeholder="Business, Service, etc.">
-      </div>
-      <div>
-        <label>Purpose of Visit</label>
-        <input id="mPurpose" placeholder="Tourism, Business, Personal">
-      </div>
-
-      <div class="span2 calc-box">
-        <div style="font-weight:800;margin-bottom:6px">Billing Summary</div>
-        <div id="mCalcInfo" style="font-size:13px;color:#475569;margin-bottom:8px">1 night rate calculated</div>
-        <div class="form">
-          <div>
-            <label>Total Room Charges (${data.settings.currency})</label>
-            <input id="mTotalAmount" type="number" value="0">
-          </div>
-          <div>
-            <label>Advance Payment (${data.settings.currency})</label>
-            <input id="mAdvancePaid" type="number" value="0">
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  $("saveModal").onclick = saveCheckin;
-  $("modalBg").classList.add("open");
+  const room = data.rooms.find(r=>r.no==roomNo);
+  const rate = room ? Number(room.price || 0) : 0;
   
-  // Set default dates & fields
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setMinutes(tomorrow.getMinutes() - tomorrow.getTimezoneOffset());
-  $("mCheckout").value = tomorrow.toISOString().slice(0,16);
+  $("mRoomRate").value = rate;
 
-  updateGuestFormFields();
-  calculateCheckinTotal();
-}
-
-function openCheckinForRoom(roomNo){
-  openCheckin(roomNo);
-}
-
-/* SAVE CHECKIN DATA */
-function saveCheckin(){
-  const roomNo = $("mRoomSelect").value;
-  const phone = $("mPhone").value.trim();
-  const checkin = $("mCheckin").value;
-  const checkout = $("mCheckout").value;
-  const adultsCount = parseInt($("mAdults").value);
-  const childrenCount = parseInt($("mChildren").value);
-  const totalAmount = Number($("mTotalAmount").value || 0);
-  const advancePaid = Number($("mAdvancePaid").value || 0);
-
-  const primaryName = $("adult_name_1")?.value.trim();
-  const primaryAge = $("adult_age_1")?.value.trim();
-  const primaryGender = $("adult_gender_1")?.value;
-  const primaryId = $("adult_id_1")?.value.trim();
-
-  if(!primaryName || !phone){
-    alert("Please fill in Primary Guest Name and Phone Number.");
+  if(!inStr || !outStr){
+    $("mDays").value = 1;
+    $("mEstTotal").value = rate;
+    $("mBalance").value = rate - advance;
     return;
   }
 
-  const resId = "RES" + Math.floor(1000 + Math.random() * 9000);
+  const d1 = new Date(inStr);
+  const d2 = new Date(outStr);
+  let diffTime = d2.getTime() - d1.getTime();
+  let diffDays = Math.ceil(diffTime / (1000 * 3600 * 24));
+  if(diffDays <= 0) diffDays = 1;
 
-  // Register Primary & Secondary Adult Guests
-  for(let i = 1; i <= adultsCount; i++){
-    const name = $(`adult_name_${i}`)?.value.trim() || `Adult ${i}`;
-    const age = Number($(`adult_age_${i}`)?.value || 25);
-    const gender = $(`adult_gender_${i}`)?.value || "Male";
-    const idno = $(`adult_id_${i}`)?.value.trim() || "-";
+  const total = rate * diffDays;
+  const balance = total - advance;
 
-    data.guests.push({
-      name,
-      age,
-      gender,
-      isMinor: false,
-      phone: i === 1 ? phone : "",
-      occupation: i === 1 ? $("mOccupation").value : "",
-      purpose: i === 1 ? $("mPurpose").value : "",
-      idtype: "Government ID",
-      idno
-    });
-  }
-
-  // Register Child Guests
-  for(let j = 1; j <= childrenCount; j++){
-    const name = $(`child_name_${j}`)?.value.trim() || `Child ${j}`;
-    const age = Number($(`child_age_${j}`)?.value || 8);
-    const gender = $(`child_gender_${j}`)?.value || "Male";
-
-    data.guests.push({
-      name,
-      age,
-      gender,
-      isMinor: true,
-      phone: "",
-      occupation: "Student",
-      purpose: "Family Stay",
-      idtype: "Minor / No ID",
-      idno: "-"
-    });
-  }
-
-  // Save Reservation
-  const newRes = {
-    id: resId,
-    guest: primaryName,
-    phone,
-    age: primaryAge,
-    gender: primaryGender,
-    adults: adultsCount,
-    children: childrenCount,
-    room: roomNo,
-    checkin,
-    checkout,
-    totalAmount,
-    advancePaid,
-    status: "Checked In"
-  };
-
-  data.reservations.push(newRes);
-
-  // Mark room occupied
-  const roomObj = data.rooms.find(r => r.no == roomNo);
-  if(roomObj) roomObj.status = "Occupied";
-
-  // Log Advance Income
-  if(advancePaid > 0){
-    data.transactions.push({
-      date: dateNow(),
-      type: "Income",
-      category: "Room Check-in Advance",
-      desc: `Advance payment from ${primaryName} for Room ${roomNo}`,
-      amount: advancePaid,
-      method: "Cash/Card"
-    });
-  }
-
-  closeModal();
-  persist();
-  toast(`Check-in complete for ${primaryName} in Room ${roomNo}`);
+  $("mDays").value = diffDays;
+  $("mEstTotal").value = total;
+  $("mBalance").value = balance;
 }
 
-/* CHECKOUT PROCESS */
-function openCheckoutModal(resId){
-  const res = data.reservations.find(r => r.id === resId);
-  if(!res) return;
-
-  const due = Math.max(0, res.totalAmount - res.advancePaid);
-
-  $("modalTitle").textContent = "Process Room Check-Out";
-  $("modalBody").innerHTML = `
-    <div class="invoice-box">
-      <h3>Checkout Summary - Room ${res.room}</h3>
-      <div class="invoice-row"><span>Guest Name:</span><b>${res.guest}</b></div>
-      <div class="invoice-row"><span>Check-in:</span><span>${formatDisplayDate(res.checkin)}</span></div>
-      <div class="invoice-row"><span>Check-out:</span><span>${dateTimeNowLocal().replace('T',' ')}</span></div>
-      <div class="invoice-row"><span>Total Rent:</span><b>${money(res.totalAmount)}</b></div>
-      <div class="invoice-row"><span>Advance Paid:</span><span>${money(res.advancePaid)}</span></div>
-      <div class="invoice-row invoice-total">
-        <span>Balance Due:</span>
-        <span class="${due > 0 ? 'invoice-due':''}">${money(due)}</span>
-      </div>
-    </div>
-    <div class="form" style="margin-top:16px">
-      <div>
-        <label>Settlement Payment Received (${data.settings.currency})</label>
-        <input id="mSettlePaid" type="number" value="${due}">
-      </div>
-      <div>
-        <label>Payment Method</label>
-        <select id="mSettleMethod">
-          <option>Cash</option>
-          <option>UPI / Online</option>
-          <option>Credit/Debit Card</option>
-        </select>
-      </div>
-    </div>
-  `;
-
-  $("saveModal").onclick = () => confirmCheckout(resId);
-  $("modalBg").classList.add("open");
-}
-
-function confirmCheckout(resId){
-  const res = data.reservations.find(r => r.id === resId);
-  if(!res) return;
-
-  const settledAmount = Number($("mSettlePaid").value || 0);
-  const paymentMethod = $("mSettleMethod").value;
-
-  res.status = "Checked Out";
-  res.checkout = dateTimeNowLocal();
-
-  // Update room status to Cleaning
-  const rm = data.rooms.find(r => r.no == res.room);
-  if(rm) rm.status = "Cleaning";
-
-  // Log Settlement Transaction
-  if(settledAmount > 0){
-    data.transactions.push({
-      date: dateNow(),
-      type: "Income",
-      category: "Room Checkout Payment",
-      desc: `Final checkout payment from ${res.guest} (Room ${res.room})`,
-      amount: settledAmount,
-      method: paymentMethod
-    });
-  }
-
-  // Create Invoice Record
-  const billId = "INV" + Math.floor(1000 + Math.random() * 9000);
-  const grandPaid = res.advancePaid + settledAmount;
-  data.bills.push({
-    id: billId,
-    resId: res.id,
-    guest: res.guest,
-    room: res.room,
-    date: dateNow(),
-    total: res.totalAmount,
-    paid: grandPaid,
-    due: Math.max(0, res.totalAmount - grandPaid)
-  });
-
-  closeModal();
-  persist();
-  toast(`Checked out Room ${res.room}. Room sent to Housekeeping.`);
-}
-
-/* INVOICE MODAL VIEW */
-function viewInvoiceByResId(resId){
-  const bill = data.bills.find(b => b.resId === resId);
-  if(bill){
-    renderInvoiceModal(bill.id);
-  } else {
-    toast("No invoice record found for this stay.");
-  }
-}
-
-function renderInvoiceModal(billId){
-  const bill = data.bills.find(b => b.id === billId);
-  if(!bill) return;
-
-  $("modalTitle").textContent = "Tax Invoice / Bill Receipt";
-  $("modalBody").innerHTML = `
-    <div class="invoice-box" id="printArea">
-      <div style="text-align:center;margin-bottom:20px">
-        <h2 style="margin:0">${data.settings.name}</h2>
-        <p style="margin:4px 0;color:#64748b">${data.settings.address} | Phone: ${data.settings.phone}</p>
-        <hr style="border:0;border-top:1px dashed #cbd5e1;margin:12px 0">
-      </div>
-      <div class="invoice-row"><span>Invoice No:</span><b>${bill.id}</b></div>
-      <div class="invoice-row"><span>Date:</span><span>${bill.date}</span></div>
-      <div class="invoice-row"><span>Guest Name:</span><b>${bill.guest}</b></div>
-      <div class="invoice-row"><span>Room Number:</span><span>Room ${bill.room}</span></div>
-      <hr style="border:0;border-top:1px dashed #cbd5e1;margin:12px 0">
-      <div class="invoice-row"><span>Room Stay Charges:</span><span>${money(bill.total)}</span></div>
-      <div class="invoice-row"><span>Total Paid:</span><span style="color:#16a34a;font-weight:700">${money(bill.paid)}</span></div>
-      <div class="invoice-row invoice-total">
-        <span>Balance Due:</span>
-        <span class="${bill.due > 0 ? 'invoice-due':''}">${money(bill.due)}</span>
-      </div>
-    </div>
-  `;
-
-  $("modalFoot").innerHTML = `
-    <button class="secondary" onclick="closeModal()">Close</button>
-    <button class="btn-invoice" onclick="window.print()">🖨️ Print Invoice</button>
-  `;
-  $("modalBg").classList.add("open");
-}
-
-/* GENERAL MODAL ROUTER FOR OTHER ACTIONS */
-function openModal(type){
-  $("modalFoot").innerHTML = `
-    <button class="secondary" onclick="closeModal()">Cancel</button>
-    <button class="primary" id="saveModal">Save & Submit</button>
-  `;
-
-  if(type === 'room'){
-    $("modalTitle").textContent = "Add New Room";
-    $("modalBody").innerHTML = `
-      <div class="form">
-        <div>
-          <label>Room Number <span class="req">*</span></label>
-          <input id="mRoomNo" type="number" placeholder="106">
-        </div>
-        <div>
-          <label>Room Type</label>
-          <select id="mRoomType">
-            <option>Standard</option>
-            <option>Deluxe</option>
-            <option>Suite</option>
-            <option>Executive</option>
-          </select>
-        </div>
-        <div>
-          <label>Air Conditioning (AC)</label>
-          <select id="mRoomAc">
-            <option value="true">AC Room</option>
-            <option value="false">Non-AC Room</option>
-          </select>
-        </div>
-        <div>
-          <label>Nightly Rate (${data.settings.currency})</label>
-          <input id="mRoomPrice" type="number" placeholder="1500">
-        </div>
-      </div>
-    `;
-    $("saveModal").onclick = saveNewRoom;
-  } else if(type === 'guest'){
-    $("modalTitle").textContent = "Register Guest Details";
-    $("modalBody").innerHTML = `
-      <div class="form">
-        <div>
-          <label>Full Name <span class="req">*</span></label>
-          <input id="mGName" placeholder="Name">
-        </div>
-        <div>
-          <label>Age <span class="req">*</span></label>
-          <input id="mAge" type="number" oninput="evaluateGuestAge()">
-        </div>
-        <div>
-          <label>Category</label>
-          <input id="mAgeCategory" readonly style="background:#f1f5f9">
-        </div>
-        <div>
-          <label>Gender</label>
-          <select id="mGGender"><option>Male</option><option>Female</option><option>Other</option></select>
-        </div>
-        <div>
-          <label>Phone</label>
-          <input id="mGPhone" placeholder="Mobile">
-        </div>
-        <div>
-          <label>ID Proof Number</label>
-          <input id="mGID" placeholder="Aadhaar / Passport">
-        </div>
-      </div>
-    `;
-    $("saveModal").onclick = saveNewGuest;
-  } else if(type === 'staff'){
-    $("modalTitle").textContent = "Add Staff Member";
-    $("modalBody").innerHTML = `
-      <div class="form">
-        <div><label>Staff Name</label><input id="mSName"></div>
-        <div><label>Department</label><input id="mSDept" placeholder="Front Desk / Housekeeping"></div>
-        <div><label>Role</label><input id="mSRole" placeholder="Manager / Cleaner"></div>
-        <div><label>Salary (${data.settings.currency})</label><input id="mSSalary" type="number"></div>
-      </div>
-    `;
-    $("saveModal").onclick = saveNewStaff;
-  } else if(type === 'transaction'){
-    $("modalTitle").textContent = "Log Financial Transaction";
-    $("modalBody").innerHTML = `
-      <div class="form">
-        <div><label>Transaction Type</label><select id="mTType"><option>Income</option><option>Expense</option></select></div>
-        <div><label>Category</label><input id="mTCat" placeholder="Supplies, Laundry, Maintenance, Rent"></div>
-        <div><label>Amount (${data.settings.currency})</label><input id="mTAmount" type="number"></div>
-        <div><label>Payment Method</label><select id="mTMethod"><option>Cash</option><option>UPI / Online</option><option>Bank Transfer</option></select></div>
-        <div class="span2"><label>Description</label><input id="mTDesc"></div>
-      </div>
-    `;
-    $("saveModal").onclick = saveTransaction;
-  } else if(type === 'maintenance'){
-    $("modalTitle").textContent = "Report Maintenance Issue";
-    $("modalBody").innerHTML = `
-      <div class="form">
-        <div>
-          <label>Select Room</label>
-          <select id="mMaintRoom">
-            ${data.rooms.map(r=>`<option value="${r.no}">Room ${r.no}</option>`).join('')}
-          </select>
-        </div>
-        <div><label>Priority</label><select id="mMaintPrio"><option>Low</option><option>Medium</option><option>High</option><option>Urgent</option></select></div>
-        <div class="span2"><label>Issue Description</label><textarea id="mMaintDesc" rows="3" placeholder="AC not cooling, Plumbing leak, etc."></textarea></div>
-      </div>
-    `;
-    $("saveModal").onclick = saveMaintenance;
-  } else if(type === 'bill'){
-    $("modalTitle").textContent = "Create Manual Custom Bill";
-    $("modalBody").innerHTML = `
-      <div class="form">
-        <div><label>Guest Name</label><input id="mBGuest"></div>
-        <div><label>Room No</label><input id="mBRoom"></div>
-        <div><label>Total Amount (${data.settings.currency})</label><input id="mBTotal" type="number"></div>
-        <div><label>Amount Paid (${data.settings.currency})</label><input id="mBPaid" type="number"></div>
-      </div>
-    `;
-    $("saveModal").onclick = saveManualBill;
-  }
-
+/* MODAL SYSTEM ENGINE */
+function openModal(type, title, saveFn){
+  $("modalTitle").textContent = title;
+  $("saveModal").onclick = saveFn;
   $("modalBg").classList.add("open");
 }
 
@@ -1730,138 +1233,493 @@ function closeModal(){
   $("modalBg").classList.remove("open");
 }
 
-/* SAVE HANDLERS FOR OTHER ENTITIES */
-function saveNewRoom(){
-  const no = Number($("mRoomNo").value);
-  const type = $("mRoomType").value;
-  const ac = $("mRoomAc").value === "true";
-  const price = Number($("mRoomPrice").value || 0);
+/* NEW CHECK-IN MODAL */
+function openCheckin(){
+  const readyRooms = data.rooms.filter(r=>r.status==="Ready");
+  if(!readyRooms.length){
+    toast("No rooms currently marked as 'Ready' for Check-in!");
+    return;
+  }
 
-  if(!no){ alert("Enter room number"); return; }
-  data.rooms.push({ no, type, ac, beds: 1, price, status: "Ready" });
-  closeModal();
-  persist();
-  toast(`Room ${no} added successfully`);
+  $("modalBody").innerHTML = `
+    <div class="form">
+      <div>
+        <label>Primary Guest Name <span class="req">*</span></label>
+        <input id="mName" placeholder="Full name">
+      </div>
+      <div>
+        <label>Phone Number <span class="req">*</span></label>
+        <input id="mPhone" placeholder="10-digit phone number">
+      </div>
+      <div>
+        <label>Age <span class="req">*</span></label>
+        <input id="mAge" type="number" oninput="evaluateGuestAge()" placeholder="Years">
+      </div>
+      <div>
+        <label>Category (Auto-detected)</label>
+        <input id="mAgeCategory" readonly style="background:#f1f5f9;font-weight:700">
+      </div>
+      <div>
+        <label>Gender</label>
+        <select id="mGender">
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label>Occupation</label>
+        <input id="mOccupation" placeholder="e.g. Engineer, Business">
+      </div>
+      <div>
+        <label>Purpose of Visit</label>
+        <input id="mPurpose" placeholder="e.g. Tourism, Business">
+      </div>
+      <div>
+        <label>ID Proof Type</label>
+        <select id="mIdType">
+          <option>Aadhaar Card</option>
+          <option>Passport</option>
+          <option>Driving License</option>
+          <option>Voter ID</option>
+        </select>
+      </div>
+      <div class="span2">
+        <label>ID Proof Number / Details</label>
+        <input id="mIdNo" placeholder="Document ID number">
+      </div>
+      
+      <div class="span2" style="border-top:2px dashed #cbd5e1;margin-top:10px;padding-top:10px">
+        <b style="color:#4f46e5">Room Selection & Stay Info</b>
+      </div>
+
+      <div>
+        <label>Select Room <span class="req">*</span></label>
+        <select id="mRoom" onchange="calculateCheckinTotals()">
+          ${readyRooms.map(r=>`<option value="${r.no}">Room ${r.no} (${r.type} - ${money(r.price)}/day)</option>`).join("")}
+        </select>
+      </div>
+      <div>
+        <label>Room Rate per Day</label>
+        <input id="mRoomRate" readonly style="background:#f1f5f9">
+      </div>
+      <div>
+        <label>Adults</label>
+        <input id="mAdults" type="number" value="1">
+      </div>
+      <div>
+        <label>Children</label>
+        <input id="mChildren" type="number" value="0">
+      </div>
+      <div>
+        <label>Check-In Date/Time</label>
+        <input id="mCheckin" type="datetime-local" value="${dateTimeNowLocal()}" onchange="calculateCheckinTotals()">
+      </div>
+      <div>
+        <label>Expected Check-Out Date/Time</label>
+        <input id="mCheckout" type="datetime-local" onchange="calculateCheckinTotals()">
+      </div>
+
+      <div class="span2 calc-box">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+          <div>
+            <label>Estimated Days</label>
+            <input id="mDays" readonly style="font-weight:800">
+          </div>
+          <div>
+            <label>Estimated Total</label>
+            <input id="mEstTotal" readonly style="font-weight:800">
+          </div>
+          <div>
+            <label>Advance Payment</label>
+            <input id="mAdvance" type="number" value="0" oninput="calculateCheckinTotals()">
+          </div>
+        </div>
+        <div style="margin-top:10px;text-align:right">
+          <b>Estimated Due Balance: </b><span id="mBalance" style="font-size:18px;font-weight:900;color:#dc2626">₹0</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Set default checkout (tomorrow)
+  let tmr = new Date();
+  tmr.setDate(tmr.getDate() + 1);
+  tmr.setMinutes(tmr.getMinutes() - tmr.getTimezoneOffset());
+  $("mCheckout").value = tmr.toISOString().slice(0,16);
+
+  calculateCheckinTotals();
+  openModal('checkin', 'New Guest Registration & Room Check-In', saveCheckin);
 }
 
-function saveNewGuest(){
-  const name = $("mGName").value.trim();
-  const age = Number($("mAge").value);
-  const isMinor = age < 18;
-
-  if(!name){ alert("Enter guest name"); return; }
-  data.guests.push({
-    name,
-    age,
-    gender: $("mGGender").value,
-    isMinor,
-    phone: $("mGPhone").value,
-    idtype: isMinor ? "Minor / No ID" : "Government ID",
-    idno: $("mGID").value || "-"
-  });
-  closeModal();
-  persist();
-  toast("Guest registered in directory");
-}
-
-function saveNewStaff(){
-  const name = $("mSName").value;
-  if(!name) return;
-  data.staff.push({
-    id: "S" + Math.floor(100 + Math.random()*900),
-    name,
-    dept: $("mSDept").value || "General",
-    role: $("mSRole").value || "Staff",
-    attendance: "Present",
-    salary: Number($("mSSalary").value || 0),
-    paid: "No"
-  });
-  closeModal();
-  persist();
-  toast("Staff member added");
-}
-
-function saveTransaction(){
-  const amount = Number($("mTAmount").value || 0);
-  if(!amount) return;
-  data.transactions.push({
-    date: dateNow(),
-    type: $("mTType").value,
-    category: $("mTCat").value || "General",
-    desc: $("mTDesc").value,
-    amount,
-    method: $("mTMethod").value
-  });
-  closeModal();
-  persist();
-  toast("Transaction recorded");
-}
-
-function saveMaintenance(){
-  const room = $("mMaintRoom").value;
-  const problem = $("mMaintDesc").value;
-  if(!problem) return;
-
-  data.maintenance.push({
-    id: "MNT" + Math.floor(100 + Math.random()*900),
-    room,
-    problem,
-    priority: $("mMaintPrio").value,
-    status: "Pending"
-  });
-
-  const rm = data.rooms.find(r => r.no == room);
-  if(rm) rm.status = "Maintenance";
-
-  closeModal();
-  persist();
-  toast(`Maintenance ticket raised for Room ${room}`);
-}
-
-function saveManualBill(){
-  const total = Number($("mBTotal").value || 0);
-  const paid = Number($("mBPaid").value || 0);
-  data.bills.push({
-    id: "INV" + Math.floor(1000 + Math.random()*9000),
-    guest: $("mBGuest").value || "Walk-in Guest",
-    room: $("mBRoom").value || "-",
-    date: dateNow(),
-    total,
-    paid,
-    due: Math.max(0, total - paid)
-  });
-  closeModal();
-  persist();
-  toast("Manual bill generated");
-}
-
-/* QUICK ROOM / HOUSEKEEPING ACTIONS */
-function markRoomCleaned(roomNo){
-  setRoomStatus(roomNo, "Ready");
-  toast(`Room ${roomNo} cleaned and set to Ready`);
-}
-
-function setRoomStatus(roomNo, status){
-  const rm = data.rooms.find(r => r.no == roomNo);
-  if(rm){
-    rm.status = status;
-    persist();
+function openCheckinForRoom(roomNo){
+  openCheckin();
+  if($("mRoom")) {
+    $("mRoom").value = roomNo;
+    calculateCheckinTotals();
   }
 }
 
+function saveCheckin(){
+  const name = $("mName").value.trim();
+  const phone = $("mPhone").value.trim();
+  const age = Number($("mAge").value);
+  const roomNo = Number($("mRoom").value);
+
+  if(!name || !phone || !age || !roomNo){
+    toast("Please fill in all required fields (*)");
+    return;
+  }
+
+  const isMinor = age < 18;
+  const resId = "RES" + Math.floor(1000 + Math.random() * 9000);
+  const estTotal = Number($("mEstTotal").value || 0);
+  const advance = Number($("mAdvance").value || 0);
+
+  const reservation = {
+    id: resId,
+    guest: name,
+    phone: phone,
+    age: age,
+    gender: $("mGender").value,
+    adults: Number($("mAdults").value||1),
+    children: Number($("mChildren").value||0),
+    room: roomNo,
+    checkin: $("mCheckin").value,
+    checkout: $("mCheckout").value,
+    totalAmount: estTotal,
+    advancePaid: advance,
+    status: "Checked In"
+  };
+
+  data.reservations.push(reservation);
+
+  let existingGuest = data.guests.find(g=>g.phone === phone);
+  if(!existingGuest){
+    data.guests.push({
+      name: name,
+      phone: phone,
+      age: age,
+      gender: $("mGender").value,
+      isMinor: isMinor,
+      occupation: $("mOccupation").value,
+      purpose: $("mPurpose").value,
+      idtype: $("mIdType").value,
+      idno: $("mIdNo").value
+    });
+  }
+
+  // Update room status
+  let room = data.rooms.find(r=>r.no === roomNo);
+  if(room) room.status = "Occupied";
+
+  // Log transaction if advance paid
+  if(advance > 0){
+    data.transactions.push({
+      date: dateNow(),
+      type: "Income",
+      category: "Room Advance",
+      desc: `Advance payment for Room ${roomNo} (${name})`,
+      amount: advance,
+      method: "Cash"
+    });
+  }
+
+  persist();
+  closeModal();
+  toast(`Check-in complete for ${name} (Room ${roomNo})`);
+}
+
+/* CHECKOUT SYSTEM */
+function openCheckoutModal(resId){
+  const res = data.reservations.find(r=>r.id===resId);
+  if(!res) return;
+
+  const due = res.totalAmount - res.advancePaid;
+
+  $("modalBody").innerHTML = `
+    <div class="invoice-box">
+      <h3>Checkout Summary - ${res.guest}</h3>
+      <div class="invoice-row"><span>Room Number:</span> <b>Room ${res.room}</b></div>
+      <div class="invoice-row"><span>Check-in Date:</span> <span>${formatDisplayDate(res.checkin)}</span></div>
+      <div class="invoice-row"><span>Check-out Date:</span> <span>${dateTimeNowLocal().replace("T"," ")}</span></div>
+      <div class="invoice-row"><span>Total Room Fee:</span> <b>${money(res.totalAmount)}</b></div>
+      <div class="invoice-row"><span>Advance Paid:</span> <span style="color:#16a34a">-${money(res.advancePaid)}</span></div>
+      <div class="invoice-total invoice-row">
+        <span>Balance Remaining:</span>
+        <span class="${due > 0 ? 'invoice-due':''}">${money(due)}</span>
+      </div>
+      ${due > 0 ? `
+        <div style="margin-top:16px">
+          <label>Payment Method for Outstanding Balance</label>
+          <select id="mPayMethod">
+            <option>Cash</option>
+            <option>UPI / QR</option>
+            <option>Credit/Debit Card</option>
+          </select>
+        </div>
+      `:''}
+    </div>
+  `;
+
+  openModal('checkout', `Check Out Room ${res.room}`, ()=>confirmCheckout(resId));
+}
+
+function confirmCheckout(resId){
+  const res = data.reservations.find(r=>r.id===resId);
+  if(!res) return;
+
+  const due = res.totalAmount - res.advancePaid;
+  const payMethod = $("mPayMethod") ? $("mPayMethod").value : "Cash";
+
+  res.status = "Checked Out";
+
+  // Room goes to housekeeping
+  let room = data.rooms.find(r=>r.no == res.room);
+  if(room) room.status = "Cleaning";
+
+  // Create invoice record
+  const billId = "INV" + Math.floor(1000 + Math.random() * 9000);
+  data.bills.push({
+    id: billId,
+    resId: res.id,
+    guest: res.guest,
+    room: res.room,
+    date: dateNow(),
+    total: res.totalAmount,
+    paid: res.totalAmount,
+    due: 0
+  });
+
+  // Log final transaction
+  if(due > 0){
+    data.transactions.push({
+      date: dateNow(),
+      type: "Income",
+      category: "Room Final Checkout",
+      desc: `Settlement balance for Room ${res.room} (${res.guest})`,
+      amount: due,
+      method: payMethod
+    });
+  }
+
+  persist();
+  closeModal();
+  toast(`Guest ${res.guest} checked out. Room ${res.room} sent to cleaning.`);
+}
+
+/* ROOM & GUEST CREATION MODALS */
+function setRoomStatus(no, status){
+  let r = data.rooms.find(x=>x.no == no);
+  if(r){
+    r.status = status;
+    persist();
+    toast(`Room ${no} status updated to ${status}`);
+  }
+}
+
+function markRoomCleaned(no){
+  setRoomStatus(no, "Ready");
+}
+
+/* INVOICE VIEWING */
+function viewInvoiceByResId(resId){
+  const bill = data.bills.find(b=>b.resId===resId);
+  if(bill){
+    renderInvoiceModal(bill.id);
+  } else {
+    toast("Invoice record generation pending.");
+  }
+}
+
+function renderInvoiceModal(billId){
+  const bill = data.bills.find(b=>b.id===billId);
+  if(!bill) return;
+
+  $("modalBody").innerHTML = `
+    <div class="invoice-box" id="printArea">
+      <div style="display:flex;justify-content:space-between;border-bottom:2px solid #cbd5e1;padding-bottom:12px">
+        <div>
+          <h2 style="margin:0">${data.settings.name}</h2>
+          <small>${data.settings.address} | Phone: ${data.settings.phone}</small>
+        </div>
+        <div style="text-align:right">
+          <h3 style="margin:0;color:#4f46e5">${bill.id}</h3>
+          <small>Date: ${bill.date}</small>
+        </div>
+      </div>
+      <br>
+      <div class="invoice-row"><span>Billed To:</span> <b>${bill.guest}</b></div>
+      <div class="invoice-row"><span>Assigned Room:</span> <b>Room ${bill.room}</b></div>
+      <hr>
+      <div class="invoice-row"><span>Room & Services Subtotal:</span> <span>${money(bill.total)}</span></div>
+      <div class="invoice-row"><span>Total Amount Paid:</span> <span style="color:#16a34a">${money(bill.paid)}</span></div>
+      <div class="invoice-total invoice-row">
+        <span>Balance Due:</span>
+        <span>${money(bill.due)}</span>
+      </div>
+    </div>
+  `;
+
+  openModal('invoice', 'Invoice Details', ()=>window.print());
+  $("saveModal").textContent = "🖨️ Print Invoice";
+}
+
+/* TRANSACTIONS, MAINTENANCE & OTHER FORMS */
+function openModalType(type){
+  if(type==='room'){
+    $("modalBody").innerHTML=`
+      <div class="form">
+        <div><label>Room Number</label><input id="mRoomNo" type="number"></div>
+        <div><label>Type</label><select id="mRoomType"><option>Standard</option><option>Deluxe</option><option>Suite</option></select></div>
+        <div><label>Bed Count</label><input id="mBeds" type="number" value="1"></div>
+        <div><label>Daily Rate (${data.settings.currency})</label><input id="mPrice" type="number"></div>
+      </div>
+    `;
+    openModal('room', 'Add New Room', ()=>{
+      data.rooms.push({
+        no: Number($("mRoomNo").value),
+        type: $("mRoomType").value,
+        ac: true,
+        beds: Number($("mBeds").value),
+        price: Number($("mPrice").value),
+        status: "Ready"
+      });
+      persist(); closeModal(); toast("Room added!");
+    });
+  }
+  else if(type==='transaction'){
+    $("modalBody").innerHTML=`
+      <div class="form">
+        <div><label>Type</label><select id="mTxType"><option>Expense</option><option>Income</option></select></div>
+        <div><label>Category</label><input id="mTxCat" placeholder="e.g. Utilities, Supplies"></div>
+        <div><label>Amount</label><input id="mTxAmt" type="number"></div>
+        <div><label>Payment Method</label><select id="mTxMethod"><option>Cash</option><option>Bank Transfer</option><option>Card</option></select></div>
+        <div class="span2"><label>Description</label><input id="mTxDesc"></div>
+      </div>
+    `;
+    openModal('transaction', 'Log Financial Transaction', ()=>{
+      data.transactions.push({
+        date: dateNow(),
+        type: $("mTxType").value,
+        category: $("mTxCat").value,
+        amount: Number($("mTxAmt").value),
+        method: $("mTxMethod").value,
+        desc: $("mTxDesc").value
+      });
+      persist(); closeModal(); toast("Transaction logged!");
+    });
+  }
+  else if(type==='maintenance'){
+    $("modalBody").innerHTML=`
+      <div class="form">
+        <div><label>Room Number</label><input id="mMaintRoom" type="number"></div>
+        <div><label>Priority</label><select id="mMaintPrio"><option>Low</option><option>Medium</option><option>High</option></select></div>
+        <div class="span2"><label>Issue Description</label><textarea id="mMaintDesc" rows="3"></textarea></div>
+      </div>
+    `;
+    openModal('maintenance', 'Report Room Maintenance', ()=>{
+      const roomNo = Number($("mMaintRoom").value);
+      const mId = "M" + Math.floor(100 + Math.random() * 900);
+      data.maintenance.push({
+        id: mId,
+        room: roomNo,
+        problem: $("mMaintDesc").value,
+        priority: $("mMaintPrio").value,
+        status: "Pending"
+      });
+      let room = data.rooms.find(r=>r.no === roomNo);
+      if(room) room.status = "Maintenance";
+      persist(); closeModal(); toast("Maintenance issue logged.");
+    });
+  }
+  else if(type==='staff'){
+    $("modalBody").innerHTML=`
+      <div class="form">
+        <div><label>Staff Name</label><input id="mSName"></div>
+        <div><label>Department</label><input id="mSDept"></div>
+        <div><label>Role</label><input id="mSRole"></div>
+        <div><label>Monthly Salary</label><input id="mSSalary" type="number"></div>
+      </div>
+    `;
+    openModal('staff', 'Add New Staff Member', ()=>{
+      data.staff.push({
+        id: "S" + Math.floor(100 + Math.random() * 900),
+        name: $("mSName").value,
+        dept: $("mSDept").value,
+        role: $("mSRole").value,
+        salary: Number($("mSSalary").value),
+        attendance: "Present",
+        paid: "No"
+      });
+      persist(); closeModal(); toast("Staff member added!");
+    });
+  }
+  else if(type==='guest'){
+    $("modalBody").innerHTML=`
+      <div class="form">
+        <div><label>Guest Name</label><input id="mGName"></div>
+        <div><label>Phone</label><input id="mGPhone"></div>
+        <div><label>Age</label><input id="mGAge" type="number"></div>
+        <div><label>Gender</label><select id="mGGender"><option>Male</option><option>Female</option></select></div>
+      </div>
+    `;
+    openModal('guest', 'Add Guest to Directory', ()=>{
+      data.guests.push({
+        name: $("mGName").value,
+        phone: $("mGPhone").value,
+        age: Number($("mGAge").value),
+        gender: $("mGGender").value,
+        isMinor: Number($("mGAge").value) < 18
+      });
+      persist(); closeModal(); toast("Guest profile saved!");
+    });
+  }
+  else if(type==='bill'){
+    $("modalBody").innerHTML=`
+      <div class="form">
+        <div><label>Guest Name</label><input id="mBName"></div>
+        <div><label>Room Number</label><input id="mBRoom" type="number"></div>
+        <div><label>Total Amount</label><input id="mBTotal" type="number"></div>
+        <div><label>Amount Paid</label><input id="mBPaid" type="number"></div>
+      </div>
+    `;
+    openModal('bill', 'Create Manual Bill', ()=>{
+      const tot = Number($("mBTotal").value);
+      const pd = Number($("mBPaid").value);
+      data.bills.push({
+        id: "INV" + Math.floor(1000 + Math.random() * 9000),
+        guest: $("mBName").value,
+        room: Number($("mBRoom").value),
+        date: dateNow(),
+        total: tot,
+        paid: pd,
+        due: tot - pd
+      });
+      persist(); closeModal(); toast("Custom bill created!");
+    });
+  }
+}
+
+// Global modal router wrapper
+window.openModal = function(type){
+  openModalType(type);
+};
+
+/* HELPER ACTIONS */
 function completeMaintenance(id){
-  const m = data.maintenance.find(x => x.id === id);
+  let m = data.maintenance.find(x=>x.id===id);
   if(m){
     m.status = "Completed";
-    const rm = data.rooms.find(r => r.no == m.room);
-    if(rm && rm.status === "Maintenance") rm.status = "Ready";
+    let r = data.rooms.find(x=>x.no == m.room);
+    if(r) r.status = "Ready";
     persist();
-    toast("Maintenance issue resolved");
+    toast("Maintenance issue resolved!");
   }
 }
 
 function toggleAttendance(id){
-  const s = data.staff.find(x => x.id === id);
+  let s = data.staff.find(x=>x.id===id);
   if(s){
     s.attendance = s.attendance === "Present" ? "Absent" : "Present";
     persist();
@@ -1869,7 +1727,7 @@ function toggleAttendance(id){
 }
 
 function toggleSalary(id){
-  const s = data.staff.find(x => x.id === id);
+  let s = data.staff.find(x=>x.id===id);
   if(s){
     s.paid = s.paid === "Yes" ? "No" : "Yes";
     persist();
@@ -1879,22 +1737,21 @@ function toggleSalary(id){
 function viewGuestDetails(idx){
   const g = data.guests[idx];
   if(!g) return;
-  alert(`Guest Details:\n\nName: ${g.name}\nAge: ${g.age} (${g.isMinor ? 'Minor' : 'Adult'})\nGender: ${g.gender}\nPhone: ${g.phone}\nID Proof: ${g.idtype} - ${g.idno}\nOccupation: ${g.occupation||'-'}\nPurpose: ${g.purpose||'-'}`);
+  alert(`Guest Details:\nName: ${g.name}\nAge: ${g.age}\nPhone: ${g.phone}\nID Proof: ${g.idtype || '-'} (${g.idno || '-'})`);
 }
 
-/* SETTINGS & SYSTEM UTILS */
 function saveSettings(){
   data.settings.name = $("hotelName").value;
   data.settings.currency = $("currency").value;
-  data.settings.tax = Number($("tax").value);
+  data.settings.tax = $("tax").value;
   data.settings.phone = $("hotelPhone").value;
   data.settings.address = $("hotelAddress").value;
   persist();
-  toast("Settings saved successfully");
+  toast("Settings saved successfully!");
 }
 
 function backup(){
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = `hotelpro_backup_${dateNow()}.json`;
@@ -1906,28 +1763,18 @@ function resetData(){
     localStorage.removeItem(KEY);
     data = JSON.parse(JSON.stringify(initial));
     persist();
-    toast("Data reset to factory defaults");
+    toast("System reset complete.");
   }
 }
 
-/* INITIALIZATION */
-function init(){
-  $("hotelName").value = data.settings.name;
-  $("currency").value = data.settings.currency;
-  $("tax").value = data.settings.tax;
-  $("hotelPhone").value = data.settings.phone;
-  $("hotelAddress").value = data.settings.address;
-
-  // Clock
-  setInterval(()=>{
-    const d = new Date();
-    $("clock").textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  }, 1000);
-
-  render();
-}
-
-init();
+// Initial settings load
+window.onload = function(){
+  if($("hotelName")) $("hotelName").value = data.settings.name;
+  if($("currency")) $("currency").value = data.settings.currency;
+  if($("tax")) $("tax").value = data.settings.tax;
+  if($("hotelPhone")) $("hotelPhone").value = data.settings.phone;
+  if($("hotelAddress")) $("hotelAddress").value = data.settings.address;
+};
 </script>
 </body>
 </html>

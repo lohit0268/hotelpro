@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HotelPro v9 - Complete Management Dashboard</title>
+    <title>HotelPro v9 - Master Management System</title>
     <style>
         :root {
             --primary: #0f172a;
@@ -327,8 +327,10 @@
             const otaGroup = document.getElementById('ota-id-group');
             if (source !== "Direct Walk-In") {
                 otaGroup.style.display = "flex";
+                document.getElementById('ota-booking-id').required = true;
             } else {
                 otaGroup.style.display = "none";
+                document.getElementById('ota-booking-id').required = false;
             }
         }
 
@@ -337,7 +339,9 @@
             document.querySelectorAll('#sidebar nav button').forEach(el => el.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
             
             const titles = {
                 dashboard: "Dashboard Overview",
@@ -363,9 +367,15 @@
             const nights = parseInt(document.getElementById('stay-nights').value);
             const notes = document.getElementById('guest-notes').value;
 
-            // Enforcement Rule: Age check block
+            // Enforcement Rule: Child check-in protection
             if (category === "Child") {
-                alert("Check-in Error: Minors cannot be checked in without an accompanying adult.");
+                alert("Check-in Error: Minors cannot be registered without an accompanying adult.");
+                return;
+            }
+
+            // Enforcement Rule: OTA Reference mandate
+            if (source !== "Direct Walk-In" && !otaId.trim()) {
+                alert("Check-in Error: OTA booking reference ID is required for online platform bookings.");
                 return;
             }
 
@@ -409,7 +419,7 @@
             const guest = state.guests.find(g => g.id === guestId);
             if (!guest) return;
 
-            if (confirm(`Confirm Check-Out for ${guest.name}? Total Bill: $${guest.totalBill}`)) {
+            if (confirm(`Confirm Check-Out for ${guest.name}?\n\nTotal Payment Settled: $${guest.totalBill}`)) {
                 guest.status = "Checked-Out";
                 const room = state.rooms.find(r => r.id === guest.roomId);
                 if (room) room.status = "available";
@@ -427,7 +437,7 @@
         }
 
         function resetSystem() {
-            if (confirm("Are you sure you want to clear all data and restore factory defaults?")) {
+            if (confirm("Are you sure you want to clear all data and restore default factory settings?")) {
                 localStorage.removeItem(KEY);
                 state = JSON.parse(JSON.stringify(defaultState));
                 saveState();

@@ -202,7 +202,7 @@ button{cursor:pointer;border:0;border-radius:10px;padding:12px 16px;font-weight:
 table{
   border-collapse:collapse;
   width:100%;
-  min-width:850px
+  min-width:950px
 }
 
 th,td{
@@ -346,7 +346,7 @@ th{
 .modalbg.open{display:flex}
 
 .modal{
-  width:min(850px,100%);
+  width:min(900px,100%);
   max-height:92vh;
   overflow:auto;
   background:#fff;
@@ -566,7 +566,8 @@ th{
           <thead>
             <tr>
               <th>Guest</th>
-              <th>Source / Booking ID</th>
+              <th>Age/Gender</th>
+              <th>Guests (A/C)</th>
               <th>Room</th>
               <th>Check-in</th>
               <th>Status</th>
@@ -611,11 +612,11 @@ th{
         <tr>
           <th>ID</th>
           <th>Guest Name</th>
-          <th>Source / Booking ID</th>
+          <th>Age / Gender</th>
+          <th>Adults / Children</th>
           <th>Room</th>
           <th>Check-in</th>
           <th>Expected Out</th>
-          <th>Days</th>
           <th>Total</th>
           <th>Paid</th>
           <th>Status</th>
@@ -672,12 +673,12 @@ th{
       <thead>
         <tr>
           <th>Name</th>
+          <th>Age / Gender</th>
+          <th>Category</th>
           <th>Phone</th>
-          <th>Email</th>
-          <th>Source / Booking ID</th>
-          <th>ID Type</th>
-          <th>ID Number</th>
-          <th>Last Room</th>
+          <th>Occupation</th>
+          <th>Purpose of Visit</th>
+          <th>ID Proof</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -878,15 +879,15 @@ th{
 <div id="toast" class="toast"></div>
 
 <script>
-const KEY="hotelpro_v8";
+const KEY="hotelpro_v9";
 
 const initial={
   rooms:[
-    {no:101,type:"Standard",ac:true,beds:1,price:1000,status:"Ready"},
-    {no:102,type:"Standard",ac:false,beds:1,price:1000,status:"Ready"},
-    {no:103,type:"Deluxe",ac:true,beds:2,price:2000,status:"Ready"},
-    {no:104,type:"Deluxe",ac:true,beds:2,price:2000,status:"Ready"},
-    {no:105,type:"Suite",ac:true,beds:3,price:3500,status:"Ready"}
+    {no:101,type:"Standard",ac:true,beds:1,price:null,status:"Ready"},
+    {no:102,type:"Standard",ac:false,beds:1,price:null,status:"Ready"},
+    {no:103,type:"Deluxe",ac:true,beds:2,price:null,status:"Ready"},
+    {no:104,type:"Deluxe",ac:true,beds:2,price:null,status:"Ready"},
+    {no:105,type:"Suite",ac:true,beds:3,price:null,status:"Ready"}
   ],
   reservations:[],
   guests:[],
@@ -997,11 +998,11 @@ function render(){
     <tr>
       <td><b>${r.id}</b></td>
       <td><b>${r.guest}</b><br><small class="muted">${r.phone||"-"}</small></td>
-      <td>${r.source==="Platform"?`💻 ${r.platform}<br><small><b>ID:</b> ${r.bookingId||'-'}</small>`:"🚶 Direct Walk-in"}</td>
+      <td>${r.age} yrs / ${r.gender}</td>
+      <td>👤 ${r.adults} Adult(s)<br>👶 ${r.children} Child(ren)</td>
       <td><b>Room ${r.room}</b></td>
       <td>${formatDisplayDate(r.checkin)}</td>
       <td>${formatDisplayDate(r.checkout)}</td>
-      <td>${r.days} Day(s)</td>
       <td>${money(r.totalAmount)}</td>
       <td>${money(r.advancePaid)}</td>
       <td>${badge(r.status)}</td>
@@ -1016,7 +1017,8 @@ function render(){
   $("dashTable").innerHTML=data.reservations.slice(-6).reverse().map(r=>`
     <tr>
       <td><b>${r.guest}</b><br><small class="muted">${r.phone||"-"}</small></td>
-      <td>${r.source==="Platform"?`💻 ${r.platform}<br><small><b>ID:</b> ${r.bookingId||'-'}</small>`:"🚶 Direct"}</td>
+      <td>${r.age} yrs / ${r.gender}</td>
+      <td>👤 ${r.adults} A / 👶 ${r.children} C</td>
       <td><b>Room ${r.room}</b></td>
       <td>${formatDisplayDate(r.checkin)}</td>
       <td>${badge(r.status)}</td>
@@ -1025,7 +1027,7 @@ function render(){
           r.status==="Checked Out"?`<button class="btn-invoice" onclick="viewInvoiceByResId('${r.id}')">🧾 Invoice</button>`:'-'}
       </td>
     </tr>
-  `).join("")||empty(6);
+  `).join("")||empty(7);
 
   /* ROOM MANAGEMENT CARDS */
   const count=s=>data.rooms.filter(r=>r.status===s).length;
@@ -1053,7 +1055,7 @@ function render(){
           </div>
           <div class="room-info">
             <div><b>Type</b><br>${r.type}</div>
-            <div><b>Rent/Day</b><br>${money(r.price)}</div>
+            <div><b>Rent/Day</b><br>${r.price ? money(r.price) : 'Not Fixed'}</div>
             <div style="grid-column:1/-1"><b>Status / Guest:</b><br>${activeRes?`<b>${activeRes.guest}</b> (${activeRes.phone})`:"Vacant Room"}</div>
           </div>
           <div class="room-actions">
@@ -1070,12 +1072,12 @@ function render(){
   $("guestTable").innerHTML=data.guests.map((g,idx)=>`
     <tr>
       <td><b>${g.name}</b></td>
+      <td>${g.age||"-"} yrs / ${g.gender||"-"}</td>
+      <td><b>${g.isMinor ? "👶 Child (Minor)" : "👤 Adult"}</b></td>
       <td>${g.phone||"-"}</td>
-      <td>${g.email||"-"}</td>
-      <td>${g.source==="Platform"?`💻 ${g.platform}<br><small><b>ID:</b> ${g.bookingId||'-'}</small>`:"🚶 Direct Walk-in"}</td>
-      <td>${g.idtype||"-"}</td>
-      <td><b>${g.idno||"-"}</b></td>
-      <td>Room ${g.room||"-"}</td>
+      <td>${g.occupation||"-"}</td>
+      <td>${g.purpose||"-"}</td>
+      <td><b>${g.idno||"-"}</b> (${g.idtype||"-"})</td>
       <td><button class="secondary" onclick="viewGuestDetails(${idx})">Details</button></td>
     </tr>
   `).join("")||empty(8);
@@ -1155,17 +1157,32 @@ function render(){
   $("summary").textContent=`Property has ${data.rooms.length} total rooms with ${occupied} currently occupied (${$("repOcc").textContent} occupancy rate). Calculated revenue stands at ${money(income)}.`;
 }
 
+/* LIVE AGE CHECK & GUEST CATEGORIZATION */
+function evaluateGuestAge(){
+  let ageVal = Number($("mAge").value);
+  let categoryBox = $("mAgeCategory");
+  
+  if(!ageVal || ageVal <= 0){
+    categoryBox.value = "";
+    return;
+  }
+  
+  if(ageVal < 18){
+    categoryBox.value = "👶 Child (Under 18 - Minor)";
+    categoryBox.style.color = "#ea580c";
+  } else {
+    categoryBox.value = "👤 Adult (18+)";
+    categoryBox.style.color = "#16a34a";
+  }
+}
+
 /* REAL-TIME CHECKIN CALCULATOR */
 function updateCheckinCalculations(){
-  let roomNo=Number($("mSelRoom").value);
-  let days=Number($("mDays").value)||1;
-  let checkinVal=$("mRIn").value;
+  let days = Number($("mDays").value)||1;
+  let checkinVal = $("mRIn").value;
+  let rentInput = Number($("mRentPerDayInput").value)||0;
 
-  let roomObj=data.rooms.find(r=>r.no===roomNo);
-  let pricePerDay=roomObj?roomObj.price:1000;
-
-  let totalRent = days * pricePerDay;
-  $("mRentPerDay").value = money(pricePerDay);
+  let totalRent = days * rentInput;
   $("mTotalAmt").value = totalRent;
 
   let paid = Number($("mAdvanceAmt").value)||0;
@@ -1204,12 +1221,38 @@ function openCheckin(){
   $("modalBody").innerHTML=`
     <div class="form">
       <div><label>Room Number <span class="req">*</span></label>
-        <select id="mSelRoom" onchange="updateCheckinCalculations()">
-          ${availableRooms.map(r=>`<option value="${r.no}">Room ${r.no} (${r.type} - ${money(r.price)}/day) ${r.status==='Occupied'?'[Currently Occupied]':''}</option>`).join("")}
+        <select id="mSelRoom">
+          ${availableRooms.map(r=>`<option value="${r.no}">Room ${r.no} (${r.type}) ${r.status==='Occupied'?'[Currently Occupied]':''}</option>`).join("")}
         </select>
       </div>
+
       <div><label>Guest Full Name <span class="req">*</span></label><input id="mRName" placeholder="Enter Guest Name"></div>
+      
+      <div><label>Age (Years) <span class="req">*</span></label>
+        <input id="mAge" type="number" min="1" max="120" placeholder="e.g. 25" oninput="evaluateGuestAge()">
+      </div>
+      <div><label>Guest Status Category</label>
+        <input id="mAgeCategory" readonly style="background:#f1f5f9;font-weight:bold" placeholder="Auto-calculated from age">
+      </div>
+
+      <div><label>Gender <span class="req">*</span></label>
+        <select id="mGender">
+          <option value="">-- Select Gender --</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+      
       <div><label>Phone Number <span class="req">*</span></label><input id="mRPhone" placeholder="Mobile Number (Mandatory)"></div>
+
+      <div><label>Number of Adults (18+) <span class="req">*</span></label>
+        <input id="mAdultsCount" type="number" min="0" value="1">
+      </div>
+      <div><label>Number of Children (&lt;18)</label>
+        <input id="mChildrenCount" type="number" min="0" value="0">
+      </div>
+
       <div>
         <label>ID Document Type <span class="req">*</span></label>
         <select id="mRIDType">
@@ -1221,13 +1264,26 @@ function openCheckin(){
         </select>
       </div>
       <div><label>ID Proof Number <span class="req">*</span></label><input id="mRIDNo" placeholder="Document ID Number (Mandatory)"></div>
-      <div><label>Email Address</label><input id="mREmail" placeholder="email@domain.com"></div>
       
+      <div><label>Occupation / Work</label><input id="mOccupation" placeholder="e.g. Engineer, Business"></div>
+      <div><label>Purpose of Visit</label><input id="mPurpose" placeholder="e.g. Business, Tourism, Personal"></div>
+      
+      <div class="span2"><label>Full Address</label><input id="mRAddress" placeholder="Guest Permanent Address"></div>
+
       <div>
         <label>Booking Source <span class="req">*</span></label>
         <select id="mSource" onchange="toggleSourceFields()">
           <option value="Direct">Direct Walk-in</option>
           <option value="Platform">Online Booking Platform</option>
+        </select>
+      </div>
+      <div>
+        <label>Payment Method <span class="req">*</span></label>
+        <select id="mPayMethod">
+          <option>Cash</option>
+          <option>UPI / QR Code</option>
+          <option>Credit / Debit Card</option>
+          <option>Net Banking</option>
         </select>
       </div>
 
@@ -1254,20 +1310,25 @@ function openCheckin(){
       </div>
 
       <div class="span2 calc-box">
-        <h3 style="margin:0 0 10px 0;color:#166534">💰 Rent & Payment Breakdown</h3>
+        <h3 style="margin:0 0 10px 0;color:#166534">💰 Rent & Payment Calculation (No Fixed Default Rent)</h3>
         <div class="form">
-          <div><label>Daily Room Rent Rate</label><input id="mRentPerDay" readonly style="background:#fff;font-weight:bold"></div>
-          <div><label>Total Room Rent</label><input id="mTotalAmt" readonly style="background:#fff;font-weight:bold;color:#1e40af"></div>
-          <div><label>Amount Paid Now by Guest</label><input id="mAdvanceAmt" type="number" value="0" oninput="updateCheckinCalculations()"></div>
+          <div><label>Room Rent / Day (Enter Rent) <span class="req">*</span></label>
+            <input id="mRentPerDayInput" type="number" placeholder="Enter Rent Amount" oninput="updateCheckinCalculations()">
+          </div>
+          <div><label>Total Rent Charges</label><input id="mTotalAmt" readonly style="background:#fff;font-weight:bold;color:#1e40af"></div>
+          <div><label>Amount Paid Now</label><input id="mAdvanceAmt" type="number" value="0" oninput="updateCheckinCalculations()"></div>
           <div><label>Balance Due</label><input id="mDueAmt" readonly style="background:#fff;font-weight:900"></div>
         </div>
+      </div>
+
+      <div class="span2"><label>Special Guest Requirements / Notes</label>
+        <textarea id="mRequirements" rows="2" placeholder="e.g. Extra bed needed, Late check-out requested, Ground floor preffered..."></textarea>
       </div>
 
       <div>
         <label>Calculated Check-out Date</label>
         <input id="mROut" type="datetime-local" readonly style="background:#f1f5f9">
       </div>
-      <div><label>Guest Address</label><input id="mRAddress" placeholder="Full Address"></div>
     </div>
   `;
 
@@ -1275,18 +1336,35 @@ function openCheckin(){
 
   $("saveModal").onclick=()=>{
     let name=$("mRName").value.trim();
+    let age=Number($("mAge").value);
+    let gender=$("mGender").value;
     let phone=$("mRPhone").value.trim();
     let idNo=$("mRIDNo").value.trim();
     let roomNo=Number($("mSelRoom").value);
+    let adults=Number($("mAdultsCount").value)||0;
+    let children=Number($("mChildrenCount").value)||0;
+    let rentInput=Number($("mRentPerDayInput").value);
 
     // MANDATORY VALIDATIONS
     if(!name) return alert("❌ Guest Name is mandatory!");
+    if(!age || age <= 0) return alert("❌ Valid Age is mandatory!");
+    if(!gender) return alert("❌ Gender selection is mandatory!");
     if(!phone) return alert("❌ Phone Number is mandatory!");
     if(!idNo) return alert("❌ ID Proof Number is mandatory!");
+    if(!rentInput || rentInput <= 0) return alert("❌ Please enter a valid Room Rent per day!");
+
+    // STRICT ADULT / MINOR RULE CHECK
+    let isPrimaryMinor = age < 18;
+    if(isPrimaryMinor && adults === 0){
+      return alert("❌ ROOM DENIED: Primary customer is under 18 years old (Child). A room cannot be booked without an Adult (18+) present!");
+    }
+    if(adults === 0){
+      return alert("❌ Cannot process check-in with 0 Adults!");
+    }
 
     let roomObj = data.rooms.find(r=>r.no===roomNo);
     if(roomObj && roomObj.status==="Occupied"){
-      return alert(`❌ Room ${roomNo} is currently occupied! Please select a vacant room or check out the current guest first.`);
+      return alert(`❌ Room ${roomNo} is currently occupied! Please select a vacant room.`);
     }
 
     let src=$("mSource").value;
@@ -1309,18 +1387,28 @@ function openCheckin(){
     data.reservations.push({
       id:resId,
       guest:name,
+      age:age,
+      isMinor:isPrimaryMinor,
+      gender:gender,
+      adults:adults,
+      children:children,
       phone:phone,
-      email:$("mREmail").value,
+      email:"",
       idtype:$("mRIDType").value,
       idno:idNo,
+      occupation:$("mOccupation").value,
+      purpose:$("mPurpose").value,
       address:$("mRAddress").value,
+      requirements:$("mRequirements").value,
       source:src,
       platform:platformName,
       bookingId:bookingId,
+      payMethod:$("mPayMethod").value,
       room:roomNo,
       checkin:$("mRIn").value,
       checkout:$("mROut").value,
       days:days,
+      pricePerDay:rentInput,
       totalAmount:totalAmt,
       advancePaid:advance,
       status:"Checked In"
@@ -1330,10 +1418,14 @@ function openCheckin(){
     if(!existingGuest){
       data.guests.push({
         name:name,
+        age:age,
+        isMinor:isPrimaryMinor,
+        gender:gender,
         phone:phone,
-        email:$("mREmail").value,
         idtype:$("mRIDType").value,
         idno:idNo,
+        occupation:$("mOccupation").value,
+        purpose:$("mPurpose").value,
         address:$("mRAddress").value,
         source:src,
         platform:platformName,
@@ -1346,7 +1438,21 @@ function openCheckin(){
       existingGuest.room = roomNo;
     }
 
-    if(roomObj) roomObj.status="Occupied";
+    if(roomObj){
+      roomObj.status="Occupied";
+      roomObj.price=rentInput;
+    }
+
+    if(advance > 0){
+      data.transactions.push({
+        date: dateNow(),
+        type: "Income",
+        category: "Room Booking Advance",
+        desc: `Check-in Advance payment for ${name} (Room ${roomNo})`,
+        amount: advance,
+        method: $("mPayMethod").value
+      });
+    }
 
     persist();
     closeModal();
@@ -1378,7 +1484,8 @@ function openCheckoutModal(resId){
 
   $("modalBody").innerHTML=`
     <div class="invoice-box">
-      <div class="invoice-row"><span>Guest Name:</span><b>${r.guest}</b></div>
+      <div class="invoice-row"><span>Guest Name:</span><b>${r.guest} (${r.age} yrs, ${r.gender})</b></div>
+      <div class="invoice-row"><span>Guests Count:</span><span><b>${r.adults}</b> Adults, <b>${r.children}</b> Children</span></div>
       <div class="invoice-row"><span>Phone Number:</span><span>${r.phone||"-"}</span></div>
       <div class="invoice-row"><span>Room Assigned:</span><b>Room ${r.room}</b></div>
       <div class="invoice-row"><span>Check-in Date:</span><span>${formatDisplayDate(r.checkin)}</span></div>
@@ -1437,10 +1544,10 @@ function openCheckoutModal(resId){
       data.transactions.push({
         date: dateNow(),
         type: "Income",
-        category: "Room Booking",
+        category: "Room Booking Final Settlement",
         desc: `Checkout Payment #${billId} - ${r.guest} (Room ${r.room})`,
         amount: payNow,
-        method: "Cash/Card"
+        method: r.payMethod||"Cash"
       });
     }
 
@@ -1490,8 +1597,11 @@ function viewGuestDetails(idx){
   $("modalBody").innerHTML=`
     <div class="invoice-box">
       <div class="invoice-row"><span>Full Name:</span><b>${g.name}</b></div>
+      <div class="invoice-row"><span>Age / Gender:</span><span><b>${g.age||"-"} yrs / ${g.gender||"-"}</b></span></div>
+      <div class="invoice-row"><span>Category:</span><span><b>${g.isMinor ? "👶 Child (Minor)" : "👤 Adult"}</b></span></div>
       <div class="invoice-row"><span>Phone Number:</span><span><b>${g.phone||"-"}</b></span></div>
-      <div class="invoice-row"><span>Email:</span><span>${g.email||"-"}</span></div>
+      <div class="invoice-row"><span>Occupation / Job:</span><span>${g.occupation||"-"}</span></div>
+      <div class="invoice-row"><span>Purpose of Visit:</span><span>${g.purpose||"-"}</span></div>
       <div class="invoice-row"><span>Booking Source:</span><span>${g.source==="Platform"?`💻 ${g.platform}`:"🚶 Direct Walk-in"}</span></div>
       <div class="invoice-row"><span>Online Booking ID:</span><span><b>${g.bookingId||"-"}</b></span></div>
       <div class="invoice-row"><span>ID Document:</span><span>${g.idtype||"-"} (<b>${g.idno||"-"}</b>)</span></div>
@@ -1569,7 +1679,7 @@ function openModal(type){
       <div class="form">
         <div><label>Room Number</label><input id="mRoomNo" type="number"></div>
         <div><label>Room Type</label><select id="mRoomType"><option>Standard</option><option>Deluxe</option><option>Suite</option></select></div>
-        <div><label>Rent per Day (24hr)</label><input id="mRoomPrice" type="number" value="1000"></div>
+        <div><label>Default Rent per Day (Optional)</label><input id="mRoomPrice" type="number" placeholder="Leave empty for variable rent"></div>
         <div><label>AC Available</label><select id="mRoomAC"><option value="true">Yes</option><option value="false">No</option></select></div>
       </div>
     `;
@@ -1580,7 +1690,7 @@ function openModal(type){
         no:no,
         type:$("mRoomType").value,
         beds:2,
-        price:Number($("mRoomPrice").value||1000),
+        price:$("mRoomPrice").value ? Number($("mRoomPrice").value) : null,
         ac:$("mRoomAC").value==="true",
         status:"Ready"
       });
@@ -1594,18 +1704,26 @@ function openModal(type){
     body.innerHTML=`
       <div class="form">
         <div><label>Guest Name *</label><input id="mGName"></div>
+        <div><label>Age *</label><input id="mGAge" type="number"></div>
+        <div><label>Gender *</label><select id="mGGender"><option>Male</option><option>Female</option><option>Other</option></select></div>
         <div><label>Phone Number *</label><input id="mGPhone"></div>
-        <div><label>Email</label><input id="mGEmail"></div>
+        <div><label>Occupation</label><input id="mGOcc"></div>
+        <div><label>Purpose of Visit</label><input id="mGPurpose"></div>
         <div><label>ID Type *</label><input id="mGIDType" placeholder="Aadhaar / Passport"></div>
-        <div class="span2"><label>ID Number *</label><input id="mGIDNo"></div>
+        <div><label>ID Number *</label><input id="mGIDNo"></div>
       </div>
     `;
     save.onclick=()=>{
-      if(!$("mGName").value||!$("mGPhone").value||!$("mGIDNo").value) return alert("Name, Phone, and ID Number are mandatory!");
+      if(!$("mGName").value||!$("mGAge").value||!$("mGPhone").value||!$("mGIDNo").value) return alert("Name, Age, Phone, and ID Number are mandatory!");
+      let ageVal = Number($("mGAge").value);
       data.guests.push({
         name:$("mGName").value,
+        age:ageVal,
+        isMinor:ageVal < 18,
+        gender:$("mGGender").value,
         phone:$("mGPhone").value,
-        email:$("mGEmail").value,
+        occupation:$("mGOcc").value,
+        purpose:$("mGPurpose").value,
         idtype:$("mGIDType").value,
         idno:$("mGIDNo").value
       });
@@ -1647,7 +1765,7 @@ function openModal(type){
         <div><label>Type</label><select id="mTxType"><option>Income</option><option>Expense</option></select></div>
         <div><label>Category</label><input id="mTxCat" placeholder="Maintenance, Food, Utility"></div>
         <div><label>Amount</label><input id="mTxAmt" type="number"></div>
-        <div><label>Payment Method</label><select id="mTxMethod"><option>Cash</option><option>UPI/Card</option></select></div>
+        <div><label>Payment Method</label><select id="mTxMethod"><option>Cash</option><option>UPI/Card</option><option>Net Banking</option></select></div>
         <div class="span2"><label>Description</label><input id="mTxDesc"></div>
       </div>
     `;

@@ -3,53 +3,206 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Room Booking Form</title>
+  <title>Room Booking System</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; }
-    .booking-card { max-width: 500px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input[type="number"], select, input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    .radio-group { display: flex; gap: 20px; }
-    .radio-group label { font-weight: normal; }
-    .adult-block { background: #eef2f5; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #007bff; }
-    .adult-block h4 { margin: 0 0 10px 0; color: #007bff; }
-    button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
-    button:hover { background: #0056b3; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f0f2f5;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .booking-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 600px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .booking-card h2 {
+      margin-bottom: 20px;
+      color: #1a1a1a;
+      font-size: 24px;
+      border-bottom: 2px solid #f0f2f5;
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 15px;
+    }
+
+    .radio-option {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border: 2px solid #e1e4e8;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .radio-option:hover {
+      border-color: #0066cc;
+    }
+
+    .radio-option input[type="radio"] {
+      margin-right: 10px;
+      accent-color: #0066cc;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    input[type="number"], 
+    input[type="text"], 
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: #0066cc;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 25px 0 15px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .adult-block {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #0066cc;
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .adult-block h4 {
+      margin-bottom: 12px;
+      color: #0066cc;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .adult-fields {
+      display: grid;
+      grid-template-columns: 2fr 1fr 2fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 500px) {
+      .adult-fields {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background-color: #0066cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0052a3;
+    }
+
+    .note {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
 
 <div class="booking-card">
-  <h2>Room Booking</h2>
+  <h2>Hotel Room Booking</h2>
+  
   <form id="bookingForm">
     
-    <!-- Room Type Selection -->
+    <!-- Room AC / Non-AC Selection -->
     <div class="form-group">
-      <label>Room Category:</label>
+      <label>Room Preference</label>
       <div class="radio-group">
-        <label><input type="radio" name="roomType" value="AC" checked> AC</label>
-        <label><input type="radio" name="roomType" value="Non-AC"> Non-AC</label>
+        <label class="radio-option">
+          <input type="radio" name="roomType" value="AC" checked>
+          <span>AC Room</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="roomType" value="Non-AC">
+          <span>Non-AC Room</span>
+        </label>
       </div>
     </div>
 
-    <!-- Guest Counts -->
-    <div class="form-group">
-      <label for="adultCount">Number of Adults (18+ yrs):</label>
-      <input type="number" id="adultCount" min="1" max="10" value="1" required>
+    <!-- Guest Count Selection -->
+    <div class="grid-2">
+      <div class="form-group">
+        <label for="adultCount">Adults (18+ yrs) *</label>
+        <input type="number" id="adultCount" min="1" max="10" value="1" required>
+        <div class="note">Mandatory details for each</div>
+      </div>
+
+      <div class="form-group">
+        <label for="childCount">Children (Below 18)</label>
+        <input type="number" id="childCount" min="0" max="10" value="0">
+        <div class="note">No details required</div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="childCount">Number of Children (Optional details):</label>
-      <input type="number" id="childCount" min="0" max="10" value="0">
+    <!-- Dynamic Container for Adult Info -->
+    <div class="section-title">
+      <span>Adult Guests Information</span>
     </div>
 
-    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
-
-    <!-- Dynamic Adult Fields Container -->
     <div id="adultsContainer"></div>
 
-    <button type="submit">Submit Booking</button>
+    <button type="submit">Confirm & Book Room</button>
   </form>
 </div>
 
@@ -57,44 +210,78 @@
   const adultCountInput = document.getElementById('adultCount');
   const adultsContainer = document.getElementById('adultsContainer');
 
-  // Function to render inputs dynamically based on count
-  function updateAdultFields() {
-    const count = parseInt(adultCountInput.value) || 1;
-    adultsContainer.innerHTML = ''; // Clear previous inputs
+  // Function to dynamically build input forms for every adult
+  function renderAdultFields() {
+    let count = parseInt(adultCountInput.value) || 1;
+    
+    // Safety boundaries
+    if (count < 1) count = 1;
+    if (count > 10) count = 10;
+    
+    adultsContainer.innerHTML = ''; 
 
     for (let i = 1; i <= count; i++) {
       const adultCard = document.createElement('div');
       adultCard.className = 'adult-block';
+      
       adultCard.innerHTML = `
-        <h4>Adult ${i} Details *</h4>
-        <div class="form-group">
-          <input type="text" placeholder="Full Name" name="adult_${i}_name" required>
-        </div>
-        <div class="form-group">
-          <input type="number" placeholder="Age" name="adult_${i}_age" min="18" required>
-        </div>
-        <div class="form-group">
-          <input type="text" placeholder="Government ID / Passport No." name="adult_${i}_id" required>
+        <h4>Adult ${i} Details</h4>
+        <div class="adult-fields">
+          <div>
+            <input type="text" placeholder="Full Name *" name="adult_${i}_name" required>
+          </div>
+          <div>
+            <input type="number" placeholder="Age *" name="adult_${i}_age" min="18" max="120" required>
+          </div>
+          <div>
+            <select name="adult_${i}_gender" required>
+              <option value="" disabled selected>Gender *</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
       `;
       adultsContainer.appendChild(adultCard);
     }
   }
 
-  // Initial render
-  updateAdultFields();
+  // Initial render when the page loads
+  renderAdultFields();
 
-  // Listen for changes to the adult count input
-  adultCountInput.addEventListener('input', updateAdultFields);
+  // Listen to input changes on the Adult count box
+  adultCountInput.addEventListener('input', renderAdultFields);
 
-  // Form submission handling
+  // Process completed booking payload
   document.getElementById('bookingForm').addEventListener('submit', function(e) {
     e.preventDefault();
+
     const formData = new FormData(this);
-    const data = Object.fromEntries(formData.entries());
-    
-    console.log("Submitted Booking Data:", data);
-    alert("Form submitted successfully! Check browser console for full output data.");
+    const roomType = formData.get('roomType');
+    const adultCount = parseInt(formData.get('adultCount') || adultCountInput.value);
+    const childCount = parseInt(document.getElementById('childCount').value) || 0;
+
+    const adultsData = [];
+    for (let i = 1; i <= adultCount; i++) {
+      adultsData.push({
+        name: formData.get(`adult_${i}_name`),
+        age: formData.get(`adult_${i}_age`),
+        gender: formData.get(`adult_${i}_gender`)
+      });
+    }
+
+    const payload = {
+      roomType: roomType,
+      counts: {
+        adults: adultCount,
+        children: childCount
+      },
+      adultGuestsDetails: adultsData
+    };
+
+    console.log("Final Booking Payload:", payload);
+    alert(`Booking Request Received!\nRoom: ${roomType}\nTotal Adults Registered: ${adultCount}\nCheck the console to view the raw JSON payload.`);
   });
 </script>
 

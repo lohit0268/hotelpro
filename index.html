@@ -1,289 +1,1933 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Room Booking System</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HotelPro - Simple Hotel Management System</title>
 
-    body {
-      background-color: #f0f2f5;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
-    }
+<style>
+*{box-sizing:border-box}
 
-    .booking-card {
-      background: #ffffff;
-      width: 100%;
-      max-width: 600px;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    }
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:#f1f5f9;
+  color:#0f172a
+}
 
-    .booking-card h2 {
-      margin-bottom: 20px;
-      color: #1a1a1a;
-      font-size: 24px;
-      border-bottom: 2px solid #f0f2f5;
-      padding-bottom: 10px;
-    }
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:10px;padding:12px 16px;font-weight:700;transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+/* DISTINCT BUTTON COLORS & STYLES */
+.btn-checkin{background:#16a34a!important;color:#fff!important}
+.btn-checkin:hover{background:#15803d!important}
 
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #333;
-    }
+.btn-checkout{background:#ea580c!important;color:#fff!important}
+.btn-checkout:hover{background:#c2410c!important}
 
-    .radio-group {
-      display: flex;
-      gap: 15px;
-    }
+.btn-clean{background:#0284c7!important;color:#fff!important}
+.btn-clean:hover{background:#0369a1!important}
 
-    .radio-option {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      padding: 12px;
-      border: 2px solid #e1e4e8;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+.btn-maint{background:#dc2626!important;color:#fff!important}
+.btn-maint:hover{background:#b91c1c!important}
 
-    .radio-option:hover {
-      border-color: #0066cc;
-    }
+.btn-invoice{background:#4f46e5!important;color:#fff!important}
+.btn-invoice:hover{background:#4338ca!important}
 
-    .radio-option input[type="radio"] {
-      margin-right: 10px;
-      accent-color: #0066cc;
-    }
+.login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#0f172a,#1e293b)
+}
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
+.loginbox{
+  width:380px;
+  background:#fff;
+  border-radius:20px;
+  padding:36px;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,0.25)
+}
 
-    input[type="number"], 
-    input[type="text"], 
-    select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
+.logo{font-size:32px;font-weight:900;color:#0f172a;margin-bottom:6px;text-align:center}
+.logo span,.brand span{color:#eab308}
+.muted{color:#64748b;text-align:center;margin-bottom:20px}
 
-    input:focus, select:focus {
-      border-color: #0066cc;
-    }
+.loginbox input{
+  width:100%;
+  padding:12px;
+  margin:6px 0 16px;
+  border:2px solid #e2e8f0;
+  border-radius:10px
+}
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #2c3e50;
-      margin: 25px 0 15px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+.primary{background:#eab308;color:#0f172a;font-weight:800}
+.primary:hover{background:#ca8a04}
+.full{width:100%}
+.error{color:#dc2626;font-size:14px;display:none;margin-bottom:12px;text-align:center;font-weight:600}
 
-    .adult-block {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-left: 4px solid #0066cc;
-      padding: 20px;
-      border-radius: 6px;
-      margin-bottom: 15px;
-    }
+.app{display:none}
 
-    .adult-block h4 {
-      margin-bottom: 12px;
-      color: #0066cc;
-      font-size: 15px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:240px;
+  background:#0f172a;
+  color:#fff;
+  padding:20px 14px;
+  z-index:5;
+  overflow-y:auto
+}
 
-    .adult-fields {
-      display: grid;
-      grid-template-columns: 2fr 1fr 2fr;
-      gap: 10px;
-    }
+.brand{font-size:26px;font-weight:900;padding:10px 12px 24px}
 
-    @media (max-width: 500px) {
-      .adult-fields {
-        grid-template-columns: 1fr;
-      }
-    }
+.nav button{
+  display:flex;
+  width:100%;
+  background:transparent;
+  color:#94a3b8;
+  text-align:left;
+  margin:4px 0;
+  padding:14px;
+  font-size:15px
+}
 
-    button[type="submit"] {
-      width: 100%;
-      padding: 14px;
-      background-color: #0066cc;
-      color: #ffffff;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.2s ease;
-    }
+.nav button:hover,.nav button.active{
+  background:#1e293b;
+  color:#fff
+}
 
-    button[type="submit"]:hover {
-      background-color: #0052a3;
-    }
+.main{margin-left:240px}
 
-    .note {
-      font-size: 12px;
-      color: #666;
-      margin-top: 4px;
-    }
-  </style>
+.topbar{
+  height:72px;
+  background:#fff;
+  border-bottom:2px solid #e2e8f0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  position:sticky;
+  top:0;
+  z-index:4
+}
+
+.topbar h1{font-size:22px;margin:0}
+
+.user{display:flex;gap:12px;align-items:center}
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#eab308;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  color:#0f172a
+}
+
+.content{padding:28px}
+.page{display:none}
+.page.active{display:block}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px
+}
+
+.card{
+  background:#fff;
+  border:2px solid #e2e8f0;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 4px 6px -1px rgba(0,0,0,0.05)
+}
+
+.metric{font-size:32px;font-weight:900;margin-top:8px}
+.label{
+  font-size:12px;
+  text-transform:uppercase;
+  color:#64748b;
+  font-weight:800;
+  letter-spacing:.5px
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:20px;
+  margin-top:20px
+}
+
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+  gap:10px
+}
+
+.secondary{background:#e2e8f0;color:#0f172a}
+.secondary:hover{background:#cbd5e1}
+
+.filters{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:20px
+}
+
+.filters input,.filters select,
+.form input,.form select,.form textarea{
+  padding:12px;
+  border:2px solid #cbd5e1;
+  border-radius:10px;
+  width:100%;
+  background:#fff;
+  font-size:14px
+}
+
+.filters input:focus,.filters select:focus,
+.form input:focus,.form select:focus,.form textarea:focus{
+  border-color:#4f46e5;
+  outline:none
+}
+
+.table{overflow:auto}
+
+table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:950px
+}
+
+th,td{
+  padding:14px;
+  border-bottom:1px solid #e2e8f0;
+  text-align:left;
+  font-size:14px
+}
+
+th{
+  font-size:11px;
+  color:#64748b;
+  text-transform:uppercase;
+  font-weight:800
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  display:inline-block
+}
+
+.ready{background:#dcfce7;color:#166534}
+.ready .dot{background:#16a34a}
+
+.occupied{background:#fed7aa;color:#9a3412}
+.occupied .dot{background:#ea580c}
+
+.reserved{background:#ede9fe;color:#6d28d9}
+.reserved .dot{background:#7c3aed}
+
+.cleaning{background:#e0f2fe;color:#075985}
+.cleaning .dot{background:#0284c7}
+
+.maintenance{background:#fee2e2;color:#991b1b}
+.maintenance .dot{background:#dc2626}
+
+.paid,.present{background:#dcfce7;color:#166534}
+.unpaid{background:#fee2e2;color:#991b1b}
+
+.room-summary{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px;
+  margin-bottom:24px
+}
+
+.room-stat{
+  background:#fff;
+  border:2px solid #e2e8f0;
+  border-radius:14px;
+  padding:16px;
+  text-align:center
+}
+
+.room-stat .number{
+  font-size:26px;
+  font-weight:900;
+  margin-top:6px
+}
+
+.room-stat .title{
+  font-size:11px;
+  color:#64748b;
+  font-weight:800
+}
+
+.room-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px
+}
+
+.room-card{
+  position:relative;
+  border:3px solid #e2e8f0;
+  border-radius:18px;
+  background:#fff;
+  padding:20px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.03)
+}
+
+.room-card.ready-card{border-color:#86efac}
+.room-card.occupied-card{border-color:#ffb74d}
+.room-card.reserved-card{border-color:#c4b5fd}
+.room-card.cleaning-card{border-color:#38bdf8}
+.room-card.maintenance-card{border-color:#fca5a5}
+
+.room-number{
+  font-size:24px;
+  font-weight:900
+}
+
+.room-info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:16px 0
+}
+
+.room-info div{
+  background:#f8fafc;
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+  border:1px solid #f1f5f9
+}
+
+.room-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap
+}
+
+.room-actions button{flex:1}
+
+.modalbg{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,0.75);
+  z-index:20;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  backdrop-filter:blur(4px)
+}
+
+.modalbg.open{display:flex}
+
+.modal{
+  width:min(900px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,0.3)
+}
+
+.form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px
+}
+
+.span2{grid-column:1/-1}
+
+.form label{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:6px;
+  color:#334155
+}
+
+.form label span.req{
+  color:#dc2626;
+  font-size:16px
+}
+
+.modalfoot{
+  text-align:right;
+  margin-top:24px;
+  border-top:2px solid #f1f5f9;
+  padding-top:18px
+}
+
+.modalfoot button{margin-left:10px}
+
+.toast{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  background:#0f172a;
+  color:#fff;
+  padding:16px 24px;
+  border-radius:12px;
+  display:none;
+  z-index:50;
+  font-weight:700;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2)
+}
+
+.toast.show{display:block}
+
+.quick button{
+  width:100%;
+  text-align:left;
+  margin:8px 0;
+  padding:14px;
+  font-size:15px
+}
+
+.checklist label{
+  display:block;
+  padding:12px;
+  border-bottom:1px solid #f1f5f9;
+  font-weight:600
+}
+
+.empty{
+  text-align:center;
+  color:#64748b;
+  padding:30px;
+  font-weight:600
+}
+
+.invoice-box{
+  background:#f8fafc;
+  border:2px solid #cbd5e1;
+  border-radius:14px;
+  padding:24px
+}
+
+.invoice-row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  font-size:15px
+}
+
+.invoice-total{
+  font-size:20px;
+  font-weight:900;
+  border-top:2px solid #94a3b8;
+  margin-top:12px;
+  padding-top:12px
+}
+
+.invoice-due{
+  color:#dc2626;
+  font-weight:900
+}
+
+.calc-box{
+  background:#f0fdf4;
+  border:2px solid #bbf7d0;
+  border-radius:12px;
+  padding:16px;
+  margin-top:8px
+}
+
+.guest-card-block{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:12px
+}
+
+.guest-card-block h4{
+  margin:0 0 10px 0;
+  font-size:14px;
+  color:#4f46e5
+}
+
+@media(max-width:1100px){
+  .cards{grid-template-columns:1fr 1fr}
+  .room-summary{grid-template-columns:repeat(3,1fr)}
+  .room-grid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:900px){
+  .sidebar{width:200px}
+  .main{margin-left:200px}
+  .grid2{grid-template-columns:1fr}
+}
+
+@media(max-width:650px){
+  .sidebar{position:relative;width:100%;height:auto}
+  .main{margin-left:0}
+  .cards,.room-grid,.form{grid-template-columns:1fr}
+  .room-summary{grid-template-columns:1fr 1fr}
+  .span2{grid-column:auto}
+}
+
+@media print{
+  .sidebar,.topbar,.no-print,.modalfoot{display:none!important}
+  .main{margin:0}
+  .modal{box-shadow:none;border:none}
+}
+</style>
 </head>
+
 <body>
 
-<div class="booking-card">
-  <h2>Hotel Room Booking</h2>
-  
-  <form id="bookingForm">
-    
-    <!-- Room AC / Non-AC Selection -->
-    <div class="form-group">
-      <label>Room Preference</label>
-      <div class="radio-group">
-        <label class="radio-option">
-          <input type="radio" name="roomType" value="AC" checked>
-          <span>AC Room</span>
-        </label>
-        <label class="radio-option">
-          <input type="radio" name="roomType" value="Non-AC">
-          <span>Non-AC Room</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Guest Count Selection -->
-    <div class="grid-2">
-      <div class="form-group">
-        <label for="adultCount">Adults (18+ yrs) *</label>
-        <input type="number" id="adultCount" min="1" max="10" value="1" required>
-        <div class="note">Mandatory details for each</div>
-      </div>
-
-      <div class="form-group">
-        <label for="childCount">Children (Below 18)</label>
-        <input type="number" id="childCount" min="0" max="10" value="0">
-        <div class="note">No details required</div>
-      </div>
-    </div>
-
-    <!-- Dynamic Container for Adult Info -->
-    <div class="section-title">
-      <span>Adult Guests Information</span>
-    </div>
-
-    <div id="adultsContainer"></div>
-
-    <button type="submit">Confirm & Book Room</button>
-  </form>
+<!-- LOGIN SCREEN -->
+<div id="login" class="login">
+  <div class="loginbox">
+    <div class="logo">Hotel<span>Pro</span></div>
+    <p class="muted">Simple Management System</p>
+    <label style="font-weight:700">Username</label>
+    <input id="loginUser" value="admin">
+    <label style="font-weight:700">Password</label>
+    <input id="loginPass" type="password" value="admin">
+    <div id="loginError" class="error">Invalid login. Use admin / admin.</div>
+    <button class="primary full" onclick="login()">Login to Dashboard</button>
+  </div>
 </div>
 
+<!-- APPLICATION SYSTEM -->
+<div id="app" class="app">
+<aside class="sidebar">
+  <div class="brand">Hotel<span>Pro</span></div>
+  <div class="nav">
+    <button class="active" onclick="showPage('dashboard',this)">🏠 Dashboard</button>
+    <button onclick="showPage('reservations',this)">📅 Reservations & Check-In</button>
+    <button onclick="showPage('rooms',this)">🛏️ Rooms</button>
+    <button onclick="showPage('guests',this)">👥 Guests</button>
+    <button onclick="showPage('staff',this)">👨‍💼 Staff</button>
+    <button onclick="showPage('billing',this)">🧾 Billing</button>
+    <button onclick="showPage('finance',this)">💰 Income & Expenses</button>
+    <button onclick="showPage('maintenance',this)">🔧 Maintenance</button>
+    <button onclick="showPage('housekeeping',this)">🧹 Housekeeping</button>
+    <button onclick="showPage('reports',this)">📊 Reports</button>
+    <button onclick="showPage('settings',this)">⚙️ Settings</button>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <h1 id="pageTitle">Dashboard</h1>
+  <div class="user">
+    <span id="clock" style="font-weight:700;color:#64748b"></span>
+    <div class="avatar">A</div>
+    <b style="font-size:15px">Admin Manager</b>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="page active">
+  <div class="cards">
+    <div class="card">
+      <span class="label">Total Rooms</span>
+      <div class="metric" id="mRooms">0</div>
+    </div>
+    <div class="card">
+      <span class="label">Occupied Rooms</span>
+      <div class="metric" id="mOccupied">0</div>
+    </div>
+    <div class="card">
+      <span class="label">Total Revenue</span>
+      <div class="metric" id="mRevenue">₹0</div>
+    </div>
+    <div class="card">
+      <span class="label">Pending Maintenance</span>
+      <div class="metric" id="mIssues">0</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="head">
+        <h2>Live Guest Operations</h2>
+        <button class="btn-checkin no-print" onclick="openCheckin()">✅ New Guest Check-in</button>
+      </div>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Guest</th>
+              <th>Age/Gender</th>
+              <th>Guests (A/C)</th>
+              <th>Room</th>
+              <th>Check-in</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="dashTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Quick One-Tap Buttons</h2>
+      <div class="quick">
+        <button class="btn-checkin" onclick="openCheckin()">✅ Guest Check-in</button>
+        <button class="btn-invoice" onclick="openModal('bill')">🧾 Create Custom Bill</button>
+        <button class="secondary" onclick="openModal('transaction')">💸 Log Expense</button>
+        <button class="btn-maint" onclick="openModal('maintenance')">🔧 Report Room Maintenance</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATIONS -->
+<section id="reservations" class="page">
+<div class="card">
+  <div class="head">
+    <h2>Reservations & Stay Logs</h2>
+    <button class="btn-checkin no-print" onclick="openCheckin()">✅ New Check-in</button>
+  </div>
+  <div class="filters">
+    <input id="resSearch" placeholder="Search guest, phone, or room..." oninput="render()">
+    <select id="resFilter" onchange="render()">
+      <option value="">All Statuses</option>
+      <option>Checked In</option>
+      <option>Checked Out</option>
+    </select>
+  </div>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Guest Name</th>
+          <th>Age / Gender</th>
+          <th>Adults / Children</th>
+          <th>Room</th>
+          <th>Check-in</th>
+          <th>Expected Out</th>
+          <th>Total</th>
+          <th>Paid</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="resTable"></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- ROOMS -->
+<section id="rooms" class="page">
+<div class="card">
+  <div class="head">
+    <h2>Room Management</h2>
+    <button class="primary no-print" onclick="openModal('room')">+ Add Room</button>
+  </div>
+
+  <div class="room-summary">
+    <div class="room-stat"><div class="title">TOTAL</div><div class="number" id="roomTotal">0</div></div>
+    <div class="room-stat"><div class="title">🟢 READY</div><div class="number" id="roomReady">0</div></div>
+    <div class="room-stat"><div class="title">🟠 OCCUPIED</div><div class="number" id="roomOccupied">0</div></div>
+    <div class="room-stat"><div class="title">🟣 RESERVED</div><div class="number" id="roomReserved">0</div></div>
+    <div class="room-stat"><div class="title">🧹 CLEANING</div><div class="number" id="roomCleaning">0</div></div>
+    <div class="room-stat"><div class="title">🔴 MAINTENANCE</div><div class="number" id="roomMaintenance">0</div></div>
+  </div>
+
+  <div class="filters">
+    <select id="roomFilter" onchange="render()">
+      <option value="">Show All Statuses</option>
+      <option>Ready</option>
+      <option>Occupied</option>
+      <option>Cleaning</option>
+      <option>Maintenance</option>
+    </select>
+    <select id="roomAcFilter" onchange="render()">
+      <option value="">All AC Types</option>
+      <option value="AC">AC Rooms</option>
+      <option value="Non-AC">Non-AC Rooms</option>
+    </select>
+    <input id="roomSearch" placeholder="Search room number..." oninput="render()">
+  </div>
+
+  <div id="roomGrid" class="room-grid"></div>
+</div>
+</section>
+
+<!-- GUESTS -->
+<section id="guests" class="page">
+<div class="card">
+  <div class="head">
+    <h2>Guest Directory</h2>
+    <button class="primary no-print" onclick="openModal('guest')">+ Add Guest</button>
+  </div>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age / Gender</th>
+          <th>Category</th>
+          <th>Phone</th>
+          <th>Occupation</th>
+          <th>Purpose of Visit</th>
+          <th>ID Proof</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="guestTable"></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- STAFF -->
+<section id="staff" class="page">
+<div class="card">
+  <div class="head">
+    <h2>Staff & Attendance</h2>
+    <button class="primary no-print" onclick="openModal('staff')">+ Add Staff</button>
+  </div>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Role</th>
+          <th>Attendance</th>
+          <th>Salary</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="staffTable"></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- BILLING -->
+<section id="billing" class="page">
+<div class="card">
+  <div class="head">
+    <h2>Invoices & Billings</h2>
+    <button class="btn-invoice no-print" onclick="openModal('bill')">+ Manual Invoice</button>
+  </div>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Guest</th>
+          <th>Room</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Paid</th>
+          <th>Due Balance</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="billTable"></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- FINANCE -->
+<section id="finance" class="page">
+  <div class="cards">
+    <div class="card"><span class="label">Total Income</span><div class="metric" id="income">₹0</div></div>
+    <div class="card"><span class="label">Total Expenses</span><div class="metric" id="expenses">₹0</div></div>
+    <div class="card"><span class="label">Net Profit</span><div class="metric" id="profit">₹0</div></div>
+    <div class="card"><span class="label">Transactions</span><div class="metric" id="txcount">0</div></div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <div class="head">
+      <h2>Financial Ledger</h2>
+      <button class="primary no-print" onclick="openModal('transaction')">+ Log Transaction</button>
+    </div>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Method</th>
+          </tr>
+        </thead>
+        <tbody id="txTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- MAINTENANCE -->
+<section id="maintenance" class="page">
+<div class="card">
+  <div class="head">
+    <h2>Maintenance Tickets</h2>
+    <button class="btn-maint no-print" onclick="openModal('maintenance')">+ New Issue</button>
+  </div>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Room</th>
+          <th>Issue</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="maintTable"></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- HOUSEKEEPING -->
+<section id="housekeeping" class="page">
+<div class="grid2">
+  <div class="card">
+    <div class="head">
+      <h2>Rooms Needing Cleaning</h2>
+    </div>
+    <div id="cleanList"></div>
+  </div>
+
+  <div class="card">
+    <h2>Cleaning Protocol Checklist</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Strip bedsheets & change pillow covers</label>
+      <label><input type="checkbox"> Disinfect & scrub bathroom fixtures</label>
+      <label><input type="checkbox"> Restock bath towels & toiletries</label>
+      <label><input type="checkbox"> Vacuum, sweep & mop bedroom floor</label>
+      <label><input type="checkbox"> Supervisor final clearance check</label>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- REPORTS -->
+<section id="reports" class="page">
+<div class="cards">
+  <div class="card"><span class="label">Total Check-ins</span><div class="metric" id="repRes">0</div></div>
+  <div class="card"><span class="label">Total Guests</span><div class="metric" id="repGuests">0</div></div>
+  <div class="card"><span class="label">Active Staff</span><div class="metric" id="repStaff">0</div></div>
+  <div class="card"><span class="label">Occupancy Rate</span><div class="metric" id="repOcc">0%</div></div>
+</div>
+
+<div class="card" style="margin-top:20px">
+  <h2>Operational Report</h2>
+  <p id="summary" style="font-size:16px;line-height:1.6"></p>
+  <button class="secondary no-print" onclick="window.print()">🖨️ Print Full Report</button>
+</div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="page">
+<div class="card">
+  <div class="head">
+    <h2>Hotel Settings</h2>
+    <button class="primary no-print" onclick="saveSettings()">Save Configuration</button>
+  </div>
+  <div class="form">
+    <div><label>Hotel Name</label><input id="hotelName"></div>
+    <div><label>Currency Symbol</label><select id="currency"><option>₹</option><option>$</option><option>€</option><option>£</option></select></div>
+    <div><label>Tax (%)</label><input id="tax" type="number"></div>
+    <div><label>Phone Number</label><input id="hotelPhone"></div>
+    <div class="span2"><label>Address</label><textarea id="hotelAddress" rows="3"></textarea></div>
+  </div>
+</div>
+<div class="card" style="margin-top:20px">
+  <h2>Data Backup & Reset</h2>
+  <button class="secondary" onclick="backup()">Export Backup File</button>
+  <button class="btn-maint" onclick="resetData()">Reset System Data</button>
+</div>
+</section>
+
+</div>
+</main>
+</div>
+
+<!-- MODAL SYSTEM -->
+<div id="modalBg" class="modalbg">
+  <div class="modal">
+    <h2 id="modalTitle" style="margin-top:0;font-size:22px"></h2>
+    <div id="modalBody"></div>
+    <div class="modalfoot" id="modalFoot">
+      <button class="secondary" onclick="closeModal()">Cancel</button>
+      <button class="primary" id="saveModal">Save & Submit</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
 <script>
-  const adultCountInput = document.getElementById('adultCount');
-  const adultsContainer = document.getElementById('adultsContainer');
+const KEY="hotelpro_v9";
 
-  // Function to dynamically build input forms for every adult
-  function renderAdultFields() {
-    let count = parseInt(adultCountInput.value) || 1;
-    
-    // Safety boundaries
-    if (count < 1) count = 1;
-    if (count > 10) count = 10;
-    
-    adultsContainer.innerHTML = ''; 
+const initial={
+  rooms:[
+    {no:101,type:"Standard",ac:true,beds:1,price:1500,status:"Ready"},
+    {no:102,type:"Standard",ac:false,beds:1,price:1000,status:"Ready"},
+    {no:103,type:"Deluxe",ac:true,beds:2,price:2500,status:"Ready"},
+    {no:104,type:"Deluxe",ac:false,beds:2,price:1800,status:"Ready"},
+    {no:105,type:"Suite",ac:true,beds:3,price:4000,status:"Ready"}
+  ],
+  reservations:[],
+  guests:[],
+  staff:[
+    {id:"S001",name:"Rahul Kumar",dept:"Front Desk",role:"Receptionist",shift:"Morning",attendance:"Present",salary:20000,paid:"No"}
+  ],
+  transactions:[],
+  maintenance:[],
+  bills:[],
+  settings:{
+    name:"Grand Royale Hotel",
+    currency:"₹",
+    tax:12,
+    phone:"+91 90000 00000",
+    address:"Main Road, City Center"
+  }
+};
 
-    for (let i = 1; i <= count; i++) {
-      const adultCard = document.createElement('div');
-      adultCard.className = 'adult-block';
-      
-      adultCard.innerHTML = `
-        <h4>Adult ${i} Details</h4>
-        <div class="adult-fields">
-          <div>
-            <input type="text" placeholder="Full Name *" name="adult_${i}_name" required>
+let data=JSON.parse(localStorage.getItem(KEY)||"null")||JSON.parse(JSON.stringify(initial));
+
+const $=id=>document.getElementById(id);
+
+function money(n){
+  return (data.settings.currency||"₹")+Number(n||0).toLocaleString("en-IN");
+}
+
+function dateNow(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function dateTimeNowLocal(){
+  const d=new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0,16);
+}
+
+function formatDisplayDate(dtStr){
+  if(!dtStr) return "-";
+  return dtStr.replace("T"," ");
+}
+
+function persist(){
+  localStorage.setItem(KEY,JSON.stringify(data));
+  render();
+}
+
+function toast(msg){
+  const t=$("toast");
+  t.textContent=msg;
+  t.classList.add("show");
+  setTimeout(()=>{ t.classList.remove("show"); },2500);
+}
+
+function badge(status){
+  let c=String(status).toLowerCase().replaceAll(" ","-");
+  return `<span class="badge ${c}"><span class="dot"></span>${status}</span>`;
+}
+
+function empty(cols){
+  return `<tr><td colspan="${cols}" class="empty">No records found</td></tr>`;
+}
+
+/* AUTHENTICATION */
+function login(){
+  if($("loginUser").value==="admin" && $("loginPass").value==="admin"){
+    $("login").style.display="none";
+    $("app").style.display="block";
+    render();
+  }else{
+    $("loginError").style.display="block";
+  }
+}
+
+function logout(){
+  $("app").style.display="none";
+  $("login").style.display="flex";
+}
+
+/* NAVIGATION */
+function showPage(id,btn){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  $(id).classList.add("active");
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  $("pageTitle").textContent=btn?btn.textContent.replace(/^[^\s]+\s/,""):"Dashboard";
+}
+
+/* MAIN RENDER FUNCTION */
+function render(){
+  const occupied=data.rooms.filter(r=>r.status==="Occupied").length;
+  const income=data.transactions.filter(t=>t.type==="Income").reduce((a,t)=>a+Number(t.amount||0),0);
+  const expense=data.transactions.filter(t=>t.type==="Expense").reduce((a,t)=>a+Number(t.amount||0),0);
+
+  $("mRooms").textContent=data.rooms.length;
+  $("mOccupied").textContent=occupied;
+  $("mRevenue").textContent=money(income);
+  $("mIssues").textContent=data.maintenance.filter(m=>m.status!=="Completed").length;
+
+  /* RESERVATIONS TABLE */
+  let q=($("resSearch")?.value||"").toLowerCase();
+  let f=$("resFilter")?.value||"";
+  let rows=data.reservations.filter(r=>{
+    const text=`${r.guest} ${r.phone} ${r.room} ${r.bookingId||''}`.toLowerCase();
+    return (!q||text.includes(q))&&(!f||r.status===f);
+  });
+
+  $("resTable").innerHTML=rows.map(r=>`
+    <tr>
+      <td><b>${r.id}</b></td>
+      <td><b>${r.guest}</b><br><small class="muted">${r.phone||"-"}</small></td>
+      <td>${r.age||"-"} yrs / ${r.gender||"-"}</td>
+      <td>👤 ${r.adults} Adult(s)<br>👶 ${r.children} Child(ren)</td>
+      <td><b>Room ${r.room}</b></td>
+      <td>${formatDisplayDate(r.checkin)}</td>
+      <td>${formatDisplayDate(r.checkout)}</td>
+      <td>${money(r.totalAmount)}</td>
+      <td>${money(r.advancePaid)}</td>
+      <td>${badge(r.status)}</td>
+      <td>
+        ${r.status==="Checked In"?`<button class="btn-checkout" onclick="openCheckoutModal('${r.id}')">🚪 Check Out</button>`:
+          r.status==="Checked Out"?`<button class="btn-invoice" onclick="viewInvoiceByResId('${r.id}')">🧾 Invoice</button>`:'-'}
+      </td>
+    </tr>
+  `).join("")||empty(11);
+
+  /* DASHBOARD LIVE OPERATIONS TABLE */
+  $("dashTable").innerHTML=data.reservations.slice(-6).reverse().map(r=>`
+    <tr>
+      <td><b>${r.guest}</b><br><small class="muted">${r.phone||"-"}</small></td>
+      <td>${r.age||"-"} yrs / ${r.gender||"-"}</td>
+      <td>👤 ${r.adults} A / 👶 ${r.children} C</td>
+      <td><b>Room ${r.room}</b></td>
+      <td>${formatDisplayDate(r.checkin)}</td>
+      <td>${badge(r.status)}</td>
+      <td>
+        ${r.status==="Checked In"?`<button class="btn-checkout" onclick="openCheckoutModal('${r.id}')">🚪 Check Out</button>`:
+          r.status==="Checked Out"?`<button class="btn-invoice" onclick="viewInvoiceByResId('${r.id}')">🧾 Invoice</button>`:'-'}
+      </td>
+    </tr>
+  `).join("")||empty(7);
+
+  /* ROOM MANAGEMENT CARDS */
+  const count=s=>data.rooms.filter(r=>r.status===s).length;
+  $("roomTotal").textContent=data.rooms.length;
+  $("roomReady").textContent=count("Ready");
+  $("roomOccupied").textContent=count("Occupied");
+  $("roomReserved").textContent=count("Reserved");
+  $("roomCleaning").textContent=count("Cleaning");
+  $("roomMaintenance").textContent=count("Maintenance");
+
+  let rf=$("roomFilter")?.value||"";
+  let acFilter=$("roomAcFilter")?.value||"";
+  let rs=($("roomSearch")?.value||"").trim();
+
+  $("roomGrid").innerHTML=data.rooms
+    .filter(r=>!rf||r.status===rf)
+    .filter(r=>!acFilter||(acFilter==="AC"?r.ac:!r.ac))
+    .filter(r=>!rs||String(r.no).includes(rs))
+    .map(r=>{
+      let cls=r.status.toLowerCase().replaceAll(" ","-");
+      let activeRes=data.reservations.find(res=>res.room==r.no && res.status==="Checked In");
+      return `
+        <div class="room-card ${cls}-card">
+          <div class="head">
+            <div class="room-number">Room ${r.no}</div>
+            ${badge(r.status)}
           </div>
-          <div>
-            <input type="number" placeholder="Age *" name="adult_${i}_age" min="18" max="120" required>
+          <div class="room-info">
+            <div><b>Type / AC</b><br>${r.type} (${r.ac ? 'AC' : 'Non-AC'})</div>
+            <div><b>Rent/Day</b><br>${r.price ? money(r.price) : 'Not Fixed'}</div>
+            <div style="grid-column:1/-1"><b>Status / Guest:</b><br>${activeRes?`<b>${activeRes.guest}</b> (${activeRes.phone})`:"Vacant Room"}</div>
           </div>
-          <div>
-            <select name="adult_${i}_gender" required>
-              <option value="" disabled selected>Gender *</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
+          <div class="room-actions">
+            ${r.status==="Ready"?`<button class="btn-checkin" onclick="openCheckinForRoom(${r.no})">✅ Check-in</button>`:""}
+            ${r.status==="Occupied" && activeRes?`<button class="btn-checkout" onclick="openCheckoutModal('${activeRes.id}')">🚪 Check Out</button>`:""}
+            ${r.status==="Cleaning"?`<button class="btn-clean" onclick="markRoomCleaned(${r.no})">🧹 Mark Cleaned</button>`:""}
+            ${r.status==="Maintenance"?`<button class="btn-clean" onclick="setRoomStatus(${r.no},'Ready')">✓ Resolved</button>`:""}
           </div>
         </div>
       `;
-      adultsContainer.appendChild(adultCard);
-    }
+    }).join("")||`<div class="empty" style="grid-column:1/-1">No matching rooms.</div>`;
+
+  /* GUESTS TABLE */
+  $("guestTable").innerHTML=data.guests.map((g,idx)=>`
+    <tr>
+      <td><b>${g.name}</b></td>
+      <td>${g.age||"-"} yrs / ${g.gender||"-"}</td>
+      <td><b>${g.isMinor ? "👶 Child (Minor)" : "👤 Adult"}</b></td>
+      <td>${g.phone||"-"}</td>
+      <td>${g.occupation||"-"}</td>
+      <td>${g.purpose||"-"}</td>
+      <td><b>${g.idno||"-"}</b> (${g.idtype||"-"})</td>
+      <td><button class="secondary" onclick="viewGuestDetails(${idx})">Details</button></td>
+    </tr>
+  `).join("")||empty(8);
+
+  /* STAFF TABLE */
+  $("staffTable").innerHTML=data.staff.map(s=>`
+    <tr>
+      <td><b>${s.name}</b></td>
+      <td>${s.dept}</td>
+      <td>${s.role}</td>
+      <td><button class="secondary" onclick="toggleAttendance('${s.id}')">${badge(s.attendance)}</button></td>
+      <td>${money(s.salary)}</td>
+      <td>${badge(s.paid==="Yes"?"Paid":"Unpaid")}</td>
+      <td><button class="secondary" onclick="toggleSalary('${s.id}')">${s.paid==="Yes"?"Mark Unpaid":"Mark Paid"}</button></td>
+    </tr>
+  `).join("")||empty(7);
+
+  /* BILLING TABLE */
+  $("billTable").innerHTML=data.bills.map(b=>`
+    <tr>
+      <td><b>${b.id}</b></td>
+      <td>${b.guest}</td>
+      <td>Room ${b.room}</td>
+      <td>${b.date}</td>
+      <td>${money(b.total)}</td>
+      <td>${money(b.paid)}</td>
+      <td class="${b.due>0?'invoice-due':''}">${money(b.due)}</td>
+      <td>${badge(b.due<=0?'Paid':'Unpaid')}</td>
+      <td><button class="btn-invoice" onclick="renderInvoiceModal('${b.id}')">🧾 Print Invoice</button></td>
+    </tr>
+  `).join("")||empty(9);
+
+  /* FINANCE METRICS & TRANSACTIONS */
+  $("income").textContent=money(income);
+  $("expenses").textContent=money(expense);
+  $("profit").textContent=money(income-expense);
+  $("txcount").textContent=data.transactions.length;
+
+  $("txTable").innerHTML=data.transactions.map(t=>`
+    <tr>
+      <td>${t.date}</td>
+      <td>${badge(t.type)}</td>
+      <td>${t.category}</td>
+      <td>${t.desc||"-"}</td>
+      <td><b>${money(t.amount)}</b></td>
+      <td>${t.method||"Cash"}</td>
+    </tr>
+  `).join("")||empty(6);
+
+  /* MAINTENANCE TABLE */
+  $("maintTable").innerHTML=data.maintenance.map(m=>`
+    <tr>
+      <td>${m.id}</td>
+      <td><b>Room ${m.room}</b></td>
+      <td>${m.problem}</td>
+      <td>${badge(m.priority)}</td>
+      <td>${badge(m.status)}</td>
+      <td>${m.status!=="Completed"?`<button class="btn-clean" onclick="completeMaintenance('${m.id}')">✓ Resolve Issue</button>`:'-'}</td>
+    </tr>
+  `).join("")||empty(6);
+
+  /* HOUSEKEEPING LIST */
+  $("cleanList").innerHTML=data.rooms.filter(r=>r.status==="Cleaning"||r.status==="Ready").map(r=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid #e2e8f0">
+      <div><b>Room ${r.no}</b> - ${r.type} (${r.ac ? 'AC' : 'Non-AC'})</div>
+      <div>
+        ${r.status==="Cleaning"?`<button class="btn-clean" onclick="markRoomCleaned(${r.no})">🧹 Mark Cleaned</button>`:badge('Ready')}
+      </div>
+    </div>
+  `).join("")||`<div class="empty">No rooms currently waiting for cleaning.</div>`;
+
+  /* REPORTS SUMMARY */
+  $("repRes").textContent=data.reservations.length;
+  $("repGuests").textContent=data.guests.length;
+  $("repStaff").textContent=data.staff.length;
+  $("repOcc").textContent=data.rooms.length?Math.round((occupied/data.rooms.length)*100)+"%":"0%";
+  $("summary").textContent=`Property has ${data.rooms.length} total rooms with ${occupied} currently occupied (${$("repOcc").textContent} occupancy rate). Calculated revenue stands at ${money(income)}.`;
+}
+
+/* LIVE AGE CHECK & GUEST CATEGORIZATION */
+function evaluateGuestAge(){
+  let ageVal = Number($("mAge").value);
+  let categoryBox = $("mAgeCategory");
+  
+  if(!ageVal || ageVal <= 0){
+    categoryBox.value = "";
+    return;
+  }
+  
+  if(ageVal < 18){
+    categoryBox.value = "Minor (Child)";
+  } else {
+    categoryBox.value = "Adult";
+  }
+}
+
+/* DYNAMIC ADULT & CHILD GUEST FORM GENERATION */
+function updateGuestFormFields(){
+  const numAdults = parseInt($("mAdults")?.value || 1);
+  const numChildren = parseInt($("mChildren")?.value || 0);
+
+  let adultHtml = '';
+  for(let i = 1; i <= numAdults; i++){
+    adultHtml += `
+      <div class="guest-card-block">
+        <h4>Adult ${i} Details ${i === 1 ? '(Primary Guest)' : ''}</h4>
+        <div class="form">
+          <div>
+            <label>Name <span class="req">*</span></label>
+            <input id="adult_name_${i}" placeholder="Full Name" required>
+          </div>
+          <div>
+            <label>Age <span class="req">*</span></label>
+            <input id="adult_age_${i}" type="number" min="18" placeholder="Age (18+)" required>
+          </div>
+          <div>
+            <label>Gender</label>
+            <select id="adult_gender_${i}">
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label>ID Proof (Type & No.)</label>
+            <input id="adult_id_${i}" placeholder="Aadhaar / Passport / Driving Lic">
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  if($("adultsContainer")) $("adultsContainer").innerHTML = adultHtml;
+
+  let childHtml = '';
+  for(let j = 1; j <= numChildren; j++){
+    childHtml += `
+      <div class="guest-card-block">
+        <h4>Child ${j} Details</h4>
+        <div class="form">
+          <div>
+            <label>Name</label>
+            <input id="child_name_${j}" placeholder="Child Full Name">
+          </div>
+          <div>
+            <label>Age</label>
+            <input id="child_age_${j}" type="number" max="17" placeholder="Age (0-17)">
+          </div>
+          <div>
+            <label>Gender</label>
+            <select id="child_gender_${j}">
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  if($("childrenContainer")) $("childrenContainer").innerHTML = childHtml;
+}
+
+/* RECALCULATE CHECKIN TOTAL COST */
+function calculateCheckinTotal(){
+  const roomId = $("mRoomSelect")?.value;
+  const room = data.rooms.find(r=>r.no == roomId);
+  const inDate = new Date($("mCheckin")?.value);
+  const outDate = new Date($("mCheckout")?.value);
+
+  if(room && inDate && outDate && outDate > inDate){
+    const diffTime = Math.abs(outDate - inDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+    const rate = room.price || 0;
+    const total = diffDays * rate;
+    if($("mTotalAmount")) $("mTotalAmount").value = total;
+    if($("mCalcInfo")) $("mCalcInfo").textContent = `${diffDays} night(s) @ ${money(rate)}/night (${room.ac ? 'AC' : 'Non-AC'})`;
+  }
+}
+
+/* OPEN CHECKIN MODAL */
+function openCheckin(preselectedRoom = null){
+  const readyRooms = data.rooms.filter(r => r.status === "Ready" || r.no == preselectedRoom);
+  if(readyRooms.length === 0){
+    toast("No rooms are currently Ready for check-in!");
+    return;
   }
 
-  // Initial render when the page loads
-  renderAdultFields();
+  $("modalTitle").textContent = "New Guest Check-in";
+  $("modalBody").innerHTML = `
+    <div class="form">
+      <div>
+        <label>Select Room <span class="req">*</span></label>
+        <select id="mRoomSelect" onchange="calculateCheckinTotal()">
+          ${readyRooms.map(r=>`<option value="${r.no}" ${r.no == preselectedRoom ? 'selected':''}>Room ${r.no} - ${r.type} (${r.ac?'AC':'Non-AC'}) - ${money(r.price)}/night</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <label>Phone Number <span class="req">*</span></label>
+        <input id="mPhone" placeholder="Mobile / Phone" required>
+      </div>
+      <div>
+        <label>Check-in Date & Time <span class="req">*</span></label>
+        <input id="mCheckin" type="datetime-local" value="${dateTimeNowLocal()}" onchange="calculateCheckinTotal()">
+      </div>
+      <div>
+        <label>Expected Check-out <span class="req">*</span></label>
+        <input id="mCheckout" type="datetime-local" value="${dateTimeNowLocal()}" onchange="calculateCheckinTotal()">
+      </div>
+      <div>
+        <label>Number of Adults (18+)</label>
+        <select id="mAdults" onchange="updateGuestFormFields()">
+          <option value="1">1 Adult</option>
+          <option value="2">2 Adults</option>
+          <option value="3">3 Adults</option>
+          <option value="4">4 Adults</option>
+        </select>
+      </div>
+      <div>
+        <label>Number of Children (&lt;18)</label>
+        <select id="mChildren" onchange="updateGuestFormFields()">
+          <option value="0">0 Children</option>
+          <option value="1">1 Child</option>
+          <option value="2">2 Children</option>
+          <option value="3">3 Children</option>
+        </select>
+      </div>
 
-  // Listen to input changes on the Adult count box
-  adultCountInput.addEventListener('input', renderAdultFields);
+      <div class="span2" id="adultsContainer"></div>
+      <div class="span2" id="childrenContainer"></div>
 
-  // Process completed booking payload
-  document.getElementById('bookingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+      <div>
+        <label>Occupation</label>
+        <input id="mOccupation" placeholder="Business, Service, etc.">
+      </div>
+      <div>
+        <label>Purpose of Visit</label>
+        <input id="mPurpose" placeholder="Tourism, Business, Personal">
+      </div>
 
-    const formData = new FormData(this);
-    const roomType = formData.get('roomType');
-    const adultCount = parseInt(formData.get('adultCount') || adultCountInput.value);
-    const childCount = parseInt(document.getElementById('childCount').value) || 0;
+      <div class="span2 calc-box">
+        <div style="font-weight:800;margin-bottom:6px">Billing Summary</div>
+        <div id="mCalcInfo" style="font-size:13px;color:#475569;margin-bottom:8px">1 night rate calculated</div>
+        <div class="form">
+          <div>
+            <label>Total Room Charges (${data.settings.currency})</label>
+            <input id="mTotalAmount" type="number" value="0">
+          </div>
+          <div>
+            <label>Advance Payment (${data.settings.currency})</label>
+            <input id="mAdvancePaid" type="number" value="0">
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 
-    const adultsData = [];
-    for (let i = 1; i <= adultCount; i++) {
-      adultsData.push({
-        name: formData.get(`adult_${i}_name`),
-        age: formData.get(`adult_${i}_age`),
-        gender: formData.get(`adult_${i}_gender`)
-      });
-    }
+  $("saveModal").onclick = saveCheckin;
+  $("modalBg").classList.add("open");
+  
+  // Set default dates & fields
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setMinutes(tomorrow.getMinutes() - tomorrow.getTimezoneOffset());
+  $("mCheckout").value = tomorrow.toISOString().slice(0,16);
 
-    const payload = {
-      roomType: roomType,
-      counts: {
-        adults: adultCount,
-        children: childCount
-      },
-      adultGuestsDetails: adultsData
-    };
+  updateGuestFormFields();
+  calculateCheckinTotal();
+}
 
-    console.log("Final Booking Payload:", payload);
-    alert(`Booking Request Received!\nRoom: ${roomType}\nTotal Adults Registered: ${adultCount}\nCheck the console to view the raw JSON payload.`);
+function openCheckinForRoom(roomNo){
+  openCheckin(roomNo);
+}
+
+/* SAVE CHECKIN DATA */
+function saveCheckin(){
+  const roomNo = $("mRoomSelect").value;
+  const phone = $("mPhone").value.trim();
+  const checkin = $("mCheckin").value;
+  const checkout = $("mCheckout").value;
+  const adultsCount = parseInt($("mAdults").value);
+  const childrenCount = parseInt($("mChildren").value);
+  const totalAmount = Number($("mTotalAmount").value || 0);
+  const advancePaid = Number($("mAdvancePaid").value || 0);
+
+  const primaryName = $("adult_name_1")?.value.trim();
+  const primaryAge = $("adult_age_1")?.value.trim();
+  const primaryGender = $("adult_gender_1")?.value;
+  const primaryId = $("adult_id_1")?.value.trim();
+
+  if(!primaryName || !phone){
+    alert("Please fill in Primary Guest Name and Phone Number.");
+    return;
+  }
+
+  const resId = "RES" + Math.floor(1000 + Math.random() * 9000);
+
+  // Register Primary & Secondary Adult Guests
+  for(let i = 1; i <= adultsCount; i++){
+    const name = $(`adult_name_${i}`)?.value.trim() || `Adult ${i}`;
+    const age = Number($(`adult_age_${i}`)?.value || 25);
+    const gender = $(`adult_gender_${i}`)?.value || "Male";
+    const idno = $(`adult_id_${i}`)?.value.trim() || "-";
+
+    data.guests.push({
+      name,
+      age,
+      gender,
+      isMinor: false,
+      phone: i === 1 ? phone : "",
+      occupation: i === 1 ? $("mOccupation").value : "",
+      purpose: i === 1 ? $("mPurpose").value : "",
+      idtype: "Government ID",
+      idno
+    });
+  }
+
+  // Register Child Guests
+  for(let j = 1; j <= childrenCount; j++){
+    const name = $(`child_name_${j}`)?.value.trim() || `Child ${j}`;
+    const age = Number($(`child_age_${j}`)?.value || 8);
+    const gender = $(`child_gender_${j}`)?.value || "Male";
+
+    data.guests.push({
+      name,
+      age,
+      gender,
+      isMinor: true,
+      phone: "",
+      occupation: "Student",
+      purpose: "Family Stay",
+      idtype: "Minor / No ID",
+      idno: "-"
+    });
+  }
+
+  // Save Reservation
+  const newRes = {
+    id: resId,
+    guest: primaryName,
+    phone,
+    age: primaryAge,
+    gender: primaryGender,
+    adults: adultsCount,
+    children: childrenCount,
+    room: roomNo,
+    checkin,
+    checkout,
+    totalAmount,
+    advancePaid,
+    status: "Checked In"
+  };
+
+  data.reservations.push(newRes);
+
+  // Mark room occupied
+  const roomObj = data.rooms.find(r => r.no == roomNo);
+  if(roomObj) roomObj.status = "Occupied";
+
+  // Log Advance Income
+  if(advancePaid > 0){
+    data.transactions.push({
+      date: dateNow(),
+      type: "Income",
+      category: "Room Check-in Advance",
+      desc: `Advance payment from ${primaryName} for Room ${roomNo}`,
+      amount: advancePaid,
+      method: "Cash/Card"
+    });
+  }
+
+  closeModal();
+  persist();
+  toast(`Check-in complete for ${primaryName} in Room ${roomNo}`);
+}
+
+/* CHECKOUT PROCESS */
+function openCheckoutModal(resId){
+  const res = data.reservations.find(r => r.id === resId);
+  if(!res) return;
+
+  const due = Math.max(0, res.totalAmount - res.advancePaid);
+
+  $("modalTitle").textContent = "Process Room Check-Out";
+  $("modalBody").innerHTML = `
+    <div class="invoice-box">
+      <h3>Checkout Summary - Room ${res.room}</h3>
+      <div class="invoice-row"><span>Guest Name:</span><b>${res.guest}</b></div>
+      <div class="invoice-row"><span>Check-in:</span><span>${formatDisplayDate(res.checkin)}</span></div>
+      <div class="invoice-row"><span>Check-out:</span><span>${dateTimeNowLocal().replace('T',' ')}</span></div>
+      <div class="invoice-row"><span>Total Rent:</span><b>${money(res.totalAmount)}</b></div>
+      <div class="invoice-row"><span>Advance Paid:</span><span>${money(res.advancePaid)}</span></div>
+      <div class="invoice-row invoice-total">
+        <span>Balance Due:</span>
+        <span class="${due > 0 ? 'invoice-due':''}">${money(due)}</span>
+      </div>
+    </div>
+    <div class="form" style="margin-top:16px">
+      <div>
+        <label>Settlement Payment Received (${data.settings.currency})</label>
+        <input id="mSettlePaid" type="number" value="${due}">
+      </div>
+      <div>
+        <label>Payment Method</label>
+        <select id="mSettleMethod">
+          <option>Cash</option>
+          <option>UPI / Online</option>
+          <option>Credit/Debit Card</option>
+        </select>
+      </div>
+    </div>
+  `;
+
+  $("saveModal").onclick = () => confirmCheckout(resId);
+  $("modalBg").classList.add("open");
+}
+
+function confirmCheckout(resId){
+  const res = data.reservations.find(r => r.id === resId);
+  if(!res) return;
+
+  const settledAmount = Number($("mSettlePaid").value || 0);
+  const paymentMethod = $("mSettleMethod").value;
+
+  res.status = "Checked Out";
+  res.checkout = dateTimeNowLocal();
+
+  // Update room status to Cleaning
+  const rm = data.rooms.find(r => r.no == res.room);
+  if(rm) rm.status = "Cleaning";
+
+  // Log Settlement Transaction
+  if(settledAmount > 0){
+    data.transactions.push({
+      date: dateNow(),
+      type: "Income",
+      category: "Room Checkout Payment",
+      desc: `Final checkout payment from ${res.guest} (Room ${res.room})`,
+      amount: settledAmount,
+      method: paymentMethod
+    });
+  }
+
+  // Create Invoice Record
+  const billId = "INV" + Math.floor(1000 + Math.random() * 9000);
+  const grandPaid = res.advancePaid + settledAmount;
+  data.bills.push({
+    id: billId,
+    resId: res.id,
+    guest: res.guest,
+    room: res.room,
+    date: dateNow(),
+    total: res.totalAmount,
+    paid: grandPaid,
+    due: Math.max(0, res.totalAmount - grandPaid)
   });
-</script>
 
+  closeModal();
+  persist();
+  toast(`Checked out Room ${res.room}. Room sent to Housekeeping.`);
+}
+
+/* INVOICE MODAL VIEW */
+function viewInvoiceByResId(resId){
+  const bill = data.bills.find(b => b.resId === resId);
+  if(bill){
+    renderInvoiceModal(bill.id);
+  } else {
+    toast("No invoice record found for this stay.");
+  }
+}
+
+function renderInvoiceModal(billId){
+  const bill = data.bills.find(b => b.id === billId);
+  if(!bill) return;
+
+  $("modalTitle").textContent = "Tax Invoice / Bill Receipt";
+  $("modalBody").innerHTML = `
+    <div class="invoice-box" id="printArea">
+      <div style="text-align:center;margin-bottom:20px">
+        <h2 style="margin:0">${data.settings.name}</h2>
+        <p style="margin:4px 0;color:#64748b">${data.settings.address} | Phone: ${data.settings.phone}</p>
+        <hr style="border:0;border-top:1px dashed #cbd5e1;margin:12px 0">
+      </div>
+      <div class="invoice-row"><span>Invoice No:</span><b>${bill.id}</b></div>
+      <div class="invoice-row"><span>Date:</span><span>${bill.date}</span></div>
+      <div class="invoice-row"><span>Guest Name:</span><b>${bill.guest}</b></div>
+      <div class="invoice-row"><span>Room Number:</span><span>Room ${bill.room}</span></div>
+      <hr style="border:0;border-top:1px dashed #cbd5e1;margin:12px 0">
+      <div class="invoice-row"><span>Room Stay Charges:</span><span>${money(bill.total)}</span></div>
+      <div class="invoice-row"><span>Total Paid:</span><span style="color:#16a34a;font-weight:700">${money(bill.paid)}</span></div>
+      <div class="invoice-row invoice-total">
+        <span>Balance Due:</span>
+        <span class="${bill.due > 0 ? 'invoice-due':''}">${money(bill.due)}</span>
+      </div>
+    </div>
+  `;
+
+  $("modalFoot").innerHTML = `
+    <button class="secondary" onclick="closeModal()">Close</button>
+    <button class="btn-invoice" onclick="window.print()">🖨️ Print Invoice</button>
+  `;
+  $("modalBg").classList.add("open");
+}
+
+/* GENERAL MODAL ROUTER FOR OTHER ACTIONS */
+function openModal(type){
+  $("modalFoot").innerHTML = `
+    <button class="secondary" onclick="closeModal()">Cancel</button>
+    <button class="primary" id="saveModal">Save & Submit</button>
+  `;
+
+  if(type === 'room'){
+    $("modalTitle").textContent = "Add New Room";
+    $("modalBody").innerHTML = `
+      <div class="form">
+        <div>
+          <label>Room Number <span class="req">*</span></label>
+          <input id="mRoomNo" type="number" placeholder="106">
+        </div>
+        <div>
+          <label>Room Type</label>
+          <select id="mRoomType">
+            <option>Standard</option>
+            <option>Deluxe</option>
+            <option>Suite</option>
+            <option>Executive</option>
+          </select>
+        </div>
+        <div>
+          <label>Air Conditioning (AC)</label>
+          <select id="mRoomAc">
+            <option value="true">AC Room</option>
+            <option value="false">Non-AC Room</option>
+          </select>
+        </div>
+        <div>
+          <label>Nightly Rate (${data.settings.currency})</label>
+          <input id="mRoomPrice" type="number" placeholder="1500">
+        </div>
+      </div>
+    `;
+    $("saveModal").onclick = saveNewRoom;
+  } else if(type === 'guest'){
+    $("modalTitle").textContent = "Register Guest Details";
+    $("modalBody").innerHTML = `
+      <div class="form">
+        <div>
+          <label>Full Name <span class="req">*</span></label>
+          <input id="mGName" placeholder="Name">
+        </div>
+        <div>
+          <label>Age <span class="req">*</span></label>
+          <input id="mAge" type="number" oninput="evaluateGuestAge()">
+        </div>
+        <div>
+          <label>Category</label>
+          <input id="mAgeCategory" readonly style="background:#f1f5f9">
+        </div>
+        <div>
+          <label>Gender</label>
+          <select id="mGGender"><option>Male</option><option>Female</option><option>Other</option></select>
+        </div>
+        <div>
+          <label>Phone</label>
+          <input id="mGPhone" placeholder="Mobile">
+        </div>
+        <div>
+          <label>ID Proof Number</label>
+          <input id="mGID" placeholder="Aadhaar / Passport">
+        </div>
+      </div>
+    `;
+    $("saveModal").onclick = saveNewGuest;
+  } else if(type === 'staff'){
+    $("modalTitle").textContent = "Add Staff Member";
+    $("modalBody").innerHTML = `
+      <div class="form">
+        <div><label>Staff Name</label><input id="mSName"></div>
+        <div><label>Department</label><input id="mSDept" placeholder="Front Desk / Housekeeping"></div>
+        <div><label>Role</label><input id="mSRole" placeholder="Manager / Cleaner"></div>
+        <div><label>Salary (${data.settings.currency})</label><input id="mSSalary" type="number"></div>
+      </div>
+    `;
+    $("saveModal").onclick = saveNewStaff;
+  } else if(type === 'transaction'){
+    $("modalTitle").textContent = "Log Financial Transaction";
+    $("modalBody").innerHTML = `
+      <div class="form">
+        <div><label>Transaction Type</label><select id="mTType"><option>Income</option><option>Expense</option></select></div>
+        <div><label>Category</label><input id="mTCat" placeholder="Supplies, Laundry, Maintenance, Rent"></div>
+        <div><label>Amount (${data.settings.currency})</label><input id="mTAmount" type="number"></div>
+        <div><label>Payment Method</label><select id="mTMethod"><option>Cash</option><option>UPI / Online</option><option>Bank Transfer</option></select></div>
+        <div class="span2"><label>Description</label><input id="mTDesc"></div>
+      </div>
+    `;
+    $("saveModal").onclick = saveTransaction;
+  } else if(type === 'maintenance'){
+    $("modalTitle").textContent = "Report Maintenance Issue";
+    $("modalBody").innerHTML = `
+      <div class="form">
+        <div>
+          <label>Select Room</label>
+          <select id="mMaintRoom">
+            ${data.rooms.map(r=>`<option value="${r.no}">Room ${r.no}</option>`).join('')}
+          </select>
+        </div>
+        <div><label>Priority</label><select id="mMaintPrio"><option>Low</option><option>Medium</option><option>High</option><option>Urgent</option></select></div>
+        <div class="span2"><label>Issue Description</label><textarea id="mMaintDesc" rows="3" placeholder="AC not cooling, Plumbing leak, etc."></textarea></div>
+      </div>
+    `;
+    $("saveModal").onclick = saveMaintenance;
+  } else if(type === 'bill'){
+    $("modalTitle").textContent = "Create Manual Custom Bill";
+    $("modalBody").innerHTML = `
+      <div class="form">
+        <div><label>Guest Name</label><input id="mBGuest"></div>
+        <div><label>Room No</label><input id="mBRoom"></div>
+        <div><label>Total Amount (${data.settings.currency})</label><input id="mBTotal" type="number"></div>
+        <div><label>Amount Paid (${data.settings.currency})</label><input id="mBPaid" type="number"></div>
+      </div>
+    `;
+    $("saveModal").onclick = saveManualBill;
+  }
+
+  $("modalBg").classList.add("open");
+}
+
+function closeModal(){
+  $("modalBg").classList.remove("open");
+}
+
+/* SAVE HANDLERS FOR OTHER ENTITIES */
+function saveNewRoom(){
+  const no = Number($("mRoomNo").value);
+  const type = $("mRoomType").value;
+  const ac = $("mRoomAc").value === "true";
+  const price = Number($("mRoomPrice").value || 0);
+
+  if(!no){ alert("Enter room number"); return; }
+  data.rooms.push({ no, type, ac, beds: 1, price, status: "Ready" });
+  closeModal();
+  persist();
+  toast(`Room ${no} added successfully`);
+}
+
+function saveNewGuest(){
+  const name = $("mGName").value.trim();
+  const age = Number($("mAge").value);
+  const isMinor = age < 18;
+
+  if(!name){ alert("Enter guest name"); return; }
+  data.guests.push({
+    name,
+    age,
+    gender: $("mGGender").value,
+    isMinor,
+    phone: $("mGPhone").value,
+    idtype: isMinor ? "Minor / No ID" : "Government ID",
+    idno: $("mGID").value || "-"
+  });
+  closeModal();
+  persist();
+  toast("Guest registered in directory");
+}
+
+function saveNewStaff(){
+  const name = $("mSName").value;
+  if(!name) return;
+  data.staff.push({
+    id: "S" + Math.floor(100 + Math.random()*900),
+    name,
+    dept: $("mSDept").value || "General",
+    role: $("mSRole").value || "Staff",
+    attendance: "Present",
+    salary: Number($("mSSalary").value || 0),
+    paid: "No"
+  });
+  closeModal();
+  persist();
+  toast("Staff member added");
+}
+
+function saveTransaction(){
+  const amount = Number($("mTAmount").value || 0);
+  if(!amount) return;
+  data.transactions.push({
+    date: dateNow(),
+    type: $("mTType").value,
+    category: $("mTCat").value || "General",
+    desc: $("mTDesc").value,
+    amount,
+    method: $("mTMethod").value
+  });
+  closeModal();
+  persist();
+  toast("Transaction recorded");
+}
+
+function saveMaintenance(){
+  const room = $("mMaintRoom").value;
+  const problem = $("mMaintDesc").value;
+  if(!problem) return;
+
+  data.maintenance.push({
+    id: "MNT" + Math.floor(100 + Math.random()*900),
+    room,
+    problem,
+    priority: $("mMaintPrio").value,
+    status: "Pending"
+  });
+
+  const rm = data.rooms.find(r => r.no == room);
+  if(rm) rm.status = "Maintenance";
+
+  closeModal();
+  persist();
+  toast(`Maintenance ticket raised for Room ${room}`);
+}
+
+function saveManualBill(){
+  const total = Number($("mBTotal").value || 0);
+  const paid = Number($("mBPaid").value || 0);
+  data.bills.push({
+    id: "INV" + Math.floor(1000 + Math.random()*9000),
+    guest: $("mBGuest").value || "Walk-in Guest",
+    room: $("mBRoom").value || "-",
+    date: dateNow(),
+    total,
+    paid,
+    due: Math.max(0, total - paid)
+  });
+  closeModal();
+  persist();
+  toast("Manual bill generated");
+}
+
+/* QUICK ROOM / HOUSEKEEPING ACTIONS */
+function markRoomCleaned(roomNo){
+  setRoomStatus(roomNo, "Ready");
+  toast(`Room ${roomNo} cleaned and set to Ready`);
+}
+
+function setRoomStatus(roomNo, status){
+  const rm = data.rooms.find(r => r.no == roomNo);
+  if(rm){
+    rm.status = status;
+    persist();
+  }
+}
+
+function completeMaintenance(id){
+  const m = data.maintenance.find(x => x.id === id);
+  if(m){
+    m.status = "Completed";
+    const rm = data.rooms.find(r => r.no == m.room);
+    if(rm && rm.status === "Maintenance") rm.status = "Ready";
+    persist();
+    toast("Maintenance issue resolved");
+  }
+}
+
+function toggleAttendance(id){
+  const s = data.staff.find(x => x.id === id);
+  if(s){
+    s.attendance = s.attendance === "Present" ? "Absent" : "Present";
+    persist();
+  }
+}
+
+function toggleSalary(id){
+  const s = data.staff.find(x => x.id === id);
+  if(s){
+    s.paid = s.paid === "Yes" ? "No" : "Yes";
+    persist();
+  }
+}
+
+function viewGuestDetails(idx){
+  const g = data.guests[idx];
+  if(!g) return;
+  alert(`Guest Details:\n\nName: ${g.name}\nAge: ${g.age} (${g.isMinor ? 'Minor' : 'Adult'})\nGender: ${g.gender}\nPhone: ${g.phone}\nID Proof: ${g.idtype} - ${g.idno}\nOccupation: ${g.occupation||'-'}\nPurpose: ${g.purpose||'-'}`);
+}
+
+/* SETTINGS & SYSTEM UTILS */
+function saveSettings(){
+  data.settings.name = $("hotelName").value;
+  data.settings.currency = $("currency").value;
+  data.settings.tax = Number($("tax").value);
+  data.settings.phone = $("hotelPhone").value;
+  data.settings.address = $("hotelAddress").value;
+  persist();
+  toast("Settings saved successfully");
+}
+
+function backup(){
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `hotelpro_backup_${dateNow()}.json`;
+  a.click();
+}
+
+function resetData(){
+  if(confirm("Are you sure you want to reset all hotel data back to default settings?")){
+    localStorage.removeItem(KEY);
+    data = JSON.parse(JSON.stringify(initial));
+    persist();
+    toast("Data reset to factory defaults");
+  }
+}
+
+/* INITIALIZATION */
+function init(){
+  $("hotelName").value = data.settings.name;
+  $("currency").value = data.settings.currency;
+  $("tax").value = data.settings.tax;
+  $("hotelPhone").value = data.settings.phone;
+  $("hotelAddress").value = data.settings.address;
+
+  // Clock
+  setInterval(()=>{
+    const d = new Date();
+    $("clock").textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }, 1000);
+
+  render();
+}
+
+init();
+</script>
 </body>
 </html>
